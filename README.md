@@ -44,7 +44,7 @@ They may or may not be included in the future and thats why I haven't bothered a
 My attention after initial release will be towards the following sections of the core.
 
 |Client/Server|Name|Reviewing|Completed|Released|
-|:-:|:-:|:-:|:-:|:-:|:-:|
+|:-:|:-:|:-:|:-:|:-:|
 |**C/S**|i18n|Now|||
 |**C**|_blips|Now|||
 |**C**|_cameras|Now|||
