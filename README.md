@@ -13,7 +13,7 @@ emoji on the #welcome page.
 
 You can find it from a simple search within the **[server browser](https://servers.fivem.net/)**: ***ingenium.games***
 
-There are other resources used on it that are modified versions of other scripts out there, only to show you how this would function, they may not be used in the future of this project.
+The other resources used on the test server, are modified versions of other scripts on these forums to show you, as an example, how it all comes togeather. They are not included in this release.
 
 -----
 #### Requirements
