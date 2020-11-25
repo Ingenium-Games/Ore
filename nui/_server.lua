@@ -16,7 +16,7 @@ AddEventHandler('Server:Character:Request:List', function(source, Primary_ID)
     local Characters = _c.sql.DBGetUserCharacters(Primary_ID) 
 	local Command = "OnJoin"
 	-- Send the data table to the client that requested it...
-	TriggerClientEvent('nui_open', src, Command, Characters)
+	TriggerClientEvent('Client:Character:Open', src, Command, Characters)
 end)
 ------------------------------------------------------------------------------
 -- When they click the tick...
@@ -26,7 +26,7 @@ AddEventHandler('Server:Character:Request:Join', function(Character_ID)
 	-- If the User selected the NEW button on the NUI, the Character_ID will be listed as NEW, if this is the case, trigger the registration NUI?
     if (Character_ID == 'New') then
 		local message = "OnNew"
-        TriggerClientEvent('nui_open', src, message)
+        TriggerClientEvent('Client:Character:Open', src, message)
 	elseif Character_ID ~= nil then
 		local Coords = _c.sql.DBGetCharacterCoords(Character_ID)
 		_c.sql.DBSetCharacterActive(Character_ID)
