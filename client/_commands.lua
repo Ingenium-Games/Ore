@@ -48,7 +48,7 @@ AddEventHandler("Client:Screengrab", function()
         
         -- This is just an example to show you how to call and return the image if you use a image host like 'imgpush'
         TriggerEvent('chat:addMessage', {
-            template = '<img src="{0}" style="width: 500px;height: 450px;" />',
+            template = '<img src="{0}" style="width: 500px; height: 450px;" />',
             args = {conf.imagehost..''..t.filename}
         })
         TriggerEvent('chat:addMessage', {

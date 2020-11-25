@@ -32,6 +32,7 @@ end)
 -- Event to trigger other resources once the client has received the chosen characters data from the server.
 RegisterNetEvent('Client:Character:Ready')
 AddEventHandler('Client:Character:Ready', function()
+    DisplayRadar(true)
     NetworkSetFriendlyFireOption(true)
     RemoveMultiplayerHudCash()
     SetPlayerHealthRechargeLimit(PlayerId(), 0)

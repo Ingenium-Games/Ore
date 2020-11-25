@@ -1,4 +1,4 @@
-# _c : A Multi Character _Core for FiveM Resources. 
+# _c : A Multi Character Core for FiveM.
 ### An Overview
 This is a continual work in progress, please be advised that things 
 may and will change, I've been rolling around for a long time and since my first born, I've lost the bulk amount of free time, So I'm open to people helping.
@@ -24,7 +24,7 @@ The aptitude to follow instructions.
 
 -----
 
-#### Depenancies
+#### Dependencies
 
 This list may grow over time as functionality expands and will be reviewed every release made.
 
