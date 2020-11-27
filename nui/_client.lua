@@ -48,6 +48,7 @@ local intro = nil
 --
 RegisterNetEvent('Client:Character:OpeningMenu')
 AddEventHandler('Client:Character:OpeningMenu', function()
+    SetEntityCoords(GetPlayerPed(-1), 0, 0, 0)
     FreezeEntityPosition(GetPlayerPed(-1), true)
     intro = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", -1844.451, -1444.198, 44.72828, 15.00, 0.00, 0.00, 100.00,
         false, 0)

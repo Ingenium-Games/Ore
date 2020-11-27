@@ -14,7 +14,6 @@ math.randomseed(_c.seed)
 
 function PlayerClass(source)
     local src = tonumber(source)
-    local Primary_ID = _c.identifier(src)
     local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = _c.identifiers(src)
     local Ace = _c.sql.DBGetAce(License_ID)
     local Locale = _c.sql.DBGetLocale(License_ID)
@@ -29,8 +28,8 @@ function PlayerClass(source)
     self.Ace = Ace
     self.Locale = Locale
     --
-    ExecuteCommand(('remove_principal identifier.%s group.%s'):format(self.Primary_ID, self.Ace))
-    ExecuteCommand(('add_principal identifier.%s group.%s'):format(self.Primary_ID, self.Ace))
+    ExecuteCommand(('remove_principal identifier.%s group.%s'):format(self.License_ID, self.Ace))
+    ExecuteCommand(('add_principal identifier.%s group.%s'):format(self.License_ID, self.Ace))
     --
     self.kick = function(reason)
         DropPlayer(self.src, reason)

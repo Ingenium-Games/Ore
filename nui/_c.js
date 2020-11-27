@@ -10,6 +10,14 @@ function OnJoin(data) {
     }
 };
 
+function OnAction(data) {
+    if (data !== null) {
+        $.each(data, function (index, value) {
+            $('#' + value.Character_ID).remove();
+        });
+    }
+};
+
 function Selected(key) {
     if (key === 'New') {
         Character_ID = 'New'
@@ -40,6 +48,7 @@ function CharacterDelete() {
     }));
     $("#Sidebar").hide();
     $("#CharacterList").hide();
+    OnAction(PacketTemp);
 };
 
 function CharacterJoin() {
@@ -48,6 +57,7 @@ function CharacterJoin() {
     }));
     $("#Sidebar").hide();
     $("#CharacterList").hide();
+    OnAction(PacketTemp);
 };
 
 function CharacterMake() {
@@ -63,6 +73,7 @@ function CharacterMake() {
         Birth_Date: dob,
     }));
     $("#CharacterMake").hide();
+    OnAction(PacketTemp);
 };
 
 $(document).ready(function () {
@@ -80,8 +91,8 @@ $(document).ready(function () {
                     $("#Sidebar").show();
                     $("#CharacterList").show();
                     $("#CharacterMake").hide();
-                    OnJoin(data.packet)
-                    PacketTemp = data.packet
+                    PacketTemp = data.packet;
+                    OnJoin(PacketTemp);
                     break;
                 case 'OnNew':
                     if (EnableDebug) {

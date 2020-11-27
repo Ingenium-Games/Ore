@@ -29,7 +29,6 @@ AddEventHandler('Server:Character:Request:Join', function(Character_ID)
         TriggerClientEvent('Client:Character:Open', src, message)
 	elseif Character_ID ~= nil then
 		local Coords = _c.sql.DBGetCharacterCoords(Character_ID)
-		_c.sql.DBSetCharacterActive(Character_ID)
 		_c.data.LoadPlayer(src, Character_ID)
         TriggerClientEvent('Client:Character:ReSpawn', src, Character_ID, Coords)
     end

@@ -105,6 +105,7 @@ end
 function _c.data.LoadPlayer(source, Character_ID)
     local src = tonumber(source)
     local data = _c.data.CreatePlayer(source, Character_ID)
+    _c.sql.DBSetCharacterActive(Character_ID)
     --
         _c.data.SetPlayer(src, data)
         Wait(250)

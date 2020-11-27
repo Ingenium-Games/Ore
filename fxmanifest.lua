@@ -11,10 +11,10 @@ ui_page('nui/_c.html')
 shared_scripts {'conf.lua', 'shared/*.lua', 'i18n/*.lua'}
 ------------------------------------------------------------------------------
 -- client
-client_scripts {'client/**/*.lua', 'client/**/*.js', 'nui/_client.lua'}
+client_scripts {'client/[Tools]/*.lua' ,'client/**/*.lua', 'client/**/*.js', 'nui/_client.lua'}
 ------------------------------------------------------------------------------
 -- server
-server_scripts {'@mysql-async/lib/MySQL.lua', 'server/_functions.lua', 'server/**/*.lua', 'server/**/*.js', 'nui/_server.lua'}
+server_scripts {'@mysql-async/lib/MySQL.lua', 'server/server.lua', 'server/**/*.lua', 'server/**/*.js', 'nui/_server.lua'}
 ------------------------------------------------------------------------------
 -- client exports
 exports {'_c'}

@@ -1,7 +1,7 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.seed = (os.time() + tonumber(tostring({}):sub(8)))
+_c.seed = (os.time() + tonumber(tostring({}):sub(8)) * math.pi)
 SetGameType(conf.gametype)
 SetMapName(conf.mapname)
 --[[
@@ -80,8 +80,6 @@ AddEventHandler('PlayerConnecting:Server:Connecting', function()
         else
             DropPlayer(src, 'Contact the Server Owner, with the info of "License_ID not found".')
         end
-    else
-        DropPlayer(src, 'Your Server ID # was already used, This is extremely odd. Please reconnect or contact the server admins.')
     end
 end)
 
@@ -90,13 +88,13 @@ end)
 AddEventHandler('playerDropped', function()
     local src = tonumber(source)
     local data = _c.data.GetPlayer(src)
-
     --
     if type(data) == 'table' then
-        _c.sql.SaveUser(data, function()
+        local function cb()
             _c.data.RemovePlayer(src)
             _c.debug('^7[^2Saved^7] Player Disconnection.')
-        end)
+        end
+        _c.sql.SaveUser(data, cb)
         _c.sql.DBSetCharacterInActive(data.Character_ID)
     else
         _c.data.RemovePlayer(src)

@@ -11,11 +11,19 @@ NOTES.
 math.randomseed(_c.seed)
 --====================================================================================--
 
+RegisterCommand('switch', function(source)
+    local src = tonumber(source)
+    local Primary_ID = _c.identifier(src)
+    local char = _c.sql.DBGetActiveCharacter(Primary_ID)
+    _c.sql.DBSetCharacterInActive(Character_ID)
+    TriggerClientEvent('Client:Character:OpeningMenu', src)
+    TriggerEvent('Server:Character:Request:List', src, Primary_ID)
+end, true)
+
 RegisterCommand('noclip', function(source)
 	local src = tonumber(source)
 	TriggerClientEvent('AceCommand:NoClip', src)
 end, true)
-
 
 RegisterCommand('i18n', function(source, ...)
     local src = tonumber(source)
