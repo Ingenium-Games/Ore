@@ -51,3 +51,12 @@ Citizen.CreateThread(function()
         ThefeedHideThisFrame()
     end
 end)
+
+-- Not per Frame natives by still need to remvoe for the role play experience.
+Citizen.CreateThread(function()
+    while true do
+        InvalidateIdleCam()
+        N_0x9e4cfff989258472()
+        Wait(5000)
+    end
+end)

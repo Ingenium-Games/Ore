@@ -48,9 +48,10 @@ local intro = nil
 --
 RegisterNetEvent('Client:Character:OpeningMenu')
 AddEventHandler('Client:Character:OpeningMenu', function()
+    SetTimecycleModifier('default')
     SetEntityCoords(GetPlayerPed(-1), 0, 0, 0)
     FreezeEntityPosition(GetPlayerPed(-1), true)
-    intro = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", -1844.451, -1444.198, 44.72828, 15.00, 0.00, 0.00, 100.00,
+    intro = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00,
         false, 0)
     SetCamActive(intro, true)
     RenderScriptCams(true, false, 1, true, true)
@@ -73,20 +74,18 @@ RegisterNetEvent('Client:Character:ReSpawn')
 AddEventHandler('Client:Character:ReSpawn', function(Character_ID, Coords)
     SetTimecycleModifier('default')
     SetEntityCoords(GetPlayerPed(-1), Coords.x, Coords.y, Coords.z)
-    DoScreenFadeIn(500)
-    Citizen.Wait(500)
-    cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", -1844.451, -1444.198, 44.72828, 15.00, 0.00, 0.00, 100.00,
+    cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00,
                false, 0)
     PointCamAtCoord(cam2, Coords.x, Coords.y, Coords.z + 200)
-    SetCamActiveWithInterp(cam2, intro, 900, true, true)
+    SetCamActiveWithInterp(cam2, intro, 900, 1, 1)
     Citizen.Wait(900)
     cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", Coords.x, Coords.y, Coords.z + 200, 300.00, 0.00, 0.00, 100.00,
               false, 0)
     PointCamAtCoord(cam, Coords.x, Coords.y, Coords.z + 2)
-    SetCamActiveWithInterp(cam, cam2, 3700, true, true)
+    SetCamActiveWithInterp(cam, cam2, 3700, 1, 1)
     Citizen.Wait(3700)
     PlaySoundFrontend(-1, "Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS", 1)
-    RenderScriptCams(false, true, 500, true, true)
+    RenderScriptCams(false, true, 500, 1, 1)
     PlaySoundFrontend(-1, "CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS", 1)
     FreezeEntityPosition(GetPlayerPed(-1), false)
     Citizen.Wait(500)

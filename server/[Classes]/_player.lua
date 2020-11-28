@@ -3,10 +3,10 @@
 -- ====================================================================================--
 --[[
 NOTES.
-    - Not all informaiton is required from the DB upon loading, online stored variables are required to be imported from the DB.
+    - Not all information is required from the DB upon loading, on-line stored variables are required to be imported from the DB.
     - Identifiers can change like IP and Steam, etc; that is why they will either be Added to the DB, or Updated if they exist.
-    - Referance and follow the 'PlayerConnecting:Server:Connecting' Event chain in the /core/client/client.lua.
-    - Basically an xPlayer table. 
+    - Reference and follow the 'PlayerConnecting:Server:Connecting' Event chain in the /core/client/client.lua.
+    - Basically an xPlayer table remake. 
 ]] --
 
 math.randomseed(_c.seed)

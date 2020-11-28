@@ -23,22 +23,23 @@ function _c.data.Initilize()
         [1] = 'DB: characters.Active = FALSE;',
         [2] = 'DB: ',
     }
-    local function cb()
-        num = num + 1
-        _c.debug(t[num])
-    end
+
     MySQL.ready(function()
         -- Add other SQL commands required on start up.
         -- such as cleaning tables, requesting data, etc..
         -- [1]
-        _c.sql.DBResetActiveCharacters(cb)
-
+        _c.sql.DBResetActiveCharacters(function()
+            num = num + 1
+            _c.debug(t[num])
+        end)
         --
         loaded = true
     end)
+
     while not loaded do
         Wait(250)
     end
+
     _c.data.loading = false
     _c.debug('Loading Sequence Complete')
 end

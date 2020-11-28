@@ -285,6 +285,19 @@ function _c.sql.DBGetUserCharacters(Primary_ID, cb)
     return result
 end
 
+function _c.sql.DBDeleteCharacter(Character_ID, cb)
+    MySQL.Async.execute('DELETE FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;', {
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            --
+        end
+        if cb ~= nil then
+            cb()
+        end
+    end)
+end
+
 --- Get - # of characters owned = FALSE
 -- @Primary_ID
 function _c.sql.DBGetCharacterCount(Primary_ID, cb)

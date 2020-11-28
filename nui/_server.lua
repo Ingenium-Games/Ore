@@ -31,6 +31,9 @@ AddEventHandler('Server:Character:Request:Join', function(Character_ID)
 		local Coords = _c.sql.DBGetCharacterCoords(Character_ID)
 		_c.data.LoadPlayer(src, Character_ID)
         TriggerClientEvent('Client:Character:ReSpawn', src, Character_ID, Coords)
+    elseif Character_ID == nil then
+        local message = "OnNew"
+        TriggerClientEvent('Client:Character:Open', src, message)
     end
 end)
 
@@ -38,6 +41,10 @@ end)
 RegisterNetEvent('Server:Character:Request:Delete')
 AddEventHandler('Server:Character:Request:Delete', function(Character_ID)
     local src = tonumber(source)
+    local prim = _c.identifier(src)
+    _c.sql.DBDeleteCharacter(Character_ID, function()
+        TriggerEvent('Server:Character:Request:List', src, prim)
+    end)
 end)
 
 RegisterNetEvent('Server:Character:Request:Create')
@@ -48,10 +55,9 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
     local phone = _c.sql.GeneratePhoneNumber()
     local prim = _c.identifier(src)
     local t = {Primary_ID = prim, First_Name = first_name, Last_Name = last_name, Height = height, Birth_Date = date, Character_ID = char, City_ID = city, Phone = phone, Coords = json.encode(conf.spawn)}
-    local function cb()
+    _c.sql.CreateCharacter(t, function()
         _c.data.LoadPlayer(src, char)
-    end
-    _c.sql.CreateCharacter(t, cb)
+    end)
     Citizen.Wait(100)
     TriggerClientEvent('Client:Character:FirstSpawn', src)
     --
