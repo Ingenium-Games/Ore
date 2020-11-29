@@ -9,6 +9,7 @@ NOTES.
     - 
     -
 ]] --
+math.randomseed(_c.seed)
 SetThisScriptCanRemoveBlipsCreatedByAnyScript(true)
 -- ====================================================================================--
 -- https://docs.fivem.net/docs/game-references/blips/
@@ -115,9 +116,6 @@ end
 
 --[[
 Test Blips
-]]--
-
-
 local Blips = {
     {title = 'NAME 1', x = 500.0, y = 1200.0, z = 35.0, sprite = 211, colour = 2, size = 0.75},
     {title = 'NAME 2', x = 600.0, y = 1300.0, z = 35.0, sprite = 207, colour = 3, size = 0.75},
@@ -135,3 +133,4 @@ for _,i in ipairs(Blips) do
 end
 
 print(_c.table.dump(_c.blips.store))
+]]--

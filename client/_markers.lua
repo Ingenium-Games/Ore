@@ -8,5 +8,6 @@ NOTES.
     -
     -
 ]] --
+math.randomseed(_c.seed)
 -- ====================================================================================--
 -- https://docs.fivem.net/docs/game-references/markers/

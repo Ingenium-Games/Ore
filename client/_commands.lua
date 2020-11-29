@@ -10,6 +10,7 @@ NOTES.
     RegisterCommand('-cross', function() TriggerEvent("Client:Animation.CrossedArms", false, GetPlayerPed(-1)) end, false)
     RegisterKeyMapping('+cross', 'Cross arms', 'keyboard', 'z')
 ]]--
+math.randomseed(_c.seed)
 -- ====================================================================================--
 
 RegisterCommand('cross', function()

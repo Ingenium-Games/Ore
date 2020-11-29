@@ -1,7 +1,6 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.seed = (os.time() + tonumber(tostring({}):sub(8)) * math.pi)
 SetGameType(conf.gametype)
 SetMapName(conf.mapname)
 --[[

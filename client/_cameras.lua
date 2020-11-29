@@ -11,6 +11,7 @@ NOTES.
     - You have overlapping issues when ending cameras from different angles rather than snapping to the ped
     - Even if you don't destroy the camera, if its a different name, it should resolve the issues of weird cam shit happening.
 ]]--
+math.randomseed(_c.seed)
 -- ====================================================================================--
 
 function _c.cameras.NewName(t)
@@ -22,7 +23,7 @@ function _c.cameras.NewName(t)
             find = true
         else
             table.insert(_c.cameras.store, val)
-            _c.blips.store[val] = t
+            _c.cameras.store[val] = t
             find = false
         end
     until find == false

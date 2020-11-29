@@ -8,9 +8,20 @@ NOTES.
     -
     -
 ]]--
+math.randomseed(_c.seed)
 -- ====================================================================================--
 _c.data.obj = nil
 _c.data.loaded = false
+_c.data.locale = conf.locale
+
+function _c.data.GetLocale()
+    return _c.data.locale
+end
+
+function _c.data.SetLocale()
+    local Player = _c.data.GetPlayer()
+    _c.data.locale = Player.GetLocale()
+end
 
 function _c.data.SetLoadedStatus(bool)
     if type(bool) == 'boolean' then

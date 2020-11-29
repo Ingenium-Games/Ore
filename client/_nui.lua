@@ -7,6 +7,7 @@ NOTES.
     -
     -
 ]] --
+math.randomseed(_c.seed)
 -- ====================================================================================--
 RegisterNetEvent('Client:Character:Open')
 AddEventHandler('Client:Character:Open', function(Command, Data)

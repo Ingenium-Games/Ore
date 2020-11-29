@@ -7,10 +7,11 @@ NOTES:
     -
     -
 ]] --
+math.randomseed(_c.seed)
 -- ====================================================================================--
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Wait(0)
         if NetworkIsSessionStarted() then
             DisplayRadar(false)
             TriggerServerEvent('PlayerConnecting:Server:Connecting')
@@ -24,6 +25,7 @@ RegisterNetEvent('Client:Character:Loaded')
 AddEventHandler('Client:Character:Loaded', function(data)
     _c.data.SetPlayer(data)
     _c.data.SetLoadedStatus(true)
+    _c.data.SetLocale()
     Wait(100)
     _c.data.ClientSync()
     TriggerEvent('Client:Character:Ready')
@@ -52,7 +54,7 @@ Citizen.CreateThread(function()
     end
 end)
 
--- Not per Frame natives by still need to remvoe for the role play experience.
+-- Not per Frame natives by still need to remove for the role play experience.
 Citizen.CreateThread(function()
     while true do
         InvalidateIdleCam()

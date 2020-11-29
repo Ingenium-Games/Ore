@@ -8,13 +8,13 @@ version "0.4.2"
 ui_page('nui/_c.html')
 ------------------------------------------------------------------------------
 -- shared
-shared_scripts {'conf.lua', 'shared/*.lua', 'i18n/*.lua'}
+shared_scripts {'conf.lua', 'i18n/i18n.lua', 'i18n/*.lua', 'shared/_c.lua'}
 ------------------------------------------------------------------------------
 -- client
-client_scripts {'client/[Tools]/*.lua' ,'client/**/*.lua', 'client/**/*.js', 'nui/_client.lua'}
+client_scripts {'client/_var.lua', 'shared/[Tools]/*.lua', 'client/**/*.lua', 'client/**/*.js'}
 ------------------------------------------------------------------------------
 -- server
-server_scripts {'@mysql-async/lib/MySQL.lua', 'server/server.lua', 'server/**/*.lua', 'server/**/*.js', 'nui/_server.lua'}
+server_scripts {'@mysql-async/lib/MySQL.lua', 'server/_var.lua', 'shared/[Tools]/*.lua', 'server/**/*.lua', 'server/**/*.js'}
 ------------------------------------------------------------------------------
 -- client exports
 exports {'_c'}

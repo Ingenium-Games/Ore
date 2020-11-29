@@ -6,6 +6,7 @@ NOTES.
     - These are the events within the OneSync Server events found at :
     - https://docs.fivem.net/docs/scripting-reference/events/server-events/
 ]]--
+math.randomseed(_c.seed)
 -- ====================================================================================--
 
 AddEventHandler('weaponDamageEvent', function()

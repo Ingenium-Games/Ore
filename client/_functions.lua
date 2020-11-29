@@ -7,7 +7,17 @@ NOTES.
     -
     -
 ]]--
+math.randomseed(_c.seed)
 -- ====================================================================================--
+
+function _c.L(k)
+    local lang = _c.data.GetLocale()
+    if i18n[lang][k] then
+        return i18n[lang][k]
+    else
+        return i18n['en']['missing']
+    end
+end
 
 function _c.func(...)
     local arg = {...}
