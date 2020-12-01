@@ -9,14 +9,14 @@ NOTES.
     - Basically an xPlayer table remake. 
 ]] --
 
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 
 function PlayerClass(source)
     local src = tonumber(source)
-    local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = _c.identifiers(src)
-    local Ace = _c.sql.DBGetAce(License_ID)
-    local Locale = _c.sql.DBGetLocale(License_ID)
+    local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = c.identifiers(src)
+    local Ace = c.sql.DBGetAce(License_ID)
+    local Locale = c.sql.DBGetLocale(License_ID)
     local self = {}
     --
     self.ID = src

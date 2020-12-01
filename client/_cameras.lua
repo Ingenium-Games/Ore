@@ -1,8 +1,8 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.cameras = {}
-_c.cameras.store = {}
+c.cameras = {}
+c.cameras.store = {}
 
 --[[
 NOTES.
@@ -11,19 +11,19 @@ NOTES.
     - You have overlapping issues when ending cameras from different angles rather than snapping to the ped
     - Even if you don't destroy the camera, if its a different name, it should resolve the issues of weird cam shit happening.
 ]]--
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 
-function _c.cameras.NewName(t)
+function c.cameras.NewName(t)
     local val
     local find = false
     repeat
-        val = _c.rng.chars(15)
-        if _c.cameras.store[val] then
+        val = c.rng.chars(15)
+        if c.cameras.store[val] then
             find = true
         else
-            table.insert(_c.cameras.store, val)
-            _c.cameras.store[val] = t
+            table.insert(c.cameras.store, val)
+            c.cameras.store[val] = t
             find = false
         end
     until find == false
@@ -32,16 +32,16 @@ end
 
 -- ====================================================================================--
 
-function _c.cameras.MakeBasic(px, py, pz, rx, ry, rz, fov)
+function c.cameras.MakeBasic(px, py, pz, rx, ry, rz, fov)
     local t = {['px'] = px, ['py'] = py, ['pz'] = pz, ['rx'] = x, ['ry'] = y, ['rz'] = z, ['fov'] = fov}
-    local name = _c.cameras.NewName(t)
+    local name = c.cameras.NewName(t)
     name = CreateCamWithParams(name, px, py, pz, rx, ry, rz, fov, false, 0)
     return name
 end
 
-function _c.cameras.MakeAdvanced(px, py, pz, rx, ry, rz, fov)
+function c.cameras.MakeAdvanced(px, py, pz, rx, ry, rz, fov)
     local t = {['px'] = px, ['py'] = py, ['pz'] = pz, ['rx'] = x, ['ry'] = y, ['rz'] = z, ['fov'] = fov}
-    local name = _c.cameras.NewName(t)
+    local name = c.cameras.NewName(t)
     name = CreateCamWithParams(name, px, py, pz, rx, ry, rz, fov, false, 0)
     return name
 end

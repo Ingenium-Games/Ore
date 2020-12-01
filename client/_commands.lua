@@ -1,7 +1,7 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.commands = {}
+c.commands = {}
 --[[
 NOTES.
     - To enforce the requirement to hold the key down, add the + to the commands not commented out.
@@ -10,7 +10,7 @@ NOTES.
     RegisterCommand('-cross', function() TriggerEvent("Client:Animation.CrossedArms", false, GetPlayerPed(-1)) end, false)
     RegisterKeyMapping('+cross', 'Cross arms', 'keyboard', 'z')
 ]]--
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 
 RegisterCommand('cross', function()

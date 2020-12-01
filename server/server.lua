@@ -9,7 +9,7 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 AddEventHandler('onResourceStart', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
@@ -21,21 +21,21 @@ AddEventHandler('onResourceStart', function(resourceName)
 end)
 -- ====================================================================================--
 function OnStart()
-    _c.data.Initilize()
-    while _c.data.loading do
+    c.data.Initilize()
+    while c.data.loading do
         Wait(250)
     end
-    _c.data.ServerSync()
+    c.data.ServerSync()
 end
 -- ====================================================================================--
 RegisterNetEvent('PlayerConnecting:Server:Connecting')
 AddEventHandler('PlayerConnecting:Server:Connecting', function()
     local src = tonumber(source)
-    local Primary_ID = _c.identifier(src)
-    local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = _c.identifiers(src)
+    local Primary_ID = c.identifier(src)
+    local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = c.identifiers(src)
     --
-    if _c.pdex[src] == nil then
-        _c.data.AddPlayer(src)
+    if c.pdex[src] == nil then
+        c.data.AddPlayer(src)
         if License_ID then
             MySQL.Async.fetchScalar('SELECT `License_ID` FROM users WHERE `License_ID` = @License_ID LIMIT 1;', {
                 ['@License_ID'] = License_ID
@@ -86,16 +86,16 @@ end)
 
 AddEventHandler('playerDropped', function()
     local src = tonumber(source)
-    local data = _c.data.GetPlayer(src)
+    local data = c.data.GetPlayer(src)
     --
     if type(data) == 'table' then
         local function cb()
-            _c.data.RemovePlayer(src)
-            _c.debug('^7[^2Saved^7] Player Disconnection.')
+            c.data.RemovePlayer(src)
+            c.debug('^7[^2Saved^7] Player Disconnection.')
         end
-        _c.sql.SaveUser(data, cb)
-        _c.sql.DBSetCharacterInActive(data.Character_ID)
+        c.sql.SaveUser(data, cb)
+        c.sql.DBSetCharacterInActive(data.Character_ID)
     else
-        _c.data.RemovePlayer(src)
+        c.data.RemovePlayer(src)
     end
 end)

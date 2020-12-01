@@ -8,12 +8,12 @@ NOTES.
     -
 ]] --
 
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 
 function CharacterClass(source, Character_ID)
     local src = tonumber(source)
-    local data = _c.sql.DBGetCharacterRow(Character_ID)
+    local data = c.sql.DBGetCharacterRow(Character_ID)
     local self = {}
     --
     self.Character_ID = data.Character_ID
@@ -59,11 +59,11 @@ function CharacterClass(source, Character_ID)
     end
     --
     self.GetBank = function()
-        return _c.math.decimals(self.Bank, 2)
+        return c.math.decimals(self.Bank, 2)
     end
     --
     self.SetBank = function(num)
-        self.Bank = _c.math.decimals(num, 2)
+        self.Bank = c.math.decimals(num, 2)
     end
     --	
     self.AddBank = function(num)
@@ -84,9 +84,9 @@ function CharacterClass(source, Character_ID)
     --
     self.SetCoords = function(t)
         self.Coords = {
-            x = _c.math.decimals(t.x, 2),
-            y = _c.math.decimals(t.y, 2),
-            z = _c.math.decimals(t.z, 2)
+            x = c.math.decimals(t.x, 2),
+            y = c.math.decimals(t.y, 2),
+            z = c.math.decimals(t.z, 2)
         }
     end
     --

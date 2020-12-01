@@ -7,7 +7,7 @@ NOTES.
     -
     -
 ]] --
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 RegisterNetEvent('Client:Character:Open')
 AddEventHandler('Client:Character:Open', function(Command, Data)
@@ -40,7 +40,7 @@ end)
 
 ------------------------------------------------------------------------------
 --  While in join menu, Events and Triggers
---  Inspired by Kashacters. Still to rebuild once the _cameras.lua is built.
+--  Inspired by Kashacters. Still to rebuild once the cameras.lua is built.
 
 local cam = nil
 local cam2 = nil

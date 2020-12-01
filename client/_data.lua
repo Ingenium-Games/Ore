@@ -1,77 +1,77 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.data = {}
+c.data = {}
 --[[
 NOTES.
     -
     -
     -
 ]]--
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
-_c.data.obj = nil
-_c.data.loaded = false
-_c.data.locale = conf.locale
+c.data.obj = nil
+c.data.loaded = false
+c.data.locale = conf.locale
 
-function _c.data.GetLocale()
-    return _c.data.locale
+function c.data.GetLocale()
+    return c.data.locale
 end
 
-function _c.data.SetLocale()
-    local Player = _c.data.GetPlayer()
-    _c.data.locale = Player.GetLocale()
+function c.data.SetLocale()
+    local Player = c.data.GetPlayer()
+    c.data.locale = Player.GetLocale()
 end
 
-function _c.data.SetLoadedStatus(bool)
+function c.data.SetLoadedStatus(bool)
     if type(bool) == 'boolean' then
-        _c.data.loaded = bool
+        c.data.loaded = bool
     end
 end
 
-function _c.data.GetLoadedStatus()
-    return _c.data.loaded
+function c.data.GetLoadedStatus()
+    return c.data.loaded
 end
 
-function _c.data.SetPlayer(t)
-    _c.data.obj = t
+function c.data.SetPlayer(t)
+    c.data.obj = t
 end
 
-function _c.data.GetPlayer()
-    return _c.data.obj
+function c.data.GetPlayer()
+    return c.data.obj
 end
 
-function _c.data.IsBusy()
+function c.data.IsBusy()
     BeginTextCommandBusyspinnerOn('FM_COR_AUTOD')
     EndTextCommandBusyspinnerOn(5)
 end
 
-function _c.data.NotBusy()
+function c.data.NotBusy()
     BusyspinnerOff()
     PreloadBusyspinner()
 end
 
-function _c.data.ClientSync()
+function c.data.ClientSync()
     Citizen.CreateThread(function()
         while true do
             Wait(conf.clientsync)
-            if _c.data.loaded then
-                _c.data.IsBusy()
-                _c.data.SendPacket()
-                _c.data.NotBusy()
+            if c.data.loaded then
+                c.data.IsBusy()
+                c.data.SendPacket()
+                c.data.NotBusy()
             end
         end
     end)
 end
 
-function _c.data.SendPacket()
+function c.data.SendPacket()
     local data = {}
     -- Coords
         local loc = GetEntityCoords(PlayerPedId())
         local ords = {
-            x = _c.math.decimals(loc.x, 2),
-            y = _c.math.decimals(loc.y, 2),
-            z = _c.math.decimals(loc.z, 2)
+            x = c.math.decimals(loc.x, 2),
+            y = c.math.decimals(loc.y, 2),
+            z = c.math.decimals(loc.z, 2)
         }
         data.Coords = ords
     -- 

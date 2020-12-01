@@ -5,8 +5,8 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
     deferrals.defer()
     local src = source
     local playerName = GetPlayerName(src)
-    local id = _c.identifier(src)
-    local ban = _c.sql.DBGetBanStatus(id)
+    local id = c.identifier(src)
+    local ban = c.sql.DBGetBanStatus(id)
     -- Ban Check
     Citizen.Wait(250)
     deferrals.update('Checking User Status.')

@@ -1,12 +1,21 @@
-# _c : A Multi Character Core for FiveM.
+<p style="font-size:3.75em;display:block;text-align:center"><strong>Project : Ore</strong></p>
+
+<span style="display:block;text-align:center">![Image](./ore.png)</span>
+
 ### An Overview
-This is a continual work in progress, please be advised that things 
-may and will change, I've been rolling around for a long time and since my first born, I've lost the bulk amount of free time, So I'm open to people helping.
-If you just want to use it, it may be best to use the release section for stable/semi stable builds and not clone it.
+This is a continual work in progress, please be advised that things may and will change.
 
-While I originally wanted a ***Hurr Durr RP*** server and was building this for that purpose, I realized this could be expanded upon to feature many game modes.
+This project is an attempt to enable multiple game modes under a single framework, to enable more people to easily create their own, custom FiveM servers.
 
-The latest releases are available for live test on our Test Server.
+Currently the project is unstable, as I work out the best way to enable the multiple game mode options and deal with the quirks that come with it.
+
+-----
+
+#### Test Server
+
+We Currently have our test server running the most recent release made here on the github.
+
+It is currently showing out the multi-character for the Role Play style game mode for FiveM.
 
 You can join it, by joining our **[discord](https://discord.gg/988ERxVF2t)** and hitting the :video_game: 
 emoji on the #welcome page.
@@ -14,13 +23,6 @@ emoji on the #welcome page.
 You can find it from a simple search within the **[server browser](https://servers.fivem.net/)**: ***ingenium.games***
 
 The other resources used on the test server, are modified versions of other scripts on these forums to show you, as an example, how it all comes togeather. They are not included in this release.
-
------
-#### Requirements
-
-The aptitude to follow instructions.
-
-**Read** the FiveM documentation found **[here](https://docs.fivem.net/docs/)**.
 
 -----
 
@@ -47,7 +49,7 @@ My attention after initial release will be towards the following sections of the
 |:-:|:-:|:-:|:-:|:-:|
 |**C/S**|i18n|Now|||
 |**C**|_blips|Now|||
-|**C**|_cameras|Now|||
+|**C**|cameras|Now|||
 |**C**|_decorators|Now|||
 |**C**|_status|Now|||
 |**S**|_traits||||

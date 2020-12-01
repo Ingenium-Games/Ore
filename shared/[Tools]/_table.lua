@@ -1,17 +1,17 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.table = {}
+c.table = {}
 --[[
 NOTES.
     -
     -
     -
 ]] --
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 
-function _c.table.matchvalue(t, v)
+function c.table.matchvalue(t, v)
     for _, i in ipairs(t) do
         if (i == v) then
             return true
@@ -20,7 +20,7 @@ function _c.table.matchvalue(t, v)
     return false
 end
 
-function _c.table.matchkey(t, k)
+function c.table.matchkey(t, k)
     for i, _ in ipairs(t) do
         if (i == k) then
             return true
@@ -29,7 +29,7 @@ function _c.table.matchkey(t, k)
     return false
 end
 
-function _c.table.clone(t)
+function c.table.clone(t)
     local u = setmetatable({}, getmetatable(t))
     for i, v in pairs(t) do
         u[i] = v
@@ -37,16 +37,16 @@ function _c.table.clone(t)
     return u
 end
 
-function _c.table.merge(t, u)
-    local r = _c.table.clone(t)
+function c.table.merge(t, u)
+    local r = c.table.clone(t)
     for i, v in pairs(u) do
         r[i] = v
     end
     return r
 end
 
-function _c.table.rearrange(p, t)
-    local r = _c.table.clone(t)
+function c.table.rearrange(p, t)
+    local r = c.table.clone(t)
     for i, v in pairs(p) do
         r[v] = t[i]
         r[i] = nil
@@ -54,12 +54,12 @@ function _c.table.rearrange(p, t)
     return r
 end
 
-function _c.table.size(t)
+function c.table.size(t)
     local r = #t
     return r
 end
 
-function _c.table.dump(table, nb)
+function c.table.dump(table, nb)
     if nb == nil then
         nb = 0
     end
@@ -78,7 +78,7 @@ function _c.table.dump(table, nb)
             for i = 1, nb, 1 do
                 s = s .. "    "
             end
-            s = s .. '[' .. k .. '] = ' .. _c.table.dump(v, nb + 1) .. ',\n'
+            s = s .. '[' .. k .. '] = ' .. c.table.dump(v, nb + 1) .. ',\n'
         end
 
         for i = 1, nb, 1 do

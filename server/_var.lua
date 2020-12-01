@@ -1,5 +1,5 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.seed = (os.time() + tonumber(tostring({}):sub(8)) * math.pi)
-_c.locale = conf.locale
+c.seed = (os.time() + tonumber(tostring({}):sub(8)) * math.pi)
+c.locale = conf.locale

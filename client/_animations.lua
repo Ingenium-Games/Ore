@@ -1,28 +1,28 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.animations = {}
+c.animations = {}
 --[[
 NOTES.
     - Animations are registered as events, this can be useful for creating scripts that force a level of immersion.
     - Example for RP, A police officer is aiming a weapon at an UNARMED ped, that ped is forced to raise their hands.
     - If they aim at an ARMED ped, the ped does not have to raise hands.
 ]] --
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 local function GetPed(Ped)
     if Ped == nil then
         Ped = GetPlayerPed(-1)
+        return Ped
     else
         return Ped
     end
-    return Ped
 end
 -- ====================================================================================--
 RegisterNetEvent("Client:Animation.CrossedArms")
 AddEventHandler("Client:Animation.CrossedArms", function(Bool, Ped)
     local ped = GetPed(Ped)
-    local dict = "amb@world_human_hang_out_street@female_arms_crossed@base" 
+    local dict = "amb@world_human_hang_out_street@female_armscrossed@base" 
     local anim = "base" 
     --
     RequestAnimDict(dict)

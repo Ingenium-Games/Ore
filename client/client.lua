@@ -7,7 +7,7 @@ NOTES:
     -
     -
 ]] --
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 Citizen.CreateThread(function()
     while true do
@@ -23,11 +23,11 @@ end)
 -- Event to receive the data of the chosen character for the client.
 RegisterNetEvent('Client:Character:Loaded')
 AddEventHandler('Client:Character:Loaded', function(data)
-    _c.data.SetPlayer(data)
-    _c.data.SetLoadedStatus(true)
-    _c.data.SetLocale()
+    c.data.SetPlayer(data)
+    c.data.SetLoadedStatus(true)
+    c.data.SetLocale()
     Wait(100)
-    _c.data.ClientSync()
+    c.data.ClientSync()
     TriggerEvent('Client:Character:Ready')
 end)
 

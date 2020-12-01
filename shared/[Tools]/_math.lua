@@ -1,17 +1,17 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.math = {}
+c.math = {}
 --[[
 NOTES.
     -
     -
     -
 ]] --
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 
-function _c.math.decimals(num, dec)
+function c.math.decimals(num, dec)
     local p = 10 ^ dec
     if num ~= nil then
         return math.floor((num * p) + 0.5) / (p)

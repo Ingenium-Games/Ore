@@ -7,7 +7,7 @@ NOTES:
     -
     -
 ]] --
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 -- ====================================================================================--
 RegisterNetEvent('Client:Time:Receive')
 AddEventHandler('Client:Time:Receive', function(clock)

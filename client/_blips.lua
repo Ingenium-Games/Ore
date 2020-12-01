@@ -1,30 +1,30 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-_c.blips = {}
-_c.blips.store = {}
+c.blips = {}
+c.blips.store = {}
 --[[
 NOTES.
     - 
     - 
     -
 ]] --
-math.randomseed(_c.seed)
+math.randomseed(c.seed)
 SetThisScriptCanRemoveBlipsCreatedByAnyScript(true)
 -- ====================================================================================--
 -- https://docs.fivem.net/docs/game-references/blips/
 -- https://runtime.fivem.net/doc/natives/?_0x9029B2F3DA924928
 
-function _c.blips.NewName(t)
+function c.blips.NewName(t)
     local val
     local find = false
     repeat
-        val = _c.rng.chars(15)
-        if _c.blips.store[val] then
+        val = c.rng.chars(15)
+        if c.blips.store[val] then
             find = true
         else
-            table.insert(_c.blips.store, val)
-            _c.blips.store[val] = t
+            table.insert(c.blips.store, val)
+            c.blips.store[val] = t
             find = false
         end
     until find == false
@@ -39,23 +39,23 @@ local Blips = {
     {title = NAME, coords = {x,y,z}, sprite = 2, colour = 2, size = 0.45}
 }
     for _,i in ipairs(Blips) do
-        local blip = _c.blips.MakeBasic([i].title, [i].coords, [i].sprite, [i].colour, [i].size)
+        local blip = c.blips.MakeBasic([i].title, [i].coords, [i].sprite, [i].colour, [i].size)
         BlipStore[blip]
     end
 
     -- otherwise 
 
     for _,i in ipairs(Blips) do
-        _c.blips.MakeBasic([i].title, [i].coords, [i].sprite, [i].colour, [i].size)
+        c.blips.MakeBasic([i].title, [i].coords, [i].sprite, [i].colour, [i].size)
     end
 
     -- Now we know the name or at least the coords, if we wanted to alter the blip while within or without zones or space, we can do math with its stored name, or the original script can manipulate it 
 
 ]]--
 
-function _c.blips.MakeBasic(title, x, y, z, sprite, colour, size)
+function c.blips.MakeBasic(title, x, y, z, sprite, colour, size)
     local t = {['title'] = title, ['x'] = x, ['y'] = y, ['z'] = z, ['sprite'] = sprite, ['colour'] = colour, ['size'] = size}
-    local name = _c.blips.NewName(t)
+    local name = c.blips.NewName(t)
     name = AddBlipForCoord(x, y, z)
     --
     SetBlipSprite(name, sprite)
@@ -92,9 +92,9 @@ display
 ]]--
 
 -- str, str, int, table/vector3, num, num, int, int, bool, bool, bool
-function _c.blips.MakeAdvanced(title, x, y, z, sprite, colour, size, display, category, short, flashes, legend)
+function c.blips.MakeAdvanced(title, x, y, z, sprite, colour, size, display, category, short, flashes, legend)
     local t = {['title'] = title, ['display'] = display, ['x'] = x, ['y'] = y, ['z'] = z, ['sprite'] = sprite, ['colour'] = colour, ['size'] = size, ['category'] = category, ['short'] = short, ['flashes'] = flashes, ['legend'] = legend}
-    local name = _c.blips.NewName(t)
+    local name = c.blips.NewName(t)
     name = AddBlipForCoord(x, y, z)
     --
     SetBlipSprite(name, sprite)
@@ -126,11 +126,11 @@ local Blips = {
    
 for _,i in ipairs(Blips) do
     if i.display ~= nil then
-        local name = _c.blips.MakeAdvanced(i.title, i.x, i.y, i.z, i.sprite, i.colour, i.size, i.display, i.category, i.short, i.flashes, i.legend)
+        local name = c.blips.MakeAdvanced(i.title, i.x, i.y, i.z, i.sprite, i.colour, i.size, i.display, i.category, i.short, i.flashes, i.legend)
     else
-        local name = _c.blips.MakeBasic(i.title, i.x, i.y, i.z, i.sprite, i.colour, i.size)
+        local name = c.blips.MakeBasic(i.title, i.x, i.y, i.z, i.sprite, i.colour, i.size)
     end
 end
 
-print(_c.table.dump(_c.blips.store))
+print(c.table.dump(c.blips.store))
 ]]--
