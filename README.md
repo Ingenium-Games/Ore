@@ -1,4 +1,4 @@
-<p style="font-size:3.75em;display:block;text-align:center"><strong>Project : Ore</strong></p>
+# ore
 
 <span style="display:block;text-align:center">![Image](./ore.png)</span>
 
