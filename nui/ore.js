@@ -43,7 +43,7 @@ function Selected(key) {
 };
 
 function CharacterDelete() {
-    $.post('https://c/Client:Character:Delete', JSON.stringify({
+    $.post('https://ore/Client:Character:Delete', JSON.stringify({
         ID: Character_ID,
     }));
     $("#Sidebar").hide();
@@ -52,7 +52,7 @@ function CharacterDelete() {
 };
 
 function CharacterJoin() {
-    $.post('https://c/Client:Character:Join', JSON.stringify({
+    $.post('https://ore/Client:Character:Join', JSON.stringify({
         ID: Character_ID,
     }));
     $("#Sidebar").hide();
@@ -66,7 +66,7 @@ function CharacterMake() {
     var ln = document.getElementById("LastName").value;
     var cm = document.getElementById("Height").value;
     var dob = document.getElementById("DateOfBirth").value;
-    $.post('https://c/Client:Character:Create', JSON.stringify({
+    $.post('https://ore/Client:Character:Create', JSON.stringify({
         First_Name: fn,
         Last_Name: ln,
         Height: cm,

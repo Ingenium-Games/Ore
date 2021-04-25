@@ -1,7 +1,7 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-c.data = {}
+c.data = {} -- data table for funcitons.
 c.pdex = {} -- player index = pdex (source numbers assigned by the server upon connection order)
 --[[
 NOTES.
@@ -17,8 +17,7 @@ c.data.loading = true
 -- ====================================================================================--
 
 function c.data.Initilize()
-    local num = 0
-    local loaded = false
+    local num, loaded = 0, false
     local t = {
         [1] = 'DB: characters.Active = FALSE;',
         [2] = 'DB: ',
@@ -58,7 +57,7 @@ function c.data.GetPlayer(source)
     if c.pdex[src] ~= nil then
         return c.pdex[src]
     else
-        return 0
+        return false
     end
 end
 
@@ -73,18 +72,13 @@ function c.data.RemovePlayer(source)
     --
     if c.pdex[src] ~= nil then
         table.remove(c.pdex, src)
+    else
+        c.pdex[src] = false
     end
 end
 
--- ====================================================================================--
--- Merge the tables together. Tried doing multiple inheritance... cbf.
-
-function c.data.CreatePlayer(source, Character_ID)
-    local src = source
-    local lv1 = PlayerClass(src)
-    local lv2 = CharacterClass(src, Character_ID)
-    local obj = c.table.merge(lv1,lv2)
-    return obj
+function c.data.GetPlayers()
+    return c.pdex
 end
 
 -- ====================================================================================--

@@ -5,10 +5,10 @@ author 'Twiitchter'
 description "Ore: A multi-gamemode framwork."
 version "0.4.5"
 ------------------------------------------------------------------------------
-ui_page('nui/c.html')
+ui_page('nui/ore.html')
 ------------------------------------------------------------------------------
 -- shared
-shared_scripts {'conf.lua', 'i18n/i18n.lua', 'i18n/*.lua', 'shared/c.lua'}
+shared_scripts {'conf.lua', 'conf.cars.lua', 'conf.disable.lua', 'shared/_c.lua'}
 ------------------------------------------------------------------------------
 -- client
 client_scripts {'client/_var.lua', 'shared/[Tools]/*.lua', 'client/**/*.lua', 'client/**/*.js'}
@@ -26,5 +26,5 @@ server_exports {'c'}
 dependencies {'mysql-async', 'freecam', 'discordroles'}
 ------------------------------------------------------------------------------
 -- files
-files {'nui/c.js', 'nui/c.css', 'nui/c.html', 'nui/img/*.png', 'nui/jquery-3.5.1.min.js',
+files {'nui/ore.js', 'nui/ore.css', 'nui/ore.html', 'nui/img/*.png', 'nui/jquery-3.5.1.min.js',
        'nui/jquery.mask.min.js', 'nui/jquery.validate.min.js'}

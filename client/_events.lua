@@ -2,15 +2,14 @@
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
 --[[
-NOTES:
+NOTES.
     -
     -
     -
-]] --
+]]--
 math.randomseed(c.seed)
 -- ====================================================================================--
-RegisterNetEvent('Client:Time:Receive')
-AddEventHandler('Client:Time:Receive', function(clock)
-    NetworkOverrideClockMillisecondsPerGameMinute(60000)
-    NetworkOverrideClockTime(clock.h, clock.m)
+RegisterNetEvent("Client:Character:Death")
+AddEventHandler("Client:Character:Death", function(data)
+
 end)

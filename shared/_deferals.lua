@@ -6,15 +6,22 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
     local src = source
     local playerName = GetPlayerName(src)
     local id = c.identifier(src)
-    local ban = c.sql.DBGetBanStatus(id)
+    local ban = c.sql.GetBanStatus(id)
+    local lastplayed = c.sql.GetLastLogin(id)
+    -- Splash/loading screen
+    deferrals.handover({
+        name = playerName,
+        banned = ban,
+        last = lastplayed
+    })
     -- Ban Check
     Citizen.Wait(250)
     deferrals.update('Checking User Status.')
     if not ban then
         -- If you have/use discordperms..
-        if conf.discordperms then
+        if Config.discordperms then
             -- Force character names to not contain speical characters.
-            if conf.forcename then
+            if Config.forcename then
                 Citizen.Wait(250)
                 deferrals.update('Checking name matches approved characters.')
                 if (playerName:match("%W")) then
@@ -23,7 +30,7 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
             end
             Citizen.Wait(250)
             deferrals.update('If your stuck on this, join our discord guild.')
-            exports['discordroles']:isRolePresent(src, conf.discordrole, function(hasRole, roles)
+            exports['discordroles']:isRolePresent(src, Config.discordrole, function(hasRole, roles)
                 if hasRole then
                     deferrals.done()
                 else
@@ -31,7 +38,7 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
                 end
             end)
         else
-            if conf.forcename then
+            if Config.forcename then
                 Citizen.Wait(250)
                 deferrals.update('Checking name matches approved characters.')
                 if (playerName:match("%W")) then

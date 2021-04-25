@@ -41,24 +41,14 @@ function c.data.GetPlayer()
     return c.data.obj
 end
 
-function c.data.IsBusy()
-    BeginTextCommandBusyspinnerOn('FM_COR_AUTOD')
-    EndTextCommandBusyspinnerOn(5)
-end
-
-function c.data.NotBusy()
-    BusyspinnerOff()
-    PreloadBusyspinner()
-end
-
 function c.data.ClientSync()
     Citizen.CreateThread(function()
         while true do
             Wait(conf.clientsync)
             if c.data.loaded then
-                c.data.IsBusy()
+                c.IsBusy()
                 c.data.SendPacket()
-                c.data.NotBusy()
+                c.NotBusy()
             end
         end
     end)

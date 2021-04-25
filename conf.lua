@@ -12,11 +12,6 @@ DEBUG :
     -- Up to you if you want to see whats going on or not, or open the DevTools. Scrub.
 ]]--
 conf.debug = true
---[[
-ERRORS :
-    -- Not really needed, only for my internal test builds not/wont be released.
-]]--
-conf.error = false
 -- ====================================================================================--
 --[[
 GENERIC :
@@ -34,7 +29,7 @@ conf.locale = 'en'
 ACE PERMISSIONS :
     -- The permissions are done inside the DB, so every time the User joins the ace gets set at the user level, the default level to assign to the DB on a new user joining is...
 ]]--
-conf.ace = 'mod' 
+conf.ace = 'public' 
 --[[
 PRIMARY_ID :
     -- This will be what you choose to identify as the owner of the characters table within the DB.
@@ -51,7 +46,7 @@ UPDATE TIMES :
 conf.clientsync = 15 * conf.sec
 conf.serversync = 2 * conf.min
 --[[
-SPAWN LOCATION :
+SPAWN LOCATION : Airport.
 ]]--
 conf.spawn = {
     x = -1050.30,
@@ -66,10 +61,11 @@ DEFERALS :
 ]]--
 conf.forcename = true
 conf.discordperms = true
-conf.discordrole = '770250112353828904'
+conf.discordrole = ''
 --[[
 SCREENSHOTS :
     -- Host URL
 ]]--
-conf.imagehost = 'http://103.4.235.147:5000/'
+conf.imagehost = ''
+conf.imagetoken = ''
 -- ====================================================================================--

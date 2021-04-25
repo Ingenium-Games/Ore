@@ -40,7 +40,7 @@ AddEventHandler('Client:Character:Ready', function()
     SetPlayerHealthRechargeLimit(PlayerId(), 0)
     SetPedMinGroundTimeForStungun(PlayerPedId(), 8500)
     SetCanAttackFriendly(PlayerPedId(), true, false)
-    SetPedSuffersCriticalHits(PlayerPedId(), false)
+    SetPedSuffersCriticalHits(PlayerPedId(), true)
 end)
 
 -- Per Frame natives to enhance the role play experience.

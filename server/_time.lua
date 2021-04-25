@@ -1,7 +1,8 @@
 --====================================================================================--
 --  MIT License 2020 : Twiitchter
 --====================================================================================--
-c.time = {
+c.time = {} -- functions
+c.times = {
     h = 0,
     m = 0
 }
@@ -15,20 +16,21 @@ math.randomseed(c.seed)
 --====================================================================================--
 
 RegisterNetEvent('Server:Request:Time')
-AddEventHandler('Server:Request:Time', function(pass)
-	local src = tonumber(pass)
-	TriggerClientEvent('Client:Time.Recieve', src, c.time)
+AddEventHandler('Server:Request:Time', function(num)
+	local src = source or tonumber(num)
+	TriggerClientEvent('Client:Time:Recieve', src, c.times)
 end)
 
-Citizen.CreateThread(function()
-	while true do
-        UpdateTime()
-        Wait(conf.min)
-	end
-end)
-
-function UpdateTime()
+function c.time.Update()
 	local t = os.date('*t')
-	c.time = {h = t.hour, m = t.min}
-	SetConvarServerInfo('Time', string.format('%02d:%02d', c.time.h, c.time.m))
+	c.times = {h = t.hour, m = t.min}
+	SetConvarServerInfo('Time', string.format('%02d:%02d', c.times.h, c.times.m))
+end
+
+function c.time.ServerSync()
+    local function sync()
+        c.time.Update()
+        SetTimeout(c.min, sync)
+    end
+    SetTimeout(c.min, sync)
 end

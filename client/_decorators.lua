@@ -4,9 +4,7 @@
 c.decors = {}
 --[[
 NOTES.
-    -
-    -
-    -
+    - No longer to be used Entity(entity).state.INFORMATION o be used instead.
 ]]--
 math.randomseed(c.seed)
 -- ====================================================================================--

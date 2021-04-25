@@ -25,6 +25,8 @@ function OnStart()
     while c.data.loading do
         Wait(250)
     end
+
+    c.time.ServerSync()
     c.data.ServerSync()
 end
 -- ====================================================================================--

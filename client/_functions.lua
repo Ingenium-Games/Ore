@@ -44,19 +44,111 @@ function c.debug(str)
 end
 
 -- ====================================================================================--
+-- https://forum.cfx.re/t/tutorial-cancellable-function-usage/137558
 
-function c.enumerateObjects()
-    return EnumerateEntities(FindFirstObject, FindNextObject, EndFindObject)
+CancellationToken = { }
+CancellationToken.__index = CancellationToken
+
+function CancellationToken.MakeToken(cancellationHandler)
+    local self = { }
+
+    setmetatable(self, CancellationToken)
+    
+    self._cancelled = false
+
+    if cancellationHandler then
+        self._cancellationHandler = cancellationHandler
+    end
 end
 
-function c.enumeratePeds()
-    return EnumerateEntities(FindFirstPed, FindNextPed, EndFindPed)
+function CancellationToken:Cancel()
+    if self._cancelled then return end
+
+    self._cancelled = true
+    
+    if self._cancellationHandler then
+        self._cancellationHandler()
+    end
 end
 
-function c.enumerateVehicles()
-    return EnumerateEntities(FindFirstVehicle, FindNextVehicle, EndFindVehicle)
+function CancellationToken:WasCancelled()
+    return self._cancelled
 end
 
-function c.enumeratePickups()
-    return EnumerateEntities(FindFirstPickup, FindNextPickup, EndFindPickup)
+function c.CancellableToken(cb)
+    return CancellationToken.MakeToken(cb)
+end
+
+function c.CancellableWait(ms, token)
+    Citizen.Wait(ms)
+    if token:WasCancelled() then CancelEvent() end
+end
+
+-- ====================================================================================--
+-- https://github.com/pitermcflebor/pmc-callbacks (MIT LICENSE)
+
+RegisterNetEvent('__pmc_callback:client')
+AddEventHandler('__pmc_callback:client', function(eventName, ...)
+	local p = promise.new()
+
+	TriggerEvent(('c__pmc_callback:%s'):format(eventName), function(...)
+		p:resolve({...})
+	end, ...)
+
+	local result = Citizen.Await(p)
+	TriggerServerEvent(('__pmc_callback:server:%s'):format(eventName), table.unpack(result))
+end)
+
+_G.TriggerServerCallback = function(eventName, ...)
+	assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got '..type(eventName))
+
+	local p = promise.new()
+	local ticket = GetGameTimer()
+	
+	RegisterNetEvent(('__pmc_callback:client:%s:%s'):format(eventName, ticket))
+	local e = AddEventHandler(('__pmc_callback:client:%s:%s'):format(eventName, ticket), function(...)
+		p:resolve({...})
+	end)
+	
+	TriggerServerEvent('__pmc_callback:server', eventName, ticket, ...)
+	
+	local result = Citizen.Await(p)
+	RemoveEventHandler(e)
+	return table.unpack(result)
+end
+	
+_G.RegisterClientCallback = function(eventName, fn)
+	assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got '..type(eventName))
+	assert(type(fn) == 'function', 'Invalid Lua type at argument #2, expected function, got '..type(fn))
+
+	AddEventHandler(('c__pmc_callback:%s'):format(eventName), function(cb, ...)
+		cb(fn(...))
+	end)
+end
+
+-- ====================================================================================--
+
+function c.IsBusy()
+    BeginTextCommandBusyspinnerOn('FM_COR_AUTOD')
+    EndTextCommandBusyspinnerOn(5)
+end
+
+function c.NotBusy()
+    BusyspinnerOff()
+    PreloadBusyspinner()
+end
+
+function c.PleaseWait()
+    BeginTextCommandBusyspinnerOn('PM_WAIT')
+    EndTextCommandBusyspinnerOn(5)
+end
+
+function c.IsBusyPleaseWait(ms, cb)
+    c.PleaseWait()
+    Citizen.Wait(ms)
+    c.NotBusy()
+    --
+    if cb then
+        cb()
+    end
 end
