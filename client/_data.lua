@@ -65,9 +65,9 @@ function c.data.SendPacket()
         }
         data.Coords = ords
     -- 
-
+        data.src = GetPlayerServerId(PlayerID())
     -- 
 
-    TriggerServerEvent('Server:Packet.Update', data)
+    TriggerServerEvent('Server:Packet:Update', data)
 end
 ------------------------------------------------------------------------------

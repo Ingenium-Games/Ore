@@ -47,15 +47,15 @@ function PlayerKilledByPlayer(killerServerId, killerClientId, killerWeapon)
 	local distance     = GetDistanceBetweenCoords(victimCoords, killerCoords, true)
 
 	local data = {
-		victimCoords = vector3(c.math.Decimals(victimCoords.x, 2), c.math.Decimals(victimCoords.y, 2), c.math.Decimals(victimCoords.z, 2)),
-		killerCoords = vector3(c.math.Decimals(killerCoords.x, 2), c.math.Decimals(killerCoords.y, 2), c.math.Decimals(killerCoords.z, 2)),
+		VictimCoords = vector3(c.math.Decimals(victimCoords.x, 2), c.math.Decimals(victimCoords.y, 2), c.math.Decimals(victimCoords.z, 2)),
+		KillerCoords = vector3(c.math.Decimals(killerCoords.x, 2), c.math.Decimals(killerCoords.y, 2), c.math.Decimals(killerCoords.z, 2)),
 		--
-		killedByPlayer = true,
-		deathCause     = killerWeapon,
-		distance       = c.math.Decimals(distance, 2),
+		PlayerKill	= true,
+		Cause		= killerWeapon,
+		Distance    = c.math.Decimals(distance, 2),
 		--
-		killerServerId = killerServerId,
-		killerClientId = killerClientId
+		KillerServerID = killerServerId,
+		KillerClientID = killerClientId
 	}
 
 	TriggerEvent('Client:Character:Death', data)
@@ -67,10 +67,10 @@ function PlayerKilled()
 	local victimCoords = GetEntityCoords(PlayerPedId())
 
 	local data = {
-		victimCoords = vector3(c.math.Decimals(victimCoords.x, 2), c.math.Decimals(victimCoords.y, 2), c.math.Decimals(victimCoords.z, 2)),
+		VictimCoords = vector3(c.math.Decimals(victimCoords.x, 2), c.math.Decimals(victimCoords.y, 2), c.math.Decimals(victimCoords.z, 2)),
 		--
-		killedByPlayer = false,
-		deathCause     = GetPedCauseOfDeath(playerPed)
+		PlayerKill = false,
+		Cause     = GetPedCauseOfDeath(playerPed)
 	}
 
 	TriggerEvent('Client:Character:Death', data)

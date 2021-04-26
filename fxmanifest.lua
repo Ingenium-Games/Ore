@@ -3,7 +3,7 @@ fx_version 'cerulean'
 game 'gta5'
 author 'Twiitchter'
 description "Ore: A multi-gamemode framwork."
-version "0.4.5"
+version "0"
 ------------------------------------------------------------------------------
 ui_page('nui/ore.html')
 ------------------------------------------------------------------------------

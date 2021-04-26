@@ -42,9 +42,11 @@ conf.identifier = 'license:'
 UPDATE TIMES :
     [1] Client updates the server every...
     [2] Server updates the Database every...
+    [3] Server to Check players table every...
 ]]--
 conf.clientsync = 15 * conf.sec
 conf.serversync = 2 * conf.min
+conf.playersync = 5 * conf.min
 --[[
 SPAWN LOCATION : Airport.
 ]]--
@@ -68,4 +70,9 @@ SCREENSHOTS :
 ]]--
 conf.imagehost = ''
 conf.imagetoken = ''
+--[[
+INSTANCE/ROUTINGBUCKET :
+    -- Default world for all players.
+]]--
+conf.instancedefault = 0
 -- ====================================================================================--

@@ -35,8 +35,9 @@ AddEventHandler('PlayerConnecting:Server:Connecting', function()
     local src = tonumber(source)
     local Primary_ID = c.identifier(src)
     local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = c.identifiers(src)
+    local IsActive = c.data.GetPlayer(src)
     --
-    if c.pdex[src] == nil then
+    if (IsActive ~= false) then
         c.data.AddPlayer(src)
         if License_ID then
             MySQL.Async.fetchScalar('SELECT `License_ID` FROM users WHERE `License_ID` = @License_ID LIMIT 1;', {
@@ -79,7 +80,7 @@ AddEventHandler('PlayerConnecting:Server:Connecting', function()
                 end
             end)
         else
-            DropPlayer(src, 'Contact the Server Owner, with the info of "License_ID not found".')
+            DropPlayer(src, 'You are missing your license identifier, this is odd, make sure you have signed into FiveM and restart your client..')
         end
     end
 end)
@@ -96,7 +97,7 @@ AddEventHandler('playerDropped', function()
             c.debug('^7[^2Saved^7] Player Disconnection.')
         end
         c.sql.SaveUser(data, cb)
-        c.sql.DBSetCharacterInActive(data.Character_ID)
+        c.sql.SetCharacterInActive(data.Character_ID)
     else
         c.data.RemovePlayer(src)
     end

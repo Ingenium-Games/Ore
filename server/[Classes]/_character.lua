@@ -13,7 +13,7 @@ math.randomseed(c.seed)
 
 function CharacterClass(source, Character_ID)
     local src = tonumber(source)
-    local data = c.sql.DBGetCharacterRow(Character_ID)
+    local data = c.sql.GetCharacterRow(Character_ID)
     local self = {}
     --
     self.Character_ID = data.Character_ID

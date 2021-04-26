@@ -13,10 +13,12 @@ math.randomseed(c.seed)
 RegisterNetEvent('Server:Character:Request:List')
 AddEventHandler('Server:Character:Request:List', function(source, Primary_ID)
 	local src = tonumber(source)
-    local Characters = c.sql.DBGetUserCharacters(Primary_ID) 
+    local Characters = c.sql.GetUserCharacters(Primary_ID) 
 	local Command = "OnJoin"
 	-- Send the data table to the client that requested it...
 	TriggerClientEvent('Client:Character:Open', src, Command, Characters)
+    -- Place the user in their own instance until the user has joined and loaded.
+    c.inst.SetPlayer(src, c.inst.New())
 end)
 ------------------------------------------------------------------------------
 -- When they click the tick...
@@ -28,7 +30,7 @@ AddEventHandler('Server:Character:Request:Join', function(Character_ID)
 		local message = "OnNew"
         TriggerClientEvent('Client:Character:Open', src, message)
 	elseif Character_ID ~= nil then
-		local Coords = c.sql.DBGetCharacterCoords(Character_ID)
+		local Coords = c.sql.GetCharacterCoords(Character_ID)
 		c.data.LoadPlayer(src, Character_ID)
         TriggerClientEvent('Client:Character:ReSpawn', src, Character_ID, Coords)
     elseif Character_ID == nil then
@@ -42,7 +44,7 @@ RegisterNetEvent('Server:Character:Request:Delete')
 AddEventHandler('Server:Character:Request:Delete', function(Character_ID)
     local src = tonumber(source)
     local prim = c.identifier(src)
-    c.sql.DBDeleteCharacter(Character_ID, function()
+    c.sql.DeleteCharacter(Character_ID, function()
         TriggerEvent('Server:Character:Request:List', src, prim)
     end)
 end)
