@@ -10,12 +10,13 @@ NOTES.
     RegisterCommand('-cross', function() TriggerEvent("Client:Animation.CrossedArms", false, GetPlayerPed(-1)) end, false)
     RegisterKeyMapping('+cross', 'Cross arms', 'keyboard', 'z')
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 
 RegisterCommand('cross', function()
     TriggerEvent("Client:Animation.CrossedArms", true, GetPlayerPed(-1))
 end, false)
+
 RegisterKeyMapping('cross', 'Cross arms', 'keyboard', 'NumPad1')
 
 -- ====================================================================================--
@@ -23,6 +24,7 @@ RegisterKeyMapping('cross', 'Cross arms', 'keyboard', 'NumPad1')
 RegisterCommand('hands', function()
     TriggerEvent("Client:Animation.HandsUp", true, GetPlayerPed(-1))
 end, false)
+
 RegisterKeyMapping('hands', 'Hands Up', 'keyboard', 'NumPad2')
 
 -- ====================================================================================--
@@ -30,6 +32,7 @@ RegisterKeyMapping('hands', 'Hands Up', 'keyboard', 'NumPad2')
 RegisterCommand('armhold', function()
     TriggerEvent("Client:Animation.ArmHold", true, GetPlayerPed(-1))
 end, false)
+
 RegisterKeyMapping('armhold', 'Arm Hold', 'keyboard', 'NumPad3')
 
 -- ====================================================================================--

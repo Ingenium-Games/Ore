@@ -7,7 +7,7 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function c.func(...)

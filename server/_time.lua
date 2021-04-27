@@ -12,7 +12,7 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function c.time.Update()
@@ -22,9 +22,9 @@ function c.time.Update()
 end
 
 function c.time.ServerSync()
-    local function sync()
+    local function Do()
         c.time.Update()
-        SetTimeout(c.min, sync)
+        SetTimeout(c.min, Do)
     end
-    SetTimeout(c.min, sync)
+    SetTimeout(c.min, Do)
 end

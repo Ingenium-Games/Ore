@@ -7,7 +7,7 @@ NOTES.
     -
     -
 ]] --
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 RegisterNetEvent('Client:Character:Open')
 AddEventHandler('Client:Character:Open', function(Command, Data)
@@ -49,6 +49,9 @@ local intro = nil
 --
 RegisterNetEvent('Client:Character:OpeningMenu')
 AddEventHandler('Client:Character:OpeningMenu', function()
+    -- Set false for switch command.
+    c.data.SetLoadedStatus(false)
+    --
     SetTimecycleModifier('default')
     SetEntityCoords(GetPlayerPed(-1), 0, 0, 0)
     FreezeEntityPosition(GetPlayerPed(-1), true)

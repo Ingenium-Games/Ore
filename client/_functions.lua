@@ -7,8 +7,10 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
+-- Variables
+c.PlayerLoaded
 
 function c.func(...)
     local arg = {...}
@@ -145,10 +147,119 @@ end
 
 function c.IsBusyPleaseWait(ms, cb)
     c.PleaseWait()
-    Citizen.Wait(ms)
-    c.NotBusy()
-    --
-    if cb then
+	--
+    Citizen.Wait(ms/2)
+	if cb then
         cb()
     end
+	Citizen.Wait(ms/2)
+	--
+    c.NotBusy()
+end
+
+-- ====================================================================================--
+
+-- @coords - the {x,y,z}
+-- @radius - the distance around.
+-- returns table{players}
+function c.GetPlayersInArea(coords, radius)
+	local peds = GetGamePool('CPed')
+	local players = {}
+	for _, v in pairs(peds) do
+		if IsPedAPlayer(v) then
+			local targetCoords = GetEntityCoords(v)
+			local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) - vector3(coords.x, coords.y, coords.z))
+			if distance <= radius then
+				table.insert(players, v)
+			end
+		else
+			-- not a player
+		end
+	end
+	return players
+end
+
+-- @coords - the {x,y,z}
+-- @radius - the distance around.
+-- returns table{pedsinarea}
+function c.GetPedsInArea(coords, radius)
+	local peds = GetGamePool('CPed')
+	local pedsinarea = {}
+	for _, v in pairs(peds) do
+		local targetCoords = GetEntityCoords(v)
+		local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) - vector3(coords.x, coords.y, coords.z))
+		if distance <= radius then
+			table.insert(pedsinarea, v)
+		end
+	end
+	return pedsinarea
+end
+
+-- @coords - the {x,y,z}
+-- @radius - the distance around.
+-- returns table{objinarea}
+function c.GetObjectsInArea(coords, radius)
+	local objs = GetGamePool('CObject')
+	local objinarea = {}
+	for _, v in pairs(objs) do
+		local targetCoords = GetEntityCoords(v)
+		local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) - vector3(coords.x, coords.y, coords.z))
+		if distance <= radius then
+			table.insert(objinarea, v)
+		end
+	end
+	return objinarea
+end
+
+-- @coords - the {x,y,z}
+-- @radius - the distance around.
+-- returns table{vehinarea}
+function c.GetVehiclesInArea(coords, radius)
+	local vehicles = GetGamePool('CVehicle')
+	local vehinarea = {}
+	for _, v in pairs(vehicles) do
+		local targetCoords = GetEntityCoords(v)
+		local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) - vector3(coords.x, coords.y, coords.z))
+		if distance <= radius then
+			table.insert(vehinarea, v)
+		end
+	end
+	return vehinarea
+end
+
+-- @coords - the {x,y,z}
+-- @radius - the distance around.
+-- returns table{pickinarea}
+function c.GetPickupssInArea(coords, radius)
+	local pickups = GetGamePool('CPickup')
+	local pickinarea = {}
+	for _, v in pairs(pickups) do
+		local targetCoords = GetEntityCoords(v)
+		local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) - vector3(coords.x, coords.y, coords.z))
+		if distance <= radius then
+			table.insert(pickinarea, v)
+		end
+	end
+	return pickinarea
+end
+
+-- returns closestPlayer, closestDistance
+function c.GetClosestPlayer()
+	local players = GetActivePlayers()
+	local closestDistance = -1
+	local closestPlayer = -1
+	local ply = PlayerPedId()
+	local plyCoords = GetEntityCoords(ply)
+	for _,value in ipairs(players) do
+		local target = GetPlayerPed(value)
+		if(target ~= ply) then
+			local targetCoords = GetEntityCoords(GetPlayerPed(value))
+			local distance = #(vector3(targetCoords["x"], targetCoords["y"], targetCoords["z"]) - vector3(plyCoords["x"], plyCoords["y"], plyCoords["z"]))
+			if(closestDistance == -1 or closestDistance > distance) and not IsPedInAnyVehicle(target, false) then
+				closestPlayer = value
+				closestDistance = distance
+			end
+		end
+	end
+	return closestPlayer, closestDistance
 end

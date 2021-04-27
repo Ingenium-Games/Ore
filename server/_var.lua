@@ -2,5 +2,8 @@
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
 --
-c.seed = (os.time() * math.pi)
-c.locale = conf.locale
+c.Seed = (os.time() * math.pi)
+c.Locale = conf.locale
+
+c.Running = false
+c.Loading = true

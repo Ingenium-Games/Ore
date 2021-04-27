@@ -9,7 +9,7 @@ NOTES.
     - Basically an xPlayer table remake. 
 ]] --
 
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function PlayerClass(source)

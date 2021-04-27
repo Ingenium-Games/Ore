@@ -8,7 +8,7 @@ NOTES.
     -
 ]] --
 
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function CharacterClass(source, Character_ID)

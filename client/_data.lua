@@ -8,37 +8,34 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
-c.data.obj = nil
-c.data.loaded = false
-c.data.locale = conf.locale
 
 function c.data.GetLocale()
-    return c.data.locale
+    return c.locale
 end
 
 function c.data.SetLocale()
-    local Player = c.data.GetPlayer()
-    c.data.locale = Player.GetLocale()
+    local xPlayer = c.data.GetPlayer()
+    c.data.locale = xPlayer.GetLocale()
 end
 
 function c.data.SetLoadedStatus(bool)
     if type(bool) == 'boolean' then
-        c.data.loaded = bool
+        c.CharacterLoaded = bool
     end
 end
 
 function c.data.GetLoadedStatus()
-    return c.data.loaded
+    return c.CharacterLoaded
 end
 
 function c.data.SetPlayer(t)
-    c.data.obj = t
+    c.Character = t
 end
 
 function c.data.GetPlayer()
-    return c.data.obj
+    return c.Character
 end
 
 function c.data.ClientSync()

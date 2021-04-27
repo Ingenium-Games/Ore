@@ -9,7 +9,7 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 AddEventHandler('onResourceStart', function(resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
@@ -22,12 +22,16 @@ end)
 -- ====================================================================================--
 function OnStart()
     c.data.Initilize()
-    while c.data.loading do
-        Wait(250)
+    while c.Loading do
+        Wait(1250)
     end
-
+    -- Time now updates
     c.time.ServerSync()
+    -- Players save to the DB.
     c.data.ServerSync()
+    -- Players table is checked and cleaned.
+    c.data.PlayersSync()
+    --
 end
 -- ====================================================================================--
 RegisterNetEvent('PlayerConnecting:Server:Connecting')
@@ -40,13 +44,13 @@ AddEventHandler('PlayerConnecting:Server:Connecting', function()
     if (IsActive ~= false) then
         c.data.AddPlayer(src)
         if License_ID then
-            MySQL.Async.fetchScalar('SELECT `License_ID` FROM users WHERE `License_ID` = @License_ID LIMIT 1;', {
+            MySQL.Async.fetchScalar('SELECT `License_ID` FROM `users` WHERE `License_ID` = @License_ID LIMIT 1;', {
                 ['@License_ID'] = License_ID
             }, function(r)
                 if (r ~= nil) then
                     -- Update their steam, discord if they do not exist in the db and their ip address upon every login.
                     MySQL.Async.execute(
-                        'UPDATE users SET `Steam_ID` = IFNULL(`Steam_ID`,@Steam_ID), `FiveM_ID` = IFNULL(`FiveM_ID`,@FiveM_ID), `Discord_ID` = IFNULL(`Discord_ID`,@Discord_ID), `IP_Address` = @IP_Address, `Last_Login` = current_timestamp() WHERE `License_ID` = @License_ID;',
+                        'UPDATE `users` SET `Steam_ID` = IFNULL(`Steam_ID`,@Steam_ID), `FiveM_ID` = IFNULL(`FiveM_ID`,@FiveM_ID), `Discord_ID` = IFNULL(`Discord_ID`,@Discord_ID), `IP_Address` = @IP_Address, `Last_Login` = current_timestamp() WHERE `License_ID` = @License_ID;',
                         {
                             License_ID = License_ID,
                             FiveM_ID = FiveM_ID,
@@ -61,7 +65,7 @@ AddEventHandler('PlayerConnecting:Server:Connecting', function()
                         end)
                 else
                     MySQL.Async.execute(
-                        'INSERT INTO users (`Steam_ID`, `License_ID`, `FiveM_ID`, `Discord_ID`, `Ace`, `Locale`, `Ban`, `IP_Address`) VALUES (@Steam_ID, @License_ID, @FiveM_ID, @Discord_ID, @Ace, @Locale, @Ban, @IP_Address);',
+                        'INSERT INTO `users` (`Steam_ID`, `License_ID`, `FiveM_ID`, `Discord_ID`, `Ace`, `Locale`, `Ban`, `IP_Address`) VALUES (@Steam_ID, @License_ID, @FiveM_ID, @Discord_ID, @Ace, @Locale, @Ban, @IP_Address);',
                         {
                             Steam_ID = Steam_ID,
                             License_ID = License_ID,
@@ -90,15 +94,13 @@ end)
 AddEventHandler('playerDropped', function()
     local src = tonumber(source)
     local data = c.data.GetPlayer(src)
-    --
-    if type(data) == 'table' then
-        local function cb()
-            c.data.RemovePlayer(src)
-            c.debug('^7[^2Saved^7] Player Disconnection.')
-        end
-        c.sql.SaveUser(data, cb)
-        c.sql.SetCharacterInActive(data.Character_ID)
-    else
-        c.data.RemovePlayer(src)
+    -- if the data not false?
+    if data then
+        c.sql.SaveUser(data, function()
+            c.sql.SetCharacterInActive(data.Character_ID, function()
+                c.debug('Player Disconnection.')
+                c.data.RemovePlayer(src)
+            end)
+        end)
     end
 end)

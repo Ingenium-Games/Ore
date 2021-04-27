@@ -9,28 +9,34 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
--- ====================================================================================--
--- server level variables
-c.data.running = false
-c.data.loading = true
+math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function c.data.Initilize()
     local num, loaded = 0, false
     local t = {
-        [1] = 'DB: characters.Active = FALSE;',
-        [2] = 'DB: ',
+        [1] = 'DB: Characters;',
+        [2] = 'DB: Vehicles;',
+        [3] = 'DB: Vehicles;',
+        [4] = 'DB: Vehicles;',
+        [5] = 'DB: Vehicles;',
+        [6] = 'DB: Vehicles;',
     }
-
+    --
+    local function cb()
+        num = num + 1
+        return t[num]
+    end
+    --
     MySQL.ready(function()
         -- Add other SQL commands required on start up.
         -- such as cleaning tables, requesting data, etc..
         -- [1]
-        c.sql.ResetActiveCharacters(function()
-            num = num + 1
-            c.debug(t[num])
-        end)
+        c.sql.ResetActiveCharacters(cb)
+        -- [2]
+        -- c.sql.
+        -- [3]
+        -- c.sql.
         --
         loaded = true
     end)
@@ -39,8 +45,9 @@ function c.data.Initilize()
         Wait(250)
     end
 
-    c.data.loading = false
+    c.Loading = false
     c.debug('Loading Sequence Complete')
+    c.Running = true
 end
 
 -- ====================================================================================--
@@ -81,7 +88,6 @@ function c.data.GetPlayers()
     return c.pdex
 end
 
-
 -- ====================================================================================--
 
 -- Server to DB routine.
@@ -98,23 +104,23 @@ end
 -- Server to check for missing players / remove them.
 function c.data.PlayersSync()
     local function Do()
-        local players = GetPlayers()
-        if type(players) == 'table' then
-            for i=1, #players, 1 do
-                local player = players[i]
-                local PingCheck = GetPlayerPing(player)
-                if PingCheck == 0 then
-                    local data = GRPCore.GetPlayer(player)
-                    c.sql.SaveUser(data, function()
-                        c.sql.SetCharacterInActive(data.Character_ID, function()
-                            c.data.RemovePlayer(player)
+        local xPlayers = GetPlayers()
+        if type(xPlayers) == 'table' then
+            for i=1, #xPlayers, 1 do
+                local ply = xPlayers[i]
+                local ping = GetPlayerPing(ply)
+                if ping <= 0 then
+                    local xPlayer = c.data.GetPlayer(ply)
+                    c.sql.SaveUser(xPlayer, function()
+                        c.sql.SetCharacterInActive(xPlayer.Character_ID, function()
                             c.debug('Player Disconnection.')
+                            c.data.RemovePlayer(player)
                         end)
                     end)
                 end
             end
         else
-            c.debug('GetPLayers() is empty.')
+            c.debug('GetPlayers() is empty.')
         end
         SetTimeout(conf.playersync, Do)
     end
@@ -132,4 +138,3 @@ function c.data.LoadPlayer(source, Character_ID)
         TriggerClientEvent('Client:Character:Loaded', src, xPlayer)
     end)
 end
-

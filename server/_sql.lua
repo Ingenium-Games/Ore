@@ -7,13 +7,13 @@ NOTES.
     - All sql querys should have a call back as a function at the end to chain code execution upon completion.
     - All data should be encoded or decoded here, if possible. the fetchALL commands are decoded in the _data.lua
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 
 -- @local id for async store & Store Query
 local SaveData = -1
 MySQL.Async.store(
-    "UPDATE `characters` SET `Coords` = @Coords, `Inventory` = @Inventory, `Bank` = @Bank,  `Last_Login` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
+    "UPDATE `characters` SET `Coords` = @Coords, `Last_Login` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
     function(id)
         SaveData = id
 end)
@@ -24,13 +24,10 @@ end)
 function c.sql.SaveUser(data, cb)
     if data then
         local ords = json.encode(data.GetCoords())
-        local inv = json.encode(data.GetInventory())
-        local bank = data.GetBank()
+
         MySQL.Async.insert(SaveData, {
             ['@Coords'] = ords,
-            ['@Inventory'] = inv,
             ['@Character_ID'] = data.Character_ID,
-            ['@Bank'] = bank
         }, function(r)
             --do
         end)
@@ -42,21 +39,22 @@ end
 function c.sql.SaveData(cb)
     local users = GetPlayers()
     for i = 1, #users, 1 do
-        local data = c.data.GetPlayer(users[i])
-        if (type(data) == 'table') and (data.Coords ~= nil) then
-            local ords = json.encode(data.GetCoords())
-            local inv = json.encode(data.GetInventory())
-            local bank = data.GetBank()
-            MySQL.Async.insert(SaveData, {
-                ['@Coords'] = ords,
-                ['@Inventory'] = inv,
-                ['@Character_ID'] = data.Character_ID,
-                ['@Bank'] = bank
-            }, function(r)
-                --do
-            end)
+        if GetPlayerPing >= 1 then
+            local data = c.data.GetPlayer(users[i])
+            if data then
+                local ords = json.encode(data.GetCoords())
+
+                MySQL.Async.insert(SaveData, {
+                    ['@Coords'] = ords,
+                    ['@Character_ID'] = data.Character_ID,
+                }, function(r)
+                    -- Do nothing.
+                end)
+            else
+                -- The data is false, there fore the table of date is not there tobe saved.
+            end
         else
-            --do
+            -- The player has 0 ping, they are offline and will be saved from the playerDropped Event.
         end
     end
     -- These will all be completed prior to cb being run.
@@ -66,12 +64,14 @@ function c.sql.SaveData(cb)
     end
 end
 
+-- ====================================================================================--
+
 function c.sql.GenerateCharacterID()
     local bool = false
     local new = nil
     repeat
         new = c.rng.chars(50)
-        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM characters WHERE `Character_ID` = @Character_ID LIMIT 1;', {
+        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;', {
             ['@Character_ID'] = new
         }, function(r)
             if r then
@@ -91,14 +91,13 @@ function c.sql.GenerateCityID()
         local s1 = string.upper(c.rng.let())
         local s2 = c.rng.nums(5)
         new = string.format("%s-%s", s1, s2)
-        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM characters WHERE `City_ID` = @City_ID LIMIT 1;', {
+        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM `characters` WHERE `City_ID` = @City_ID LIMIT 1;', {
             ['@City_ID'] = new
         }, function(r)
             if r then
                 bool = true
             else
                 bool = false
-
             end
         end)
     until bool == false
@@ -109,10 +108,8 @@ function c.sql.GeneratePhoneNumber()
     local bool = false
     local new = nil
     repeat
-        local s1 = math.random(02, 06)
-        local s2 = math.random(00000, 99999)
-        new = string.format("%02d%05d", s1, s2)
-        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM characters WHERE `Phone` = @Phone LIMIT 1;', {
+        new = math.random(200000, 699999)
+        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM `characters` WHERE `Phone` = @Phone LIMIT 1;', {
             ['@Phone'] = new
         }, function(r)
             if r then
@@ -125,9 +122,11 @@ function c.sql.GeneratePhoneNumber()
     return new
 end
 
+-- ====================================================================================--
+
 function c.sql.CreateCharacter(t, cb)
     MySQL.Async.execute(
-        'INSERT INTO characters (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`, `Active`, `Wanted`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords, @Active, @Wanted);',
+        'INSERT INTO `characters` (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords);',
         {
             Primary_ID = t.Primary_ID,
             Character_ID = t.Character_ID,
@@ -138,16 +137,13 @@ function c.sql.CreateCharacter(t, cb)
             Birth_Date = t.Birth_Date,
             Phone = t.Phone,
             Coords = t.Coords,
-            Active = 0,
-            Wanted = 0
         }, function(r)
             if r then
-
+                if cb ~= nil then
+                    cb()
+                end
             end
-        end)
-    if cb ~= nil then
-        cb()
-    end
+    end)
 end
 
 ------------------------------------------------------------------------------
@@ -159,7 +155,7 @@ end
 function c.sql.GetLocale(License_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Locale` FROM users WHERE `License_ID` = @License_ID LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `Locale` FROM `users` WHERE `License_ID` = @License_ID LIMIT 1;', {
         ['@License_ID'] = License_ID
     }, function(data)
         result = data
@@ -178,7 +174,7 @@ end
 -- @License_ID
 function c.sql.SetLocale(Locale, License_ID, cb)
     local Locale = Locale
-    MySQL.Async.execute('UPDATE users SET `Locale` = @Locale WHERE `License_ID` = @License_ID;', {
+    MySQL.Async.execute('UPDATE `users` SET `Locale` = @Locale WHERE `License_ID` = @License_ID;', {
         ['@Locale'] = Locale,
         ['@License_ID'] = License_ID
     }, function(data)
@@ -191,12 +187,13 @@ function c.sql.SetLocale(Locale, License_ID, cb)
     end)
 end
 
+
 --- Get - `Ace` from the users License_ID identifier
 -- @License_ID
 function c.sql.GetAce(License_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Ace` FROM users WHERE `License_ID` = @License_ID LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `Ace` FROM `users` WHERE `License_ID` = @License_ID LIMIT 1;', {
         ['@License_ID'] = License_ID
     }, function(data)
         result = data
@@ -216,7 +213,7 @@ end
 function c.sql.GetBanStatus(License_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Ban` FROM users WHERE `License_ID` = @License_ID LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `Ban` FROM `users` WHERE `License_ID` = @License_ID LIMIT 1;', {
         ['@License_ID'] = License_ID
     }, function(data)
         result = data
@@ -234,7 +231,7 @@ end
 --- Set - `Ban` = TRUE from the users License_ID identifier
 -- @License_ID
 function c.sql.SetBanned(License_ID, cb)
-    MySQL.Async.execute('UPDATE users SET `Ban` = TRUE WHERE `License_ID` = @License_ID LIMIT 1;', {
+    MySQL.Async.execute('UPDATE `users` SET `Ban` = TRUE WHERE `License_ID` = @License_ID LIMIT 1;', {
         ['@License_ID'] = License_ID
     }, function(data)
         if data then
@@ -249,7 +246,7 @@ end
 --- Set - `Ban` = FALSE from the users License_ID identifier
 -- @License_ID
 function c.sql.SetUnBanned(License_ID, cb)
-    MySQL.Async.execute('UPDATE users SET `Ban` = FALSE WHERE `License_ID` = @License_ID LIMIT 1;', {
+    MySQL.Async.execute('UPDATE `users` SET `Ban` = FALSE WHERE `License_ID` = @License_ID LIMIT 1;', {
         ['@License_ID'] = License_ID
     }, function(data)
         if data then
@@ -270,7 +267,7 @@ end
 function c.sql.GetUserCharacters(Primary_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchAll('SELECT * FROM characters WHERE `Primary_ID` = @Primary_ID LIMIT 100;', {
+    MySQL.Async.fetchAll('SELECT * FROM `characters` WHERE `Primary_ID` = @Primary_ID LIMIT 100;', {
         ['@Primary_ID'] = Primary_ID
     }, function(data)
         result = data
@@ -303,7 +300,7 @@ end
 function c.sql.GetCharacterCount(Primary_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT COUNT(`Primary_ID`) AS "Count" FROM characters WHERE `Primary_ID` = @Primary_ID;',
+    MySQL.Async.fetchScalar('SELECT COUNT(`Primary_ID`) AS "Count" FROM `characters` WHERE `Primary_ID` = @Primary_ID;',
         {
             ['@Primary_ID'] = Primary_ID
         }, function(data)
@@ -329,7 +326,7 @@ end
 function c.sql.GetCharacterRow(Character_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchAll('SELECT * FROM characters WHERE `Character_ID` = @Character_ID LIMIT 1;', {
+    MySQL.Async.fetchAll('SELECT * FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         result = data[1]
@@ -348,7 +345,7 @@ end
 function c.sql.GetActiveCharacters(cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchAll('SELECT `Character_ID` FROM characters WHERE `Active` IS TRUE', {}, function(data)
+    MySQL.Async.fetchAll('SELECT `Character_ID` FROM `characters` WHERE `Active` IS TRUE', {}, function(data)
         result = data
         IsBusy = false
     end)
@@ -367,7 +364,7 @@ function c.sql.GetActiveCharacter(Primary_ID, cb)
     local IsBusy = true
     local result = nil
     MySQL.Async.fetchScalar(
-        'SELECT `Character_ID` FROM characters WHERE `Active` IS TRUE AND `Primary_ID` = @Primary_ID', {
+        'SELECT `Character_ID` FROM `characters` WHERE `Active` IS TRUE AND `Primary_ID` = @Primary_ID', {
             ['@Primary_ID'] = Primary_ID
         }, function(data)
             result = data
@@ -385,7 +382,7 @@ end
 --- SET - The `Active` = FALSE `Character_ID` from the Primary_ID identifier
 -- @`Character_ID`
 function c.sql.SetCharacterInActive(Character_ID, cb)
-    MySQL.Async.execute('UPDATE characters SET `Active` = FALSE WHERE `Character_ID` = @Character_ID', {
+    MySQL.Async.execute('UPDATE `characters` SET `Active` = FALSE WHERE `Character_ID` = @Character_ID', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -400,7 +397,7 @@ end
 --- SET - The `Active` = TRUE `Character_ID` from the Primary_ID identifier
 -- @`Character_ID`
 function c.sql.SetCharacterActive(Character_ID, cb)
-    MySQL.Async.execute('UPDATE characters SET `Active` = TRUE WHERE `Character_ID` = @Character_ID', {
+    MySQL.Async.execute('UPDATE `characters` SET `Active` = TRUE WHERE `Character_ID` = @Character_ID', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -414,7 +411,7 @@ end
 
 -- Should the Server crash, this one is to reset all Active Characters Just incasethe Active Column is used to data identify users/characters in data pulls.
 function c.sql.ResetActiveCharacters(cb)
-    MySQL.Async.execute('UPDATE characters SET `Active` = FALSE;', {}, function(data)
+    MySQL.Async.execute('UPDATE `characters` SET `Active` = FALSE;', {}, function(data)
         if data then
             --
         end
@@ -424,10 +421,12 @@ function c.sql.ResetActiveCharacters(cb)
     end)
 end
 
+--- Get ALL - The `Wanted` Boolean TRUE from the characters table
+
 function c.sql.GetWantedCharacters(cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Character_ID` FROM characters WHERE `Wanted` IS TRUE', {}, function(data)
+    MySQL.Async.fetchScalar('SELECT `Character_ID` FROM `characters` WHERE `Wanted` IS TRUE;', {}, function(data)
         result = data
         IsBusy = false
     end)
@@ -440,8 +439,11 @@ function c.sql.GetWantedCharacters(cb)
     return result
 end
 
+--- Set - The `Wanted` Boolean TRUE from the `Character_ID`
+-- @`Character_ID`
+
 function c.sql.SetCharacterWanted(Character_ID, cb)
-    MySQL.Async.execute('UPDATE characters SET `Wanted` IS TRUE WHERE `Character_ID` = @Character_ID', {
+    MySQL.Async.execute('UPDATE `characters` SET `Wanted` IS TRUE WHERE `Character_ID` = @Character_ID;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -453,8 +455,11 @@ function c.sql.SetCharacterWanted(Character_ID, cb)
     end)
 end
 
+--- Set - The `Wanted` Boolean FALSE from the `Character_ID`
+-- @`Character_ID`
+
 function c.sql.SetCharacterUnWanted(Character_ID, cb)
-    MySQL.Async.execute('UPDATE characters SET `Wanted` IS FALSE WHERE `Character_ID` = @Character_ID', {
+    MySQL.Async.execute('UPDATE `characters` SET `Wanted` IS FALSE WHERE `Character_ID` = @Character_ID;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -471,7 +476,7 @@ end
 function c.sql.GetCharacterFromPhone(Phone, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Character_ID` FROM characters WHERE `Phone` = @Phone LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `Character_ID` FROM `characters` WHERE `Phone` = @Phone LIMIT 1;', {
         ['@Phone'] = Phone
     }, function(data)
         result = data
@@ -491,7 +496,7 @@ end
 function c.sql.GetPhoneFromCharacter(Character_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Phone` FROM characters WHERE `Character_ID` = @Character_ID LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `Phone` FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         result = data
@@ -511,7 +516,7 @@ end
 function c.sql.GetCityIdFromCharacter(Character_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `City_ID` FROM characters WHERE `Character_ID` = @Character_ID LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `City_ID` FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         result = data
@@ -531,7 +536,7 @@ end
 function c.sql.GetCharacterFromCityId(City_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Character_ID` FROM characters WHERE `City_ID` = @City_ID LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `Character_ID` FROM `characters` WHERE `City_ID` = @City_ID LIMIT 1;', {
         ['@City_ID'] = City_ID
     }, function(data)
         result = data
@@ -551,7 +556,7 @@ end
 function c.sql.GetCharacterCoords(Character_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Coords` FROM characters WHERE `Character_ID` = @Character_ID LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT `Coords` FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -574,7 +579,7 @@ end
 -- cb if any.
 function c.sql.SetCharacterCoords(Character_ID, Vector3, cb)
     local Coords = json.encode(Vector3)
-    MySQL.Async.execute('UPDATE characters SET `Coords` = @Coords WHERE `Character_ID` = @Character_ID;', {
+    MySQL.Async.execute('UPDATE `characters` SET `Coords` = @Coords WHERE `Character_ID` = @Character_ID;', {
         ['@Coords'] = Coords,
         ['@Character_ID'] = Character_ID
     }, function(data)
@@ -593,7 +598,7 @@ end
 function c.sql.GetCharacterAppearance(Character_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Appearance` FROM characters WHERE `Character_ID` = @Character_ID;', {
+    MySQL.Async.fetchScalar('SELECT `Appearance` FROM `characters` WHERE `Character_ID` = @Character_ID;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -616,7 +621,7 @@ end
 -- cb if any.
 function c.sql.SetCharacterAppearance(Character_ID, style, cb)
     local Appearance = json.encode(style)
-    MySQL.Async.execute('UPDATE characters SET `Appearance` = @Appearance WHERE `Character_ID` = @Character_ID;', {
+    MySQL.Async.execute('UPDATE `characters` SET `Appearance` = @Appearance WHERE `Character_ID` = @Character_ID;', {
         ['@Appearance'] = Appearance,
         ['@Character_ID'] = Character_ID
     }, function(data)
@@ -629,51 +634,17 @@ function c.sql.SetCharacterAppearance(Character_ID, style, cb)
     end)
 end
 
---- GET - The `Inventory` from the `Character_ID`
+-----------------------
+--- Character Statuses
+-----------------------
+
+--- Get - The `Health` from the `Character_ID`
 -- @`Character_ID`
-function c.sql.GetCharacterInventory(Character_ID, cb)
+-- cb if any.
+function c.sql.GetCharacterHealth(Character_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Inventory` FROM characters WHERE `Character_ID` = @Character_ID;', {
-        ['@Character_ID'] = Character_ID
-    }, function(data)
-        if data then
-            result = json.decode(data)
-            IsBusy = false
-        end
-    end)
-    while IsBusy do
-        Wait(0)
-    end
-    if cb ~= nil then
-        cb()
-    end
-    return result
-end
-
---- SET - The `Inventory` from the `Character_ID`
--- @`Character_ID`
-function c.sql.SetCharacterInventory(Character_ID, Inventory, cb)
-    local Inventory = json.encode(Inventory)
-    MySQL.Async.execute('UPDATE characters SET `Inventory` = @Inventory WHERE `Character_ID` = @Character_ID;', {
-        ['@Inventory'] = Inventory,
-        ['@Character_ID'] = Character_ID
-    }, function(data)
-        if data then
-            --
-        end
-        if cb ~= nil then
-            cb()
-        end
-    end)
-end
-
---- GET - The `Inventory` from the `Character_ID`
--- @`Character_ID`
-function c.sql.GetCharacterBank(Character_ID, cb)
-    local IsBusy = true
-    local result = nil
-    MySQL.Async.fetchScalar('SELECT `Bank` FROM characters WHERE `Character_ID` = @Character_ID;', {
+    MySQL.Async.fetchScalar('SELECT `Health` FROM `characters` WHERE `Character_ID` = @Character_ID;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -690,11 +661,13 @@ function c.sql.GetCharacterBank(Character_ID, cb)
     return result
 end
 
---- SET - The `Inventory` from the `Character_ID`
+--- SET - The `Health` from the `Character_ID`
 -- @`Character_ID`
-function c.sql.SetCharacterBank(Character_ID, amount, cb)
-    MySQL.Async.execute('UPDATE characters SET `Bank`= Bank + @amount WHERE `Character_ID` = @Character_ID;', {
-        ['@amount'] = amount,
+-- @Health - Int VALUE
+-- cb if any.
+function c.sql.SetCharacterHealth(Character_ID, Health, cb)
+    MySQL.Async.execute('UPDATE `characters` SET `Health` = @Health WHERE `Character_ID` = @Character_ID;', {
+        ['@Health'] = Health,
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -705,6 +678,182 @@ function c.sql.SetCharacterBank(Character_ID, amount, cb)
         end
     end)
 end
+
+--- Get - The `Armour` from the `Character_ID`
+-- @`Character_ID`
+-- cb if any.
+function c.sql.GetCharacterArmour(Character_ID, cb)
+    local IsBusy = true
+    local result = nil
+    MySQL.Async.fetchScalar('SELECT `Armour` FROM `characters` WHERE `Character_ID` = @Character_ID;', {
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            result = data
+            IsBusy = false
+        end
+    end)
+    while IsBusy do
+        Wait(0)
+    end
+    if cb ~= nil then
+        cb()
+    end
+    return result
+end
+
+--- SET - The `Armour` from the `Character_ID`
+-- @`Character_ID`
+-- @Armour - INT VALUE
+-- cb if any.
+function c.sql.SetCharacterArmour(Character_ID, Armour, cb)
+    MySQL.Async.execute('UPDATE `characters` SET `Armour` = @Armour WHERE `Character_ID` = @Character_ID;', {
+        ['@Armour'] = Armour,
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            --
+        end
+        if cb ~= nil then
+            cb()
+        end
+    end)
+end
+
+--- Get - The `Hunger` from the `Character_ID`
+-- @`Character_ID`
+-- cb if any.
+function c.sql.GetCharacterHunger(Character_ID, cb)
+    local IsBusy = true
+    local result = nil
+    MySQL.Async.fetchScalar('SELECT `Hunger` FROM `characters` WHERE `Character_ID` = @Character_ID;', {
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            result = data
+            IsBusy = false
+        end
+    end)
+    while IsBusy do
+        Wait(0)
+    end
+    if cb ~= nil then
+        cb()
+    end
+    return result
+end
+
+--- SET - The `Hunger` from the `Character_ID`
+-- @`Character_ID`
+-- @Hunger - INT VALUE
+-- cb if any.
+function c.sql.SetCharacterHunger(Character_ID, Armour, cb)
+    MySQL.Async.execute('UPDATE `characters` SET `Hunger` = @Hunger WHERE `Character_ID` = @Character_ID;', {
+        ['@Hunger'] = Hunger,
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            --
+        end
+        if cb ~= nil then
+            cb()
+        end
+    end)
+end
+
+--- Get - The `Thirst` from the `Character_ID`
+-- @`Character_ID`
+-- cb if any.
+function c.sql.GetCharacterThirst(Character_ID, cb)
+    local IsBusy = true
+    local result = nil
+    MySQL.Async.fetchScalar('SELECT `Thirst` FROM `characters` WHERE `Character_ID` = @Character_ID;', {
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            result = data
+            IsBusy = false
+        end
+    end)
+    while IsBusy do
+        Wait(0)
+    end
+    if cb ~= nil then
+        cb()
+    end
+    return result
+end
+
+--- SET - The `Thirst` from the `Character_ID`
+-- @`Character_ID`
+-- @Thirst - INT VALUE
+-- cb if any.
+function c.sql.SetCharacterThirst(Character_ID, Armour, cb)
+    MySQL.Async.execute('UPDATE `characters` SET `Thirst` = @Thirst WHERE `Character_ID` = @Character_ID;', {
+        ['@Thirst'] = Thirst,
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            --
+        end
+        if cb ~= nil then
+            cb()
+        end
+    end)
+end
+
+--- Get - The `Thirst` from the `Character_ID`
+-- @`Character_ID`
+-- cb if any.
+function c.sql.GetCharacterStress(Character_ID, cb)
+    local IsBusy = true
+    local result = nil
+    MySQL.Async.fetchScalar('SELECT `Stress` FROM `characters` WHERE `Character_ID` = @Character_ID;', {
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            result = data
+            IsBusy = false
+        end
+    end)
+    while IsBusy do
+        Wait(0)
+    end
+    if cb ~= nil then
+        cb()
+    end
+    return result
+end
+
+--- SET - The `Stress` from the `Character_ID`
+-- @`Character_ID`
+-- @Stress - INT VALUE
+-- cb if any.
+function c.sql.SetCharacterThirst(Character_ID, Armour, cb)
+    MySQL.Async.execute('UPDATE `characters` SET `Stress` = @Stress WHERE `Character_ID` = @Character_ID;', {
+        ['@Stress'] = Thirst,
+        ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            --
+        end
+        if cb ~= nil then
+            cb()
+        end
+    end)
+end
+
+
+
+
+
+
+
+
+
+
+
+
 
 ------------------------------------------------------------------------------
 --- Vehicles

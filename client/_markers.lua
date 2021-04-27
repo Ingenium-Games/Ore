@@ -8,6 +8,6 @@ NOTES.
     -
     -
 ]] --
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 -- https://docs.fivem.net/docs/game-references/markers/

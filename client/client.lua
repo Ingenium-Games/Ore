@@ -7,8 +7,9 @@ NOTES:
     -
     -
 ]] --
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
+
 Citizen.CreateThread(function()
     while true do
         Wait(0)
@@ -18,29 +19,6 @@ Citizen.CreateThread(function()
             return
         end
     end
-end)
-
--- Event to receive the data of the chosen character for the client.
-RegisterNetEvent('Client:Character:Loaded')
-AddEventHandler('Client:Character:Loaded', function(data)
-    c.data.SetPlayer(data)
-    c.data.SetLoadedStatus(true)
-    c.data.SetLocale()
-    Wait(100)
-    c.data.ClientSync()
-    TriggerEvent('Client:Character:Ready')
-end)
-
--- Event to trigger other resources once the client has received the chosen characters data from the server.
-RegisterNetEvent('Client:Character:Ready')
-AddEventHandler('Client:Character:Ready', function()
-    DisplayRadar(true)
-    NetworkSetFriendlyFireOption(true)
-    RemoveMultiplayerHudCash()
-    SetPlayerHealthRechargeLimit(PlayerId(), 0)
-    SetPedMinGroundTimeForStungun(PlayerPedId(), 8500)
-    SetCanAttackFriendly(PlayerPedId(), true, false)
-    SetPedSuffersCriticalHits(PlayerPedId(), true)
 end)
 
 -- Per Frame natives to enhance the role play experience.

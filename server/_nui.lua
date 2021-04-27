@@ -7,7 +7,7 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 --  Get Character Info for the NUI to allow character selection.
 RegisterNetEvent('Server:Character:Request:List')
@@ -56,12 +56,10 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
     local city = c.sql.GenerateCityID()
     local phone = c.sql.GeneratePhoneNumber()
     local prim = c.identifier(src)
-    local t = {Primary_ID = prim, First_Name = first_name, Last_Name = last_name, Height = height, Birth_Date = date, Character_ID = char, City_ID = city, Phone = phone, Coords = json.encode(conf.spawn)}
-    c.sql.CreateCharacter(t, function()
+    local data = {Primary_ID = prim, First_Name = first_name, Last_Name = last_name, Height = height, Birth_Date = date, Character_ID = char, City_ID = city, Phone = phone, Coords = json.encode(conf.spawn)}
+    c.sql.CreateCharacter(data, function()
         c.data.LoadPlayer(src, char)
+        TriggerClientEvent('Client:Character:FirstSpawn', src)
+        TriggerClientEvent('creator:OpenCreator', src)
     end)
-    Citizen.Wait(100)
-    TriggerClientEvent('Client:Character:FirstSpawn', src)
-    --
-    TriggerClientEvent('creator:OpenCreator', src)
 end)

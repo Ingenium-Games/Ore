@@ -8,7 +8,7 @@ NOTES.
     -
     -
 ]]--
-math.randomseed(c.seed)
+math.randomseed(c.Seed)
 -- ====================================================================================--
 local count = 1
 
@@ -26,6 +26,7 @@ end
 function c.inst.SetPlayer(source, num)
     local current = GetPlayerRoutingBucket(source)
     if current ~= num then
+        -- to add mumble changes based on either pmavoice or frazzles mumble script
         SetPlayerRoutingBucket(source, num)
         SetEntityRoutingBucket(GetPlayerPed(source), num)
     end
@@ -47,6 +48,7 @@ function c.inst.GetEntityInstance(entity)
 end
 
 function c.inst.SetPlayerDefault(source)
+    -- to add mumble changes based on either pmavoice or frazzles mumble script
     SetPlayerRoutingBucket(source, conf.instancedefault)
     SetEntityRoutingBucket(GetPlayerPed(source), conf.instancedefault)
 end
