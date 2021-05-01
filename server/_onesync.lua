@@ -13,7 +13,7 @@ GetEntityType( entity )
 2 = vehicle
 3 = object
 
-]]--
+]] --
 -- ====================================================================================--
 
 AddEventHandler('weaponDamageEvent', function()
@@ -29,30 +29,30 @@ AddEventHandler('respawnPlayerPedEvent', function()
 end)
 
 AddEventHandler('explosionEvent', function()
-	CancelEvent()
+    CancelEvent()
 end)
 
 AddEventHandler('entityCreated', function(ent)
-	if DoesEntityExist(ent) then
-		local model = GetEntityModel(ent)
-		for _,v in pairs(conf.disable.vehicles) do
-			local restrictedVehicleModel = conf.disable.vehicles[i]
-			if (model == restrictedVehicleModel) then
-				DeleteEntity(ent)
-			end
-		end
-	end
-	-- Testing setting all vehicles that are CARS - to have a fuel as a statebag with set, get add and remove fuel functions.
-	if GetEntityType(ent) == 2 then
-		Entity(ent).state = c.class.VehicleClass(ent)
-	end
+    if DoesEntityExist(ent) then
+        local model = GetEntityModel(ent)
+        for _, v in pairs(conf.disable.vehicles) do
+            local restrictedVehicleModel = conf.disable.vehicles[i]
+            if (model == restrictedVehicleModel) then
+                DeleteEntity(ent)
+            end
+        end
+    end
+    -- Testing setting all vehicles that are CARS - to have a fuel as a statebag with set, get add and remove fuel functions.
+    if GetEntityType(ent) == 2 then
+        Entity(ent).state = c.class.VehicleClass(ent)
+    end
 end)
 
 AddEventHandler('entityCreating', function(ent)
     local model = GetEntityModel(ent)
-    for _,v in pairs(conf.disable.vehicles) do
+    for _, v in pairs(conf.disable.vehicles) do
         local restrictedVehicleModel = conf.disable.vehicles[i]
-        if (model == restrictedVehicleModel) then  
+        if (model == restrictedVehicleModel) then
             CancelEvent()
         end
     end
@@ -67,5 +67,5 @@ AddEventHandler('playerEnteredScope', function()
 end)
 
 AddEventHandler('playerLeftScope', function()
-    
+
 end)

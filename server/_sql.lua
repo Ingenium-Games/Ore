@@ -6,18 +6,21 @@ c.sql = {} -- server
 NOTES.
     - All sql querys should have a call back as a function at the end to chain code execution upon completion.
     - All data should be encoded or decoded here, if possible. the fetchALL commands are decoded in the _data.lua
-]]--
+]] --
+
 math.randomseed(c.Seed)
+
 -- ====================================================================================--
--- SAVING VALUES TO THE DATABASE AS PER SYNC ROUTINES.
+-- SAVING VALUES TO THE DATABASE AS PER SYNC FUNCTIONS IN _DATA.LUA
 -- ====================================================================================--
+
 -- @local id for async store & Store Query
 local SaveData = -1
 MySQL.Async.store(
     "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Last_Login` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
     function(id)
         SaveData = id
-end)
+    end)
 
 --- Save Single User/Character
 -- @source
@@ -30,10 +33,9 @@ function c.sql.SaveUser(data, cb)
         local Hunger = data.GetHunger()
         local Thirst = data.GetThirst()
         local Stress = data.GetStress()
-        
+
         -- Tables require JSON Encoding.
         local Coords = json.encode(data.GetCoords())
-
 
         MySQL.Async.insert(SaveData, {
 
@@ -47,9 +49,9 @@ function c.sql.SaveUser(data, cb)
             -- Table Informaiton.
             ['@Coords'] = Coords,
 
-            ['@Character_ID'] = data.Character_ID,
+            ['@Character_ID'] = data.Character_ID
         }, function(r)
-            --do
+            -- do
         end)
         if cb then
             cb()
@@ -69,10 +71,9 @@ function c.sql.SaveData(cb)
                 local Hunger = data.GetHunger()
                 local Thirst = data.GetThirst()
                 local Stress = data.GetStress()
-        
+
                 -- Tables require JSON Encoding.
                 local Coords = json.encode(data.GetCoords())
-
 
                 MySQL.Async.insert(SaveData, {
 
@@ -86,7 +87,7 @@ function c.sql.SaveData(cb)
                     -- Table Informaiton.
                     ['@Coords'] = Coords,
 
-                    ['@Character_ID'] = data.Character_ID,
+                    ['@Character_ID'] = data.Character_ID
                 }, function(r)
                     -- Do nothing.
                 end)
@@ -113,20 +114,21 @@ function c.sql.GenerateCharacterID(cb)
     local new = nil
     repeat
         new = c.rng.chars(50)
-        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;', {
-            ['@Character_ID'] = new
-        }, function(r)
-            if r then
-                bool = true
-            else
-                bool = false
-            end
-        end)
+        MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM `characters` WHERE `Character_ID` = @Character_ID LIMIT 1;',
+            {
+                ['@Character_ID'] = new
+            }, function(r)
+                if r then
+                    bool = true
+                else
+                    bool = false
+                end
+            end)
     until bool == false
-        if cb then
-            cb()
-        end
-        return new
+    if cb then
+        cb()
+    end
+    return new
 end
 
 function c.sql.GenerateCityID(cb)
@@ -146,10 +148,10 @@ function c.sql.GenerateCityID(cb)
             end
         end)
     until bool == false
-        if cb then
-            cb()
-        end
-        return new
+    if cb then
+        cb()
+    end
+    return new
 end
 
 function c.sql.GeneratePhoneNumber(cb)
@@ -167,35 +169,35 @@ function c.sql.GeneratePhoneNumber(cb)
             end
         end)
     until bool == false
-        if cb then
-            cb()
-        end
-        return new
+    if cb then
+        cb()
+    end
+    return new
 end
 
 -- ====================================================================================--
 -- SHould remake htis one..
 function c.sql.CreateCharacter(t, cb)
     MySQL.Async.execute(
-    'INSERT INTO `characters` (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords);',
-    {
-        Primary_ID = t.Primary_ID,
-        Character_ID = t.Character_ID,
-        City_ID = t.City_ID,
-        First_Name = t.First_Name,
-        Last_Name = t.Last_Name,
-        Height = t.Height,
-        Birth_Date = t.Birth_Date,
-        Phone = t.Phone,
-        Coords = t.Coords,
-    }, function(data)
-        if data then
+        'INSERT INTO `characters` (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords);',
+        {
+            Primary_ID = t.Primary_ID,
+            Character_ID = t.Character_ID,
+            City_ID = t.City_ID,
+            First_Name = t.First_Name,
+            Last_Name = t.Last_Name,
+            Height = t.Height,
+            Birth_Date = t.Birth_Date,
+            Phone = t.Phone,
+            Coords = t.Coords
+        }, function(data)
+            if data then
 
-        end
-        if cb then
-            cb()
-        end
-    end)
+            end
+            if cb then
+                cb()
+            end
+        end)
 end
 
 ------------------------------------------------------------------------------
@@ -240,7 +242,6 @@ function c.sql.SetLocale(locale, license_id, cb)
         cb()
     end
 end
-
 
 --- Get - `Ace` from the users License_ID identifier
 -- @License_ID
@@ -359,7 +360,6 @@ function c.sql.GetCharacters(primary_id, cb)
     return result
 end
 
-
 --- Get - # of characters owned = FALSE
 -- @Primary_ID
 function c.sql.GetCharacterCount(primary_id, cb)
@@ -403,16 +403,16 @@ end
 
 -- 
 
-function c.sql.GetActiveCharactersByJobAsCount(jobname, cb
+function c.sql.GetActiveCharactersByJobAsCount(jobname, cb)
     local Job = tostring(jobname)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchAll('SELECT COUNT(`Job`) AS "Count" FROM `characters` WHERE `Job` = @Job and `Active` = TRUE;',
-        {['@Job'] = Job
-        }, function(data)
-            result = data
-            IsBusy = false
-        end)
+    MySQL.Async.fetchAll('SELECT COUNT(`Job`) AS "Count" FROM `characters` WHERE `Job` = @Job and `Active` = TRUE;', {
+        ['@Job'] = Job
+    }, function(data)
+        result = data
+        IsBusy = false
+    end)
     while IsBusy do
         Wait(0)
     end
@@ -431,10 +431,11 @@ end
 function c.sql.GetActiveCharactersAsCount(cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchAll('SELECT COUNT(`Active`) AS "Count" FROM `characters` WHERE `Active` = TRUE;',
-        result = data
-        IsBusy = false
-    end)
+    MySQL.Async.fetchAll('SELECT COUNT(`Active`) AS "Count" FROM `characters` WHERE `Active` = TRUE;', {},
+        function(data)
+            result = data
+            IsBusy = false
+        end)
     while IsBusy do
         Wait(0)
     end
@@ -997,11 +998,9 @@ function c.sql.SetCharacterStress(character_ID, stress, cb)
     end)
 end
 
-
 -------------------------------------------------------------------------------
 --- BANK TABLE
 -------------------------------------------------------------------------------
-
 
 --- Get - The `Bank` from the `Character_ID`
 -- @`Character_ID`
@@ -1091,24 +1090,25 @@ function c.sql.SetCharacterLoan(character_id, loan, duration, cb)
     local Character_ID = character_id
     local Loan = loan
     local Duration = duration
-    MySQL.Async.execute('UPDATE `character_banks` SET `Loan` = @Loan, `Duration` = @Duration, `Active` = TRUE WHERE `Character_ID` = @Character_ID;', {
-        ['@Loan'] = Loan,
-        ['@Duration'] = Duration,
-        ['@Character_ID'] = Character_ID
-    }, function(data)
-        if data then
-            --
-        end
-        if cb then
-            cb()
-        end
-    end)
+    MySQL.Async.execute(
+        'UPDATE `character_banks` SET `Loan` = @Loan, `Duration` = @Duration, `Active` = TRUE WHERE `Character_ID` = @Character_ID;',
+        {
+            ['@Loan'] = Loan,
+            ['@Duration'] = Duration,
+            ['@Character_ID'] = Character_ID
+        }, function(data)
+            if data then
+                --
+            end
+            if cb then
+                cb()
+            end
+        end)
 end
 
 -- cb if any.
 function c.sql.TickOverLoanInterest(cb)
-    MySQL.Async.execute('UPDATE `character_banks` SET `Loan` = Loan * 3.5 WHERE `Duration` >= 1;', {}, 
-    function(data)
+    MySQL.Async.execute('UPDATE `character_banks` SET `Loan` = Loan * 3.5 WHERE `Duration` >= 1;', {}, function(data)
         if data then
             --
         end
@@ -1120,21 +1120,20 @@ end
 
 -- cb if any.
 function c.sql.TickOverLoanDuration(cb)
-    MySQL.Async.execute('UPDATE `character_banks` SET `Duration` = Duration - 1 WHERE `Active` = TRUE;', {}, 
-    function(data)
-        if data then
-            --
-        end
-        if cb then
-            cb()
-        end
-    end)
+    MySQL.Async.execute('UPDATE `character_banks` SET `Duration` = Duration - 1 WHERE `Active` = TRUE;', {},
+        function(data)
+            if data then
+                --
+            end
+            if cb then
+                cb()
+            end
+        end)
 end
 
 -- cb if any.
 function c.sql.TickOverLoansInactive(cb)
-    MySQL.Async.execute('UPDATE `character_banks` SET `Active` = FALSE WHERE `Duration` = 0;', {}, 
-    function(data)
+    MySQL.Async.execute('UPDATE `character_banks` SET `Active` = FALSE WHERE `Duration` = 0;', {}, function(data)
         if data then
             --
         end
@@ -1143,10 +1142,6 @@ function c.sql.TickOverLoansInactive(cb)
         end
     end)
 end
-
-
-
-
 
 -------------------------------------------------------------------------------
 --- VEHICLES TABLE

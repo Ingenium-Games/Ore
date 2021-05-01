@@ -12,13 +12,17 @@ NOTES.
     -
     -
 ]]--
+
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function c.time.Update()
-	local t = os.date('*t')
-	c.times = {h = t.hour, m = t.min}
-	SetConvarServerInfo('Time', string.format('%02d:%02d', c.times.h, c.times.m))
+    local t = os.date('*t')
+    c.times = {
+        h = t.hour,
+        m = t.min
+    }
+    SetConvarServerInfo('Time', string.format('%02d:%02d', c.times.h, c.times.m))
 end
 
 function c.time.ServerSync()

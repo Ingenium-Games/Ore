@@ -54,15 +54,15 @@ end
 function c.data.SendPacket()
     local data = {}
     -- Coords
-        local loc = GetEntityCoords(PlayerPedId())
-        local ords = {
-            x = c.math.decimals(loc.x, 2),
-            y = c.math.decimals(loc.y, 2),
-            z = c.math.decimals(loc.z, 2)
-        }
-        data.Coords = ords
+    local loc = GetEntityCoords(PlayerPedId())
+    local ords = {
+        x = c.math.decimals(loc.x, 2),
+        y = c.math.decimals(loc.y, 2),
+        z = c.math.decimals(loc.z, 2)
+    }
+    data.Coords = ords
     -- 
-        data.src = GetPlayerServerId(PlayerID())
+    data.src = GetPlayerServerId(PlayerID())
     -- 
 
     TriggerServerEvent('Server:Packet:Update', data)

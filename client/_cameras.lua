@@ -33,14 +33,30 @@ end
 -- ====================================================================================--
 
 function c.cameras.MakeBasic(px, py, pz, rx, ry, rz, fov)
-    local t = {['px'] = px, ['py'] = py, ['pz'] = pz, ['rx'] = x, ['ry'] = y, ['rz'] = z, ['fov'] = fov}
+    local t = {
+        ['px'] = px,
+        ['py'] = py,
+        ['pz'] = pz,
+        ['rx'] = rx,
+        ['ry'] = ry,
+        ['rz'] = rz,
+        ['fov'] = fov
+    }
     local name = c.cameras.NewName(t)
     name = CreateCamWithParams(name, px, py, pz, rx, ry, rz, fov, false, 0)
     return name
 end
 
 function c.cameras.MakeAdvanced(px, py, pz, rx, ry, rz, fov)
-    local t = {['px'] = px, ['py'] = py, ['pz'] = pz, ['rx'] = x, ['ry'] = y, ['rz'] = z, ['fov'] = fov}
+    local t = {
+        ['px'] = px,
+        ['py'] = py,
+        ['pz'] = pz,
+        ['rx'] = rx,
+        ['ry'] = ry,
+        ['rz'] = rz,
+        ['fov'] = fov
+    }
     local name = c.cameras.NewName(t)
     name = CreateCamWithParams(name, px, py, pz, rx, ry, rz, fov, false, 0)
     return name

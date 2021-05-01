@@ -9,6 +9,7 @@ NOTES.
     -
     -
 ]]--
+
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
@@ -20,7 +21,7 @@ function c.data.Initilize()
         [3] = 'DB: Vehicles;',
         [4] = 'DB: Vehicles;',
         [5] = 'DB: Vehicles;',
-        [6] = 'DB: Vehicles;',
+        [6] = 'DB: Vehicles;'
     }
     --
     function cb()
@@ -109,7 +110,7 @@ function c.data.PlayersSync()
         -- Is there a differance in size between the native and our Players Table?
         if c.table.SizeOf(Players) ~= c.table.SizeOf(xPlayers) then
             if type(xPlayers) == 'table' then
-                for i=1, #xPlayers, 1 do
+                for i = 1, #xPlayers, 1 do
                     local ply = xPlayers[i]
                     local ping = GetPlayerPing(ply)
                     if ping <= 1 then

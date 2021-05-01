@@ -54,7 +54,15 @@ local Blips = {
 ]]--
 
 function c.blips.MakeBasic(title, x, y, z, sprite, colour, size)
-    local t = {['title'] = title, ['x'] = x, ['y'] = y, ['z'] = z, ['sprite'] = sprite, ['colour'] = colour, ['size'] = size}
+    local t = {
+        ['title'] = title,
+        ['x'] = x,
+        ['y'] = y,
+        ['z'] = z,
+        ['sprite'] = sprite,
+        ['colour'] = colour,
+        ['size'] = size
+    }
     local name = c.blips.NewName(t)
     name = AddBlipForCoord(x, y, z)
     --
@@ -63,7 +71,7 @@ function c.blips.MakeBasic(title, x, y, z, sprite, colour, size)
     SetBlipScale(name, size)
     SetBlipColour(name, colour)
     SetBlipAsShortRange(name, true)
-	BeginTextCommandSetBlipName("STRING")
+    BeginTextCommandSetBlipName("STRING")
     AddTextComponentString(title)
     EndTextCommandSetBlipName(name)
     return name
@@ -93,7 +101,20 @@ display
 
 -- str, str, int, table/vector3, num, num, int, int, bool, bool, bool
 function c.blips.MakeAdvanced(title, x, y, z, sprite, colour, size, display, category, short, flashes, legend)
-    local t = {['title'] = title, ['display'] = display, ['x'] = x, ['y'] = y, ['z'] = z, ['sprite'] = sprite, ['colour'] = colour, ['size'] = size, ['category'] = category, ['short'] = short, ['flashes'] = flashes, ['legend'] = legend}
+    local t = {
+        ['title'] = title,
+        ['display'] = display,
+        ['x'] = x,
+        ['y'] = y,
+        ['z'] = z,
+        ['sprite'] = sprite,
+        ['colour'] = colour,
+        ['size'] = size,
+        ['category'] = category,
+        ['short'] = short,
+        ['flashes'] = flashes,
+        ['legend'] = legend
+    }
     local name = c.blips.NewName(t)
     name = AddBlipForCoord(x, y, z)
     --
@@ -109,7 +130,7 @@ function c.blips.MakeAdvanced(title, x, y, z, sprite, colour, size, display, cat
     SetBlipCategory(name, category)
     SetBlipAsShortRange(name, short)
     SetBlipHiddenOnLegend(name, legend)
-	BeginTextCommandSetBlipName("STRING")
+    BeginTextCommandSetBlipName("STRING")
     AddTextComponentString(title)
     EndTextCommandSetBlipName(name)
 end
@@ -133,4 +154,4 @@ for _,i in ipairs(Blips) do
 end
 
 print(c.table.dump(c.blips.store))
-]]--
+]]-- 

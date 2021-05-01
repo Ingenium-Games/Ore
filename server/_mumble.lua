@@ -17,7 +17,7 @@ local mumbleinstanceindex = 20000
 local count = 1
 
 function c.mumble.GenerateInstanceChannels()
-    for i=1, 64, 1 do
+    for i = 1, 64, 1 do
         MumbleCreateChannel(mumbleinstanceindex + count)
         count = count + 1
     end

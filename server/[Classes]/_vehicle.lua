@@ -20,7 +20,7 @@ function c.class.VehicleClass(entity)
     -- disable altering the direct line of data, must use set and get.
     self.__metatable = self
     --
-    self.Fuel = math.random(73,100)
+    self.Fuel = math.random(73, 100)
     --
     self.GetFuel = function()
         return self.Fuel

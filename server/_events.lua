@@ -6,7 +6,8 @@ NOTES.
     -
     -
     -
-]]--
+]] --
+
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
@@ -38,28 +39,27 @@ RegisterNetEvent("Server:Character:Death")
 AddEventHandler("Server:Character:Death", function(data)
     local src = data.src or source
     if (data.PlayerKill == true) then
-        
+
     else
-        
+
     end
 end)
 
 RegisterNetEvent('Server:Request:Time')
 AddEventHandler('Server:Request:Time', function(data)
-	local src = data.src or source
-	TriggerClientEvent('Client:Time:Recieve', src, c.times)
+    local src = data.src or source
+    TriggerClientEvent('Client:Time:Recieve', src, c.times)
 end)
 
 -- ====================================================================================--
 
 RegisterNetEvent('Server:Packet:Update')
 AddEventHandler('Server:Packet:Update', function(data)
-	local src = data.src or source
+    local src = data.src or source
     local xPlayer = c.data.GetPlayer(src)
     -- Coords
     xPlayer.SetCoords(data.Coords)
     -- 
-
 
 end)
 

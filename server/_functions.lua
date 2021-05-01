@@ -1,12 +1,13 @@
---====================================================================================--
+-- ====================================================================================--
 --  MIT License 2020 : Twiitchter
---====================================================================================--
+-- ====================================================================================--
 --[[
 NOTES.
     -
     -
     -
-]]--
+]] --
+
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
@@ -28,10 +29,10 @@ end
 function c.error(err)
     if conf.error then
         if type(err) == 'string' then
-            print("   ^7[^3Error^7]:  ".."==    ", err)
+            print("   ^7[^3Error^7]:  " .. "==    ", err)
             print(debug.traceback(_, 2))
         else
-            print("   ^7[^3Error^7]:  ".."==    ", 'Unable to type(err) == string. [err] = ', err)
+            print("   ^7[^3Error^7]:  " .. "==    ", 'Unable to type(err) == string. [err] = ', err)
             print(debug.traceback(_, 2))
         end
     end
@@ -39,7 +40,7 @@ end
 
 function c.debug(str)
     if conf.debug then
-        print("   ^7[^6Debug^7]:  ".."==    ", str)
+        print("   ^7[^6Debug^7]:  " .. "==    ", str)
     end
 end
 
@@ -78,14 +79,14 @@ end
 -- ====================================================================================--
 -- https://forum.cfx.re/t/tutorial-cancellable-function-usage/137558
 
-CancellationToken = { }
+CancellationToken = {}
 CancellationToken.__index = CancellationToken
 
 function CancellationToken.MakeToken(cancellationHandler)
-    local self = { }
+    local self = {}
 
     setmetatable(self, CancellationToken)
-    
+
     self._cancelled = false
 
     if cancellationHandler then
@@ -94,10 +95,12 @@ function CancellationToken.MakeToken(cancellationHandler)
 end
 
 function CancellationToken:Cancel()
-    if self._cancelled then return end
+    if self._cancelled then
+        return
+    end
 
     self._cancelled = true
-    
+
     if self._cancellationHandler then
         self._cancellationHandler()
     end
@@ -113,7 +116,9 @@ end
 
 function c.CancellableWait(ms, token)
     Citizen.Wait(ms)
-    if token:WasCancelled() then CancelEvent() end
+    if token:WasCancelled() then
+        CancelEvent()
+    end
 end
 
 -- ====================================================================================--
@@ -121,55 +126,55 @@ end
 
 RegisterNetEvent('__pmc_callback:server')
 AddEventHandler('__pmc_callback:server', function(eventName, ticket, ...)
-	local s = source
-	local p = promise.new()
+    local s = source
+    local p = promise.new()
 
-	TriggerEvent('s__pmc_callback:'..eventName, function(...)
-		p:resolve({...})
-	end, s, ...)
+    TriggerEvent('s__pmc_callback:' .. eventName, function(...)
+        p:resolve({...})
+    end, s, ...)
 
-	local result = Citizen.Await(p)
-	TriggerClientEvent(('__pmc_callback:client:%s:%s'):format(eventName, ticket), s, table.unpack(result))
+    local result = Citizen.Await(p)
+    TriggerClientEvent(('__pmc_callback:client:%s:%s'):format(eventName, ticket), s, table.unpack(result))
 end)
 
 _G.RegisterServerCallback = function(eventName, fn)
-	assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got '..type(eventName))
-	assert(type(fn) == 'function', 'Invalid Lua type at argument #2, expected function, got '..type(fn))
+    assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got ' .. type(eventName))
+    assert(type(fn) == 'function', 'Invalid Lua type at argument #2, expected function, got ' .. type(fn))
 
-	AddEventHandler(('s__pmc_callback:%s'):format(eventName), function(cb, s, ...)
-		local result = {fn(s, ...)}
-		cb(table.unpack(result))
-	end)
+    AddEventHandler(('s__pmc_callback:%s'):format(eventName), function(cb, s, ...)
+        local result = {fn(s, ...)}
+        cb(table.unpack(result))
+    end)
 end
 
 _G.TriggerClientCallback = function(src, eventName, ...)
-	assert(type(src) == 'number', 'Invalid Lua type at argument #1, expected number, got '..type(src))
-	assert(type(eventName) == 'string', 'Invalid Lua type at argument #2, expected string, got '..type(eventName))
+    assert(type(src) == 'number', 'Invalid Lua type at argument #1, expected number, got ' .. type(src))
+    assert(type(eventName) == 'string', 'Invalid Lua type at argument #2, expected string, got ' .. type(eventName))
 
-	local p = promise.new()
-	
-	RegisterNetEvent('__pmc_callback:server:'..eventName)
-	local e = AddEventHandler('__pmc_callback:server:'..eventName, function(...)
-		local s = source
-		if src == s then
-			p:resolve({...})
-		end
-	end)
-	
-	TriggerClientEvent('__pmc_callback:client', src, eventName, ...)
-	
-	local result = Citizen.Await(p)
-	RemoveEventHandler(e)
-	return table.unpack(result)
+    local p = promise.new()
+
+    RegisterNetEvent('__pmc_callback:server:' .. eventName)
+    local e = AddEventHandler('__pmc_callback:server:' .. eventName, function(...)
+        local s = source
+        if src == s then
+            p:resolve({...})
+        end
+    end)
+
+    TriggerClientEvent('__pmc_callback:client', src, eventName, ...)
+
+    local result = Citizen.Await(p)
+    RemoveEventHandler(e)
+    return table.unpack(result)
 end
 
 -- wrappers for the pmc callbacks
 function c.RegisterServerCallback(eventName, fn)
-	RegisterServerCallback(eventName, fn)
+    RegisterServerCallback(eventName, fn)
 end
 
 function c.TriggerClientCallback(src, eventName, ...)
-	TriggerClientCallback(src, eventName, ...)
+    TriggerClientCallback(src, eventName, ...)
 end
 
 -- ====================================================================================--

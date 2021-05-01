@@ -7,6 +7,7 @@ NOTES.
     -
     -
 ]] --
+
 math.randomseed(c.Seed)
 -- ====================================================================================--
 RegisterNetEvent('Client:Character:Open')
@@ -55,8 +56,8 @@ AddEventHandler('Client:Character:OpeningMenu', function()
     SetTimecycleModifier('default')
     SetEntityCoords(GetPlayerPed(-1), 0, 0, 0)
     FreezeEntityPosition(GetPlayerPed(-1), true)
-    intro = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00,
-        false, 0)
+    intro =
+        CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00, false, 0)
     SetCamActive(intro, true)
     RenderScriptCams(true, false, 1, true, true)
 end)
@@ -78,8 +79,7 @@ RegisterNetEvent('Client:Character:ReSpawn')
 AddEventHandler('Client:Character:ReSpawn', function(Character_ID, Coords)
     SetTimecycleModifier('default')
     SetEntityCoords(GetPlayerPed(-1), Coords.x, Coords.y, Coords.z)
-    cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00,
-               false, 0)
+    cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00, false, 0)
     PointCamAtCoord(cam2, Coords.x, Coords.y, Coords.z + 200)
     SetCamActiveWithInterp(cam2, intro, 900, 1, 1)
     Citizen.Wait(900)

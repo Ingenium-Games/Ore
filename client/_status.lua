@@ -12,13 +12,13 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
---health
+-- health
 local retval = GetPedMaxHealth(ped)
 local retval = GetEntityHealth(entity)
 local retval = GetEntityMaxHealth(entity)
 
-SetEntityHealth(entity , health)
-SetEntityMaxHealth(entity , value)
+SetEntityHealth(entity, health)
+SetEntityMaxHealth(entity, value)
 
 local retval = GetPlayerHealthRechargeLimit(player)
 
@@ -32,18 +32,18 @@ local retval = IsPedInjured(ped)
 ---fatallyinjured
 local retval = IsPedFatallyInjured(ped)
 
---armour
+-- armour
 local retval = GetPlayerMaxArmour(player)
 
 SetPlayerMaxArmour(player, value)
-AddArmourToPed(ped , amount)
+AddArmourToPed(ped, amount)
 
 local retval = GetPedArmour(ped)
 
-SetPedArmour(ped , amount)
+SetPedArmour(ped, amount)
 
---hunger
+-- hunger
 
---thirst
+-- thirst
 
---stress
+-- stress

@@ -7,7 +7,8 @@ NOTES.
     -
     -
     -
-]]--
+]] --
+
 math.randomseed(c.Seed)
 -- ====================================================================================--
 local count = 1
@@ -16,7 +17,7 @@ function c.inst.New()
     if count <= 63 then
         count = count + 1
         return count
-    else 
+    else
         count = 1
         count = count + 1
         return count

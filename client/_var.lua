@@ -7,4 +7,3 @@ c.Locale = conf.locale
 
 c.Character = nil
 c.CharacterLoaded = false
-c.PlayerLoaded
