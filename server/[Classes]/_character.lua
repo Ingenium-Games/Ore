@@ -11,26 +11,66 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
-function CharacterClass(source, Character_ID)
-    local src = tonumber(source)
-    local data = c.sql.GetCharacterRow(Character_ID)
+function c.class.CreateCharacter(character_id)
+    local data = c.sql.GetCharacterRow(character_id)
     local self = {}
-    --
-    self.Character_ID = data.Character_ID
-    self.City_ID = data.City_ID
-    self.Bank = data.Bank
+    -- enable table searching.
+    self.__index = self
+    -- disable altering the direct line of data, must use set and get.
+    self.__metatable = self
+    ---- VARIABLES
+    -- Strings
+    self.Character_ID = data.Character_ID -- 50 Random Characters [Aa-Zz][0-9]
+    self.City_ID = data.City_ID -- X-00000
     self.Birth_Date = data.Birth_Date
-    self.Name = data.First_Name .. ' ' .. data.Last_Name
-    self.Phone = data.Phone
-    self.Appearance = json.decode(data.Appearance)
-    self.Inventory = json.decode(data.Inventory)
-    self.Coords = json.decode(data.Coords)
-    self.Job = json.decode(data.Job)
-    self.Status = json.decode(data.Status)
+    self.First_Name = data.First_Name 
+    self.Last_Name = data.Last_Name
+    self.Full_Name = data.First_Name .. ' ' .. data.Last_Name
+    self.Phone = data.Phone -- 200000 - 699999
+
+    -- Booleans
     self.Wanted = data.Wanted
+
+    -- Tables (JSONIZE)
+    self.Appearance = json.decode(data.Appearance)
+    self.Coords = json.decode(data.Coords)
+    ---- FUNCTIONS
+    --
+        --
+    self.GetCharacter_ID = function()
+        return self.Character_ID
+    end
+        --
+    self.GetCity_ID = function()
+        return self.City_ID
+    end
+        --
+    self.GetBirth_Date = function()
+        return self.Birth_Date
+    end
+        --
+    self.GetFirst_Name = function()
+        return self.First_Name
+    end
+        --
+    self.GetLast_Name = function()
+        return self.Last_Name
+    end
+        --
+    self.GetFull_Name = function()
+        return self.Full_Name
+    end
+        --
+    self.GetPhone = function()
+        return self.Phone
+    end
     --
     self.GetGender = function()
-        return self.skin["sex"]
+        if self.Appearance["sex"] ~= 0 then
+            return 'Female'
+        else
+            return 'Male'
+        end
     end
     --
     self.GetAppearance = function()
@@ -39,43 +79,6 @@ function CharacterClass(source, Character_ID)
     --
     self.SetAppearance = function(v)
         self.Appearance = v
-    end
-    --
-    self.GetInventory = function()
-        return self.Inventory
-    end
-    --
-    self.SetInventory = function(k, v)
-        self.Inventory[k] = v
-    end
-    --
-    self.AddInventory = function(k, v)
-        table.insert(self.Inventory, k)
-        self.Inventory[k] = v
-    end
-    --
-    self.RemoveInventory = function(k)
-        table.remove(self.Inventory, k)
-    end
-    --
-    self.GetBank = function()
-        return c.math.decimals(self.Bank, 2)
-    end
-    --
-    self.SetBank = function(num)
-        self.Bank = c.math.decimals(num, 2)
-    end
-    --	
-    self.AddBank = function(num)
-        local bank = self.GetBank()
-        bank = bank + num
-        self.SetBank(bank)
-    end
-    --
-    self.RemoveBank = function(num)
-        local bank = self.GetBank()
-        bank = bank - num
-        self.SetBank(bank)
     end
     --
     self.GetCoords = function()
@@ -94,9 +97,9 @@ function CharacterClass(source, Character_ID)
         return self.Wanted
     end
     --
-    self.SetWanted = function(bool)
-        if type(bool) == 'boolean' then
-            self.Wanted = bool
+    self.SetWanted = function(b)
+        if type(b) == 'boolean' then
+            self.Wanted = b
         end
     end
     --

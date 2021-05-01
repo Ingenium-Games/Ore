@@ -32,7 +32,7 @@ RegisterNetEvent('Client:Character:Loaded')
 AddEventHandler('Client:Character:Loaded', function(data)
     c.data.SetPlayer(data)
     c.data.SetLoadedStatus(true)
-    c.data.SetLocale()
+    -- c.data.SetLocale() -- not yet implimented.
     Wait(100)
     c.data.ClientSync()
     TriggerEvent('Client:Character:Ready')

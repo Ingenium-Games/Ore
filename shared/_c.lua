@@ -2,6 +2,7 @@
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
 c = {}
+c.class = {}
 -- ====================================================================================--
 -- Add any other info to share with other resources should you want too.
 c.imagehost = conf.imagehost

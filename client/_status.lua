@@ -1,8 +1,8 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
+c.stats = {}
 c.status = {}
-c.statuses = {}
 --[[
 NOTES.
     -
@@ -13,78 +13,34 @@ math.randomseed(c.Seed)
 -- ====================================================================================--
 
 --health
+local retval = GetPedMaxHealth(ped)
+local retval = GetEntityHealth(entity)
+local retval = GetEntityMaxHealth(entity)
 
-local retval --[[ integer ]] =
-	GetPedMaxHealth(
-		ped --[[ Ped ]]
-	)
-local retval --[[ integer ]] =
-	GetEntityHealth(
-		entity --[[ Entity ]]
-	)
+SetEntityHealth(entity , health)
+SetEntityMaxHealth(entity , value)
 
-local retval --[[ integer ]] =
-	GetEntityMaxHealth(
-		entity --[[ Entity ]]
-	)
-SetEntityHealth(
-	entity --[[ Entity ]], 
-	health --[[ integer ]]
-)
+local retval = GetPlayerHealthRechargeLimit(player)
 
-SetEntityMaxHealth(
-	entity --[[ Entity ]], 
-	value --[[ integer ]]
-)
-local retval --[[ number ]] =
-	GetPlayerHealthRechargeLimit(
-		player --[[ Player ]]
-	)
-SetPlayerHealthRechargeLimit(
-	player --[[ Player ]], 
-	limit --[[ number ]]
-)
-SetPlayerHealthRechargeMultiplier(
-	player --[[ Player ]], 
-	regenRate --[[ number ]]
-)
-SetPlayerInvincible(
-	player --[[ Player ]], 
-	toggle --[[ boolean ]]
-)
+SetPlayerHealthRechargeLimit(player, limit)
+SetPlayerHealthRechargeMultiplier(player, regenRate)
+SetPlayerInvincible(player, toggle)
 
 ---injured
-local retval --[[ boolean ]] =
-	IsPedInjured(
-		ped --[[ Ped ]]
-	)
+local retval = IsPedInjured(ped)
 
 ---fatallyinjured
-local retval --[[ boolean ]] =
-	IsPedFatallyInjured(
-		ped --[[ Ped ]]
-	)
+local retval = IsPedFatallyInjured(ped)
 
 --armour
-local retval --[[ integer ]] =
-	GetPlayerMaxArmour(
-		player --[[ Player ]]
-	)
-	SetPlayerMaxArmour(
-	player --[[ Player ]], 
-	value --[[ integer ]]
-)AddArmourToPed(
-	ped --[[ Ped ]], 
-	amount --[[ integer ]]
-)
-local retval --[[ integer ]] =
-	GetPedArmour(
-		ped --[[ Ped ]]
-	)
-	SetPedArmour(
-	ped --[[ Ped ]], 
-	amount --[[ integer ]]
-)
+local retval = GetPlayerMaxArmour(player)
+
+SetPlayerMaxArmour(player, value)
+AddArmourToPed(ped , amount)
+
+local retval = GetPedArmour(ped)
+
+SetPedArmour(ped , amount)
 
 --hunger
 

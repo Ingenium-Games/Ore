@@ -22,9 +22,12 @@ end)
 -- ====================================================================================--
 function OnStart()
     c.data.Initilize()
+    --
     while c.Loading do
         Wait(1250)
     end
+    -- Create Channels for Instances
+    c.mumble.GenerateInstanceChannels()
     -- Time now updates
     c.time.ServerSync()
     -- Players save to the DB.
@@ -34,8 +37,8 @@ function OnStart()
     --
 end
 -- ====================================================================================--
-RegisterNetEvent('PlayerConnecting:Server:Connecting')
-AddEventHandler('PlayerConnecting:Server:Connecting', function()
+RegisterNetEvent('Server:PlayerConnecting')
+AddEventHandler('Server:PlayerConnecting', function()
     local src = tonumber(source)
     local Primary_ID = c.identifier(src)
     local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = c.identifiers(src)
@@ -59,7 +62,6 @@ AddEventHandler('PlayerConnecting:Server:Connecting', function()
                             IP_Address = IP_Address
                         }, function(r)
                             -- User Found and Updated, Now ...
-                            TriggerEvent('Server:Request:Time', src)
                             TriggerClientEvent('Client:Character:OpeningMenu', src)
                             TriggerEvent('Server:Character:Request:List', src, Primary_ID)
                         end)
@@ -77,7 +79,6 @@ AddEventHandler('PlayerConnecting:Server:Connecting', function()
                             IP_Address = IP_Address
                         }, function(r)
                             -- New User Created, Now ...
-                            TriggerEvent('Server:Request:Time', src)
                             TriggerClientEvent('Client:Character:OpeningMenu', src)
                             TriggerEvent('Server:Character:Request:List', src, Primary_ID)
                         end)
@@ -98,7 +99,7 @@ AddEventHandler('playerDropped', function()
     if data then
         c.sql.SaveUser(data, function()
             c.sql.SetCharacterInActive(data.Character_ID, function()
-                c.debug('Player Disconnection.')
+                c.debug("[E] 'playerDropped' : Player Disconnection.")
                 c.data.RemovePlayer(src)
             end)
         end)

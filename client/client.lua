@@ -15,7 +15,8 @@ Citizen.CreateThread(function()
         Wait(0)
         if NetworkIsSessionStarted() then
             DisplayRadar(false)
-            TriggerServerEvent('PlayerConnecting:Server:Connecting')
+            TriggerServerEvent('Server:PlayerConnecting')
+            TriggerServerEvent('Server:Request:Time')
             return
         end
     end

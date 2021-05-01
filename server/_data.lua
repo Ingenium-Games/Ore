@@ -23,7 +23,7 @@ function c.data.Initilize()
         [6] = 'DB: Vehicles;',
     }
     --
-    local function cb()
+    function cb()
         num = num + 1
         return t[num]
     end
@@ -104,23 +104,25 @@ end
 -- Server to check for missing players / remove them.
 function c.data.PlayersSync()
     local function Do()
-        local xPlayers = GetPlayers()
-        if type(xPlayers) == 'table' then
-            for i=1, #xPlayers, 1 do
-                local ply = xPlayers[i]
-                local ping = GetPlayerPing(ply)
-                if ping <= 0 then
-                    local xPlayer = c.data.GetPlayer(ply)
-                    c.sql.SaveUser(xPlayer, function()
-                        c.sql.SetCharacterInActive(xPlayer.Character_ID, function()
-                            c.debug('Player Disconnection.')
-                            c.data.RemovePlayer(player)
+        local Players = GetPlayers()
+        local xPlayers = c.data.GetPlayers()
+        -- Is there a differance in size between the native and our Players Table?
+        if c.table.SizeOf(Players) ~= c.table.SizeOf(xPlayers) then
+            if type(xPlayers) == 'table' then
+                for i=1, #xPlayers, 1 do
+                    local ply = xPlayers[i]
+                    local ping = GetPlayerPing(ply)
+                    if ping <= 1 then
+                        local xPlayer = c.data.GetPlayer(ply)
+                        c.sql.SaveUser(xPlayer, function()
+                            c.sql.SetCharacterInActive(xPlayer.Character_ID, function()
+                                c.debug('PlayersSync() : Player Disconnection.')
+                                c.data.RemovePlayer(player)
+                            end)
                         end)
-                    end)
+                    end
                 end
             end
-        else
-            c.debug('GetPlayers() is empty.')
         end
         SetTimeout(conf.playersync, Do)
     end

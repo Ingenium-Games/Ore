@@ -13,14 +13,6 @@ GetEntityType( entity )
 2 = vehicle
 3 = object
 
-SetStateBagValue(
-	bagName  string , 
-	keyName  string , 
-	valueData  string , 
-	valueLength  integer , 
-	replicated  boolean 
-)
-
 ]]--
 -- ====================================================================================--
 
@@ -49,6 +41,10 @@ AddEventHandler('entityCreated', function(ent)
 				DeleteEntity(ent)
 			end
 		end
+	end
+	-- Testing setting all vehicles that are CARS - to have a fuel as a statebag with set, get add and remove fuel functions.
+	if GetEntityType(ent) == 2 then
+		Entity(ent).state = c.class.VehicleClass(ent)
 	end
 end)
 

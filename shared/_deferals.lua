@@ -17,6 +17,7 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
     -- Ban Check
     Citizen.Wait(250)
     deferrals.update('Checking User Status.')
+    Citizen.Wait(250)
     if not ban then
         -- If you have/use discordperms..
         if Config.discordperms then

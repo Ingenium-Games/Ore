@@ -163,5 +163,17 @@ _G.TriggerClientCallback = function(src, eventName, ...)
 	return table.unpack(result)
 end
 
+-- wrappers for the pmc callbacks
+function c.RegisterServerCallback(eventName, fn)
+	RegisterServerCallback(eventName, fn)
+end
+
+function c.TriggerClientCallback(src, eventName, ...)
+	TriggerClientCallback(src, eventName, ...)
+end
+
 -- ====================================================================================--
 
+function c.GetEntityStateBag(entity)
+    return Entity(entity).state
+end

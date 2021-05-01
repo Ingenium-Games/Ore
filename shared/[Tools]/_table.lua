@@ -11,7 +11,7 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
-function c.table.matchvalue(t, v)
+function c.table.MatchValue(t, v)
     for _, i in ipairs(t) do
         if (i == v) then
             return true
@@ -20,7 +20,7 @@ function c.table.matchvalue(t, v)
     return false
 end
 
-function c.table.matchkey(t, k)
+function c.table.MatchKey(t, k)
     for i, _ in ipairs(t) do
         if (i == k) then
             return true
@@ -29,7 +29,7 @@ function c.table.matchkey(t, k)
     return false
 end
 
-function c.table.clone(t)
+function c.table.Clone(t)
     local u = setmetatable({}, getmetatable(t))
     for i, v in pairs(t) do
         u[i] = v
@@ -37,7 +37,7 @@ function c.table.clone(t)
     return u
 end
 
-function c.table.merge(t, u)
+function c.table.Merge(t, u)
     local r = c.table.clone(t)
     for i, v in pairs(u) do
         r[i] = v
@@ -45,7 +45,7 @@ function c.table.merge(t, u)
     return r
 end
 
-function c.table.rearrange(p, t)
+function c.table.ReArrange(p, t)
     local r = c.table.clone(t)
     for i, v in pairs(p) do
         r[v] = t[i]
@@ -54,12 +54,22 @@ function c.table.rearrange(p, t)
     return r
 end
 
-function c.table.size(t)
+function c.table.Size(t)
     local r = #t
     return r
 end
 
-function c.table.dump(table, nb)
+function c.table.SizeOf(t)
+	local count = 0
+
+	for _,_ in pairs(t) do
+		count = count + 1
+	end
+
+	return count
+end
+
+function c.table.Dump(table, nb)
     if nb == nil then
         nb = 0
     end
