@@ -11,28 +11,31 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
-function c.bank.RunRoutines()
-    c.bank.CalculateInterest()
-    c.bank.CalculateRePayments()
+-- Pulls all characters with loans and deducts money to pay the loan, can go negitive.
+function c.bank.CalculatePayments()
+    
+    
 end
 
+TriggerEvent('Server:Cron:NewTask', conf.loanpayment.h, conf.loanpayment.m, c.bank.CalculatePayments)
+--
+
+-- Updates the characters loan to add the interest on the outstanding amount each day.
 function c.bank.CalculateInterest()
-    local function Do()
 
 
-    end
 end
 
-function c.bank.CalculateRePayments()
-    local function Do()
+TriggerEvent('Server:Cron:NewTask', conf.loaninterest.h, conf.loaninterest.m, c.bank.CalculateInterest)
+--
 
 
-    end
-end
+
 
 function c.bank.EmergancyBlackout()
 
 end
+
 
 function c.bank.TheftOrRandsom()
 

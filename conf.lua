@@ -75,4 +75,14 @@ INSTANCE/ROUTINGBUCKET :
     -- Default world for all players.
 ]]--
 conf.instancedefault = 0
+
+
+
+--[[
+BANK LOANS TIMES TO PAY: 
+    -- Repayment Time to take money from bank account
+    -- Loan interest calculation time to apply interest.
+]]--
+conf.loanpayment = {h = 12, m = 0}
+conf.loaninterest = {h = 15, m = 0}
 -- ====================================================================================--
