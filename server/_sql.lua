@@ -17,7 +17,7 @@ math.randomseed(c.Seed)
 -- @local id for async store & Store Query
 local SaveData = -1
 MySQL.Async.store(
-    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Last_Login` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
+    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Last_Seen` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
     function(id)
         SaveData = id
     end)
@@ -62,8 +62,8 @@ end
 function c.sql.SaveData(cb)
     local xPlayers = c.data.GetPlayers()
     for i = 1, #xPlayers, 1 do
-        if GetPlayerPing >= 1 then
-            local data = c.data.GetPlayer(xPlayers[i])
+        if GetPlayerPing(i) >= 1 then
+            local data = c.data.GetPlayer(i)
             if data then
                 -- Other Variables.
                 local Health = data.GetHealth()
@@ -158,7 +158,7 @@ function c.sql.GeneratePhoneNumber(cb)
     local bool = false
     local new = nil
     repeat
-        new = math.random(200000, 699999)
+        new = math.random(200000, 799999)
         MySQL.Async.fetchScalar('SELECT `Primary_ID` FROM `characters` WHERE `Phone` = @Phone LIMIT 1;', {
             ['@Phone'] = new
         }, function(r)
@@ -1009,7 +1009,7 @@ function c.sql.GetCharacterBank(character_id, cb)
     local Character_ID = character_id
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Bank` FROM `character_banks` WHERE `Character_ID` = @Character_ID;', {
+    MySQL.Async.fetchScalar('SELECT `Bank` FROM `character_accounts` WHERE `Character_ID` = @Character_ID;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -1033,7 +1033,7 @@ end
 function c.sql.SetCharacterBank(character_id, bank, cb)
     local Character_ID = character_id
     local Bank = bank
-    MySQL.Async.execute('UPDATE `character_banks` SET `Bank` = @Bank WHERE `Character_ID` = @Character_ID;', {
+    MySQL.Async.execute('UPDATE `character_accounts` SET `Bank` = @Bank WHERE `Character_ID` = @Character_ID;', {
         ['@Bank'] = Bank,
         ['@Character_ID'] = Character_ID
     }, function(data)
@@ -1065,7 +1065,7 @@ function c.sql.GetCharacterLoan(character_id, cb)
     local Character_ID = character_id
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchScalar('SELECT `Loan` FROM `character_banks` WHERE `Character_ID` = @Character_ID;', {
+    MySQL.Async.fetchScalar('SELECT `Loan` FROM `character_accounts` WHERE `Character_ID` = @Character_ID;', {
         ['@Character_ID'] = Character_ID
     }, function(data)
         if data then
@@ -1091,7 +1091,7 @@ function c.sql.SetCharacterLoan(character_id, loan, duration, cb)
     local Loan = loan
     local Duration = duration
     MySQL.Async.execute(
-        'UPDATE `character_banks` SET `Loan` = @Loan, `Duration` = @Duration, `Active` = TRUE WHERE `Character_ID` = @Character_ID;',
+        'UPDATE `character_accounts` SET `Loan` = @Loan, `Duration` = @Duration, `Active` = TRUE WHERE `Character_ID` = @Character_ID;',
         {
             ['@Loan'] = Loan,
             ['@Duration'] = Duration,
@@ -1108,7 +1108,7 @@ end
 
 -- cb if any.
 function c.sql.TickOverLoanInterest(cb)
-    MySQL.Async.execute('UPDATE `character_banks` SET `Loan` = Loan * 3.5 WHERE `Duration` >= 1;', {}, function(data)
+    MySQL.Async.execute('UPDATE `character_accounts` SET `Loan` = Loan * 3.5 WHERE `Duration` >= 1;', {}, function(data)
         if data then
             --
         end
@@ -1120,7 +1120,7 @@ end
 
 -- cb if any.
 function c.sql.TickOverLoanDuration(cb)
-    MySQL.Async.execute('UPDATE `character_banks` SET `Duration` = Duration - 1 WHERE `Active` = TRUE;', {},
+    MySQL.Async.execute('UPDATE `character_accounts` SET `Duration` = Duration - 1 WHERE `Active` = TRUE;', {},
         function(data)
             if data then
                 --
@@ -1133,7 +1133,7 @@ end
 
 -- cb if any.
 function c.sql.TickOverLoansInactive(cb)
-    MySQL.Async.execute('UPDATE `character_banks` SET `Active` = FALSE WHERE `Duration` = 0;', {}, function(data)
+    MySQL.Async.execute('UPDATE `character_accounts` SET `Active` = FALSE WHERE `Duration` = 0;', {}, function(data)
         if data then
             --
         end

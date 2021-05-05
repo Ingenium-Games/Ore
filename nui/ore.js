@@ -35,7 +35,7 @@ function Selected(key) {
         let Created = PacketTemp[key].Created
         let First = PacketTemp[key].First_Name
         let Last = PacketTemp[key].Last_Name
-        let Login = PacketTemp[key].Last_Login
+        let Login = PacketTemp[key].Last_Seen
         document.getElementById('name').innerText = First + ' ' + Last;
         document.getElementById('created').innerText = new Date(Created).toISOString().slice(0, 19).replace('T', ' ')
         document.getElementById('lastseen').innerText = new Date(Login).toISOString().slice(0, 19).replace('T', ' ')

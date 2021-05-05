@@ -104,7 +104,7 @@ AddEventHandler('__pmc_callback:client', function(eventName, ...)
     TriggerServerEvent(('__pmc_callback:server:%s'):format(eventName), table.unpack(result))
 end)
 
-_G.TriggerServerCallback = function(eventName, ...)
+TriggerServerCallback = function(eventName, ...)
     assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got ' .. type(eventName))
 
     local p = promise.new()
@@ -122,7 +122,7 @@ _G.TriggerServerCallback = function(eventName, ...)
     return table.unpack(result)
 end
 
-_G.RegisterClientCallback = function(eventName, fn)
+RegisterClientCallback = function(eventName, fn)
     assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got ' .. type(eventName))
     assert(type(fn) == 'function', 'Invalid Lua type at argument #2, expected function, got ' .. type(fn))
 
@@ -170,6 +170,23 @@ function c.IsBusyPleaseWait(ms, cb)
 end
 
 -- ====================================================================================--
+
+function c.IsNear(arrays)
+    local dstchecked = 1000
+    local plyPos = GetEntityCoords(GetPlayerPed(PlayerId()), false)
+	for i = 1, #arrays do
+		local array = arrays[i]
+		local comparedst = Vdist(plyPos.x, plyPos.y, plyPos.z, array[1], array[2], array[3])
+		if comparedst < dstchecked then
+			dstchecked = comparedst
+		end
+
+		if comparedst < 5.0 then
+			DrawMarker(27, array[1], array[2], array[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 20, 0, 0, 0, 0)
+		end
+	end
+	return dstchecked
+end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.

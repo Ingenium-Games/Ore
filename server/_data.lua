@@ -14,6 +14,7 @@ math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function c.data.Initilize()
+    c.debug('Loading Sequence Begin.')
     local num, loaded = 0, false
     local t = {
         [1] = 'DB: Characters;',
@@ -47,42 +48,26 @@ function c.data.Initilize()
     end
 
     c.Loading = false
-    c.debug('Loading Sequence Complete')
+    c.debug('Loading Sequence Complete.')
     c.Running = true
 end
 
 -- ====================================================================================--
 
 function c.data.AddPlayer(source)
-    local src = tonumber(source)
-    --
-    table.insert(c.pdex, src)
+    table.insert(c.pdex, source)
 end
 
 function c.data.GetPlayer(source)
-    local src = tonumber(source)
-    --
-    if c.pdex[src] ~= nil then
-        return c.pdex[src]
-    else
-        return false
-    end
+    return c.pdex[source]
 end
 
 function c.data.SetPlayer(source, data)
-    local src = tonumber(source)
-    --
-    c.pdex[src] = data
+    c.pdex[source] = data
 end
 
 function c.data.RemovePlayer(source)
-    local src = tonumber(source)
-    --
-    if c.pdex[src] ~= nil then
-        table.remove(c.pdex, src)
-    else
-        c.pdex[src] = false
-    end
+    c.pdex[source] = false
 end
 
 function c.data.GetPlayers()
@@ -109,19 +94,17 @@ function c.data.PlayersSync()
         local xPlayers = c.data.GetPlayers()
         -- Is there a differance in size between the native and our Players Table?
         if c.table.SizeOf(Players) ~= c.table.SizeOf(xPlayers) then
-            if type(xPlayers) == 'table' then
-                for i = 1, #xPlayers, 1 do
-                    local ply = xPlayers[i]
-                    local ping = GetPlayerPing(ply)
-                    if ping <= 1 then
-                        local xPlayer = c.data.GetPlayer(ply)
-                        c.sql.SaveUser(xPlayer, function()
-                            c.sql.SetCharacterInActive(xPlayer.Character_ID, function()
-                                c.debug('PlayersSync() : Player Disconnection.')
-                                c.data.RemovePlayer(player)
-                            end)
+            for i = 1, #xPlayers, 1 do
+                local ply = xPlayers[i]
+                local ping = GetPlayerPing(ply)
+                if ping <= 1 then
+                    local xPlayer = c.data.GetPlayer(ply)
+                    c.sql.SaveUser(xPlayer, function()
+                        c.sql.SetCharacterInActive(xPlayer.Character_ID, function()
+                            c.debug('[F] PlayersSync() : Player Disconnection.')
+                            c.data.RemovePlayer(player)
                         end)
-                    end
+                    end)
                 end
             end
         end
@@ -134,7 +117,8 @@ end
 
 function c.data.LoadPlayer(source, Character_ID)
     local src = tonumber(source)
-    local xPlayer = c.data.CreatePlayer(source, Character_ID)
+    local xPlayer = c.class.CreateUser(source, Character_ID)
+    xPlayer.Character = c.class.CreateCharacter(xPlayer.GetCharacter_ID())
     --
     c.sql.SetCharacterActive(Character_ID, function()
         c.data.SetPlayer(src, xPlayer)

@@ -14,7 +14,7 @@ math.randomseed(c.Seed)
 -- Triggered after character has been loaded from db and informaiton is passed to client
 RegisterNetEvent("Server:Character:Loaded")
 AddEventHandler("Server:Character:Loaded", function(data)
-    local src = data.src or source
+    local src = source
     -- Set to default instance
     c.inst.SetPlayerDefault(src)
 
@@ -23,13 +23,13 @@ end)
 -- Triggered by the client after it has recieved its character data.
 RegisterNetEvent("Server:Character:Ready")
 AddEventHandler("Server:Character:Ready", function(data)
-    local src = data.src or source
+    local src = source
 
 end)
 
 RegisterNetEvent('Server:Instance:Player:Default')
 AddEventHandler('Server:Instance:Player:Default', function(data)
-    local src = data.src or source
+    local src = source
     -- Set to default instance
     c.inst.SetPlayerDefault(src)
 
@@ -37,7 +37,7 @@ end)
 
 RegisterNetEvent("Server:Character:Death")
 AddEventHandler("Server:Character:Death", function(data)
-    local src = data.src or source
+    local src = source
     if (data.PlayerKill == true) then
 
     else
@@ -47,7 +47,7 @@ end)
 
 RegisterNetEvent('Server:Request:Time')
 AddEventHandler('Server:Request:Time', function(data)
-    local src = data.src or source
+    local src = source
     TriggerClientEvent('Client:Time:Recieve', src, c.times)
 end)
 
@@ -55,7 +55,7 @@ end)
 
 RegisterNetEvent('Server:Packet:Update')
 AddEventHandler('Server:Packet:Update', function(data)
-    local src = data.src or source
+    local src = source
     local xPlayer = c.data.GetPlayer(src)
     -- Coords
     xPlayer.SetCoords(data.Coords)

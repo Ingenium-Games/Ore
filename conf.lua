@@ -63,7 +63,7 @@ DEFERALS :
 ]]--
 conf.forcename = true
 conf.discordperms = true
-conf.discordrole = ''
+conf.discordrole = '690445686365356072'
 --[[
 SCREENSHOTS :
     -- Host URL

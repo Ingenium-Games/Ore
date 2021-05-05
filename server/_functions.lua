@@ -137,7 +137,7 @@ AddEventHandler('__pmc_callback:server', function(eventName, ticket, ...)
     TriggerClientEvent(('__pmc_callback:client:%s:%s'):format(eventName, ticket), s, table.unpack(result))
 end)
 
-_G.RegisterServerCallback = function(eventName, fn)
+RegisterServerCallback = function(eventName, fn)
     assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got ' .. type(eventName))
     assert(type(fn) == 'function', 'Invalid Lua type at argument #2, expected function, got ' .. type(fn))
 
@@ -147,7 +147,7 @@ _G.RegisterServerCallback = function(eventName, fn)
     end)
 end
 
-_G.TriggerClientCallback = function(src, eventName, ...)
+TriggerClientCallback = function(src, eventName, ...)
     assert(type(src) == 'number', 'Invalid Lua type at argument #1, expected number, got ' .. type(src))
     assert(type(eventName) == 'string', 'Invalid Lua type at argument #2, expected string, got ' .. type(eventName))
 

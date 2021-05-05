@@ -14,7 +14,7 @@ math.randomseed(c.Seed)
 RegisterNetEvent('Server:Character:Request:List')
 AddEventHandler('Server:Character:Request:List', function(source, Primary_ID)
     local src = tonumber(source)
-    local Characters = c.sql.GetUserCharacters(Primary_ID)
+    local Characters = c.sql.GetCharacters(Primary_ID)
     local Command = "OnJoin"
     -- Send the data table to the client that requested it...
     TriggerClientEvent('Client:Character:Open', src, Command, Characters)

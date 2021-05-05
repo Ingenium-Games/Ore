@@ -43,9 +43,9 @@ AddEventHandler('entityCreated', function(ent)
         end
     end
     -- Testing setting all vehicles that are CARS - to have a fuel as a statebag with set, get add and remove fuel functions.
-    if GetEntityType(ent) == 2 then
-        Entity(ent).state = c.class.VehicleClass(ent)
-    end
+    --if GetEntityType(ent) == 2 then
+        --Entity(ent).state = c.class.VehicleClass(ent)
+    --end
 end)
 
 AddEventHandler('entityCreating', function(ent)

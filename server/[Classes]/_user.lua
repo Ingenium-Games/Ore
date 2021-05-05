@@ -12,6 +12,7 @@ math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function c.class.CreateUser(req, character_id)
+    c.debug('Start User Class Creation')
     local src = tonumber(req)
     local Character_ID = character_id
     local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = c.identifiers(src)
@@ -20,8 +21,6 @@ function c.class.CreateUser(req, character_id)
     local self = {}
     -- enable table searching.
     self.__index = self
-    -- disable altering the direct line of data, must use set and get.
-    self.__metatable = self
     --
     self.ID = src
     self.Name = GetPlayerName(src)
@@ -32,7 +31,7 @@ function c.class.CreateUser(req, character_id)
     self.IP_Address = IP_Address
     self.Ace = Ace
     self.Locale = Locale
-    self.Character = c.class.CreateCharacter(Character_ID)
+    self.Character = nil -- c.class.CreateCharacter(Character_ID)
     self.RandomTemp = c.rng.chars(15)
     --
     ExecuteCommand(('remove_principal identifier.%s group.%s'):format(self.License_ID, self.Ace))
@@ -74,5 +73,6 @@ function c.class.CreateUser(req, character_id)
         return self.IP_Address
     end
     --
+    c.debug('End User Class Creation')
     return self
 end

@@ -12,24 +12,28 @@ math.randomseed(c.Seed)
 -- ====================================================================================--
 
 function c.class.CreateCharacter(character_id)
+    c.debug('Start Character Class Creation')
     local data = c.sql.GetCharacterRow(character_id)
     local self = {}
-    -- enable table searching.
-    self.__index = self
-    -- disable altering the direct line of data, must use set and get.
-    self.__metatable = self
-    ---- VARIABLES
     -- Strings
+
     self.Character_ID = data.Character_ID -- 50 Random Characters [Aa-Zz][0-9]
-    
     self.City_ID = data.City_ID -- X-00000
-    
+
     self.Birth_Date = data.Birth_Date
     self.First_Name = data.First_Name
     self.Last_Name = data.Last_Name
     self.Full_Name = data.First_Name .. ' ' .. data.Last_Name
+
     self.Phone = data.Phone -- 200000 - 699999
-    
+
+    -- Integers
+    self.Health = data.Health
+    self.Armour = data.Armour
+    self.Hunger = data.Hunger
+    self.Thirst = data.Thirst
+    self.Stress = data.Stress
+
     -- Booleans
     self.Wanted = data.Wanted
 
@@ -74,6 +78,46 @@ function c.class.CreateCharacter(character_id)
             return 'Male'
         end
     end
+    -- Getters n Setters.
+    self.GetHealth = function()
+        return self.Health
+    end
+    --
+    self.SetHealth = function(v)
+        self.Health = v
+    end
+    --
+    self.GetArmour = function()
+        return self.Armour
+    end
+    --
+    self.SetArmour = function(v)
+        self.Armour = v
+    end
+    --
+    self.GetHunger = function()
+        return self.Hunger
+    end
+    --
+    self.SetHunger = function(v)
+        self.Hunger = v
+    end
+    --
+    self.GetThirst = function()
+        return self.Thirst
+    end
+    --
+    self.SetThirst = function(v)
+        self.Thirst = v
+    end
+    --
+    self.GetStress = function()
+        return self.Stress
+    end
+    --
+    self.SetStress = function(v)
+        self.Stress = v
+    end
     --
     self.GetAppearance = function()
         return self.Appearance
@@ -105,5 +149,6 @@ function c.class.CreateCharacter(character_id)
         end
     end
     --
+    c.debug('End Character Class Creation')
     return self
 end
