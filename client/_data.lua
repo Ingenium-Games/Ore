@@ -42,7 +42,7 @@ function c.data.ClientSync()
     Citizen.CreateThread(function()
         while true do
             Wait(conf.clientsync)
-            if c.data.loaded then
+            if c.data.GetLoadedStatus() then
                 c.IsBusy()
                 c.data.SendPacket()
                 c.NotBusy()
@@ -53,16 +53,17 @@ end
 
 function c.data.SendPacket()
     local data = {}
+    -- 
+    -- data.ID = GetPlayerServerId(PlayerID())
     -- Coords
     local loc = GetEntityCoords(PlayerPedId())
     local ords = {
-        x = c.math.decimals(loc.x, 2),
-        y = c.math.decimals(loc.y, 2),
-        z = c.math.decimals(loc.z, 2)
+        x = c.math.Decimals(loc.x, 2),
+        y = c.math.Decimals(loc.y, 2),
+        z = c.math.Decimals(loc.z, 2)
     }
+    --
     data.Coords = ords
-    -- 
-    data.src = GetPlayerServerId(PlayerID())
     -- 
 
     TriggerServerEvent('Server:Packet:Update', data)

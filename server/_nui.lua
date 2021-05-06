@@ -69,6 +69,7 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
         Coords = json.encode(conf.spawn)
     }
     c.sql.CreateCharacter(data, function()
+        Wait(500)
         c.data.LoadPlayer(src, char)
         TriggerClientEvent('Client:Character:FirstSpawn', src)
         TriggerClientEvent('creator:OpenCreator', src)

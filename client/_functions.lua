@@ -157,14 +157,10 @@ function c.PleaseWait()
     EndTextCommandBusyspinnerOn(5)
 end
 
-function c.IsBusyPleaseWait(ms, cb)
+function c.IsBusyPleaseWait(ms)
     c.PleaseWait()
     --
-    Citizen.Wait(ms / 2)
-    if cb then
-        cb()
-    end
-    Citizen.Wait(ms / 2)
+    Citizen.Wait(ms)
     --
     c.NotBusy()
 end

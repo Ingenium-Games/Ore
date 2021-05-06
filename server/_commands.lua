@@ -21,6 +21,7 @@ RegisterCommand('switch', function(source)
     c.sql.SetCharacterInActive(Character_ID, function()
         TriggerClientEvent('Client:Character:OpeningMenu', src)
         TriggerEvent('Server:Character:Request:List', src, Primary_ID)
+        c.data.RemovePlayer(src)
     end)
 end, false)
 
@@ -52,7 +53,7 @@ RegisterCommand('ban', function(source, ...)
             local Primary_ID = c.identifier(args[1])
             local xPlayer = c.data.GetPlayer(args[1])
             c.sql.SetBanned(Primary_ID, function()
-                xPlayer.DropPlayer('You have been banned.')
+                xPlayer.Kick('You have been banned.')
                 TriggerEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been banned.')
             end)
         end
@@ -76,7 +77,7 @@ RegisterCommand('kick', function(source, ...)
             TriggerEvent('HudText', src, 'You cannot /kick yourself.')
         else
             local xPlayer = c.data.GetPlayer(args[1])
-            xPlayer.DropPlayer('You have been kicked.')
+            xPlayer.Kick('You have been kicked.')
             TriggerEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been kicked.')
         end
     end

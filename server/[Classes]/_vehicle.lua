@@ -15,10 +15,6 @@ math.randomseed(c.Seed)
 
 function c.class.VehicleClass(entity)
     local self = {}
-    -- enable table searching.
-    self.__index = self
-    -- disable altering the direct line of data, must use set and get.
-    self.__metatable = self
     --
     self.Fuel = math.random(73, 100)
     --
@@ -51,4 +47,6 @@ function c.class.VehicleClass(entity)
             self.Fuel = num
         end
     end
+    --
+    return self
 end

@@ -38,14 +38,15 @@ AddEventHandler('entityCreated', function(ent)
         for _, v in pairs(conf.disable.vehicles) do
             local restrictedVehicleModel = conf.disable.vehicles[i]
             if (model == restrictedVehicleModel) then
+                c.debug('Entity Deleted.')
                 DeleteEntity(ent)
             end
         end
     end
-    -- Testing setting all vehicles that are CARS - to have a fuel as a statebag with set, get add and remove fuel functions.
-    --if GetEntityType(ent) == 2 then
-        --Entity(ent).state = c.class.VehicleClass(ent)
-    --end
+    --
+    if (GetEntityType(ent) == 2) then
+        Entity(ent).state = c.class.VehicleClass(ent)
+    end
 end)
 
 AddEventHandler('entityCreating', function(ent)
@@ -53,9 +54,12 @@ AddEventHandler('entityCreating', function(ent)
     for _, v in pairs(conf.disable.vehicles) do
         local restrictedVehicleModel = conf.disable.vehicles[i]
         if (model == restrictedVehicleModel) then
+            c.debug('Entity prevented from Spawning.')
             CancelEvent()
         end
     end
+    --
+    EnsureEntityStateBag(ent)
 end)
 
 AddEventHandler('entityRemoved', function()

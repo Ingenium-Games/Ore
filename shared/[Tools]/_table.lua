@@ -38,7 +38,7 @@ function c.table.Clone(t)
 end
 
 function c.table.Merge(t, u)
-    local r = c.table.clone(t)
+    local r = c.table.Clone(t)
     for i, v in pairs(u) do
         r[i] = v
     end
@@ -46,7 +46,7 @@ function c.table.Merge(t, u)
 end
 
 function c.table.ReArrange(p, t)
-    local r = c.table.clone(t)
+    local r = c.table.Clone(t)
     for i, v in pairs(p) do
         r[v] = t[i]
         r[i] = nil
@@ -88,7 +88,7 @@ function c.table.Dump(table, nb)
             for i = 1, nb, 1 do
                 s = s .. "    "
             end
-            s = s .. '[' .. k .. '] = ' .. c.table.dump(v, nb + 1) .. ',\n'
+            s = s .. '[' .. k .. '] = ' .. c.table.Dump(v, nb + 1) .. ',\n'
         end
 
         for i = 1, nb, 1 do

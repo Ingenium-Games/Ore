@@ -37,6 +37,8 @@ function c.sql.SaveUser(data, cb)
         -- Tables require JSON Encoding.
         local Coords = json.encode(data.GetCoords())
 
+        local Character_ID = data.GetCharacter_ID()
+
         MySQL.Async.insert(SaveData, {
 
             -- Other Variables.
@@ -49,7 +51,7 @@ function c.sql.SaveUser(data, cb)
             -- Table Informaiton.
             ['@Coords'] = Coords,
 
-            ['@Character_ID'] = data.Character_ID
+            ['@Character_ID'] = Character_ID
         }, function(r)
             -- do
         end)
@@ -62,40 +64,38 @@ end
 function c.sql.SaveData(cb)
     local xPlayers = c.data.GetPlayers()
     for i = 1, #xPlayers, 1 do
-        if GetPlayerPing(i) >= 1 then
-            local data = c.data.GetPlayer(i)
-            if data then
+        local data = c.data.GetPlayer(i)
+        if data then
+            -- Other Variables.
+            local Health = data.GetHealth()
+            local Armour = data.GetArmour()
+            local Hunger = data.GetHunger()
+            local Thirst = data.GetThirst()
+            local Stress = data.GetStress()
+
+            -- Tables require JSON Encoding.
+            local Coords = json.encode(data.GetCoords())
+
+            local Character_ID = data.GetCharacter_ID()
+
+            MySQL.Async.insert(SaveData, {
+
                 -- Other Variables.
-                local Health = data.GetHealth()
-                local Armour = data.GetArmour()
-                local Hunger = data.GetHunger()
-                local Thirst = data.GetThirst()
-                local Stress = data.GetStress()
+                ['@Health'] = Health,
+                ['@Armour'] = Armour,
+                ['@Hunger'] = Hunger,
+                ['@Thirst'] = Thirst,
+                ['@Stress'] = Stress,
 
-                -- Tables require JSON Encoding.
-                local Coords = json.encode(data.GetCoords())
+                -- Table Informaiton.
+                ['@Coords'] = Coords,
 
-                MySQL.Async.insert(SaveData, {
-
-                    -- Other Variables.
-                    ['@Health'] = Health,
-                    ['@Armour'] = Armour,
-                    ['@Hunger'] = Hunger,
-                    ['@Thirst'] = Thirst,
-                    ['@Stress'] = Stress,
-
-                    -- Table Informaiton.
-                    ['@Coords'] = Coords,
-
-                    ['@Character_ID'] = data.Character_ID
-                }, function(r)
-                    -- Do nothing.
-                end)
-            else
-                -- The data is false, there fore the table of date is not there tobe saved.
-            end
+                ['@Character_ID'] = Character_ID
+            }, function(r)
+                -- Do nothing.
+            end)
         else
-            -- The player has 0 ping, they are offline and will be saved from the playerDropped Event OR by the PlayersSync() Function.
+            -- The data is false, there fore the table of date is not there tobe saved.
         end
     end
     -- These will all be completed prior to cb being run.

@@ -12,6 +12,7 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
+--[[
 -- health
 local retval = GetPedMaxHealth(ped)
 local retval = GetEntityHealth(entity)
@@ -47,3 +48,4 @@ SetPedArmour(ped, amount)
 -- thirst
 
 -- stress
+]]--

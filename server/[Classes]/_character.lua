@@ -13,7 +13,7 @@ math.randomseed(c.Seed)
 
 function c.class.CreateCharacter(character_id)
     c.debug('Start Character Class Creation')
-    local data = c.sql.GetCharacterRow(character_id)
+    local data = c.sql.GetCharacter(character_id)
     local self = {}
     -- Strings
 
@@ -133,9 +133,9 @@ function c.class.CreateCharacter(character_id)
     --
     self.SetCoords = function(t)
         self.Coords = {
-            x = c.math.decimals(t.x, 2),
-            y = c.math.decimals(t.y, 2),
-            z = c.math.decimals(t.z, 2)
+            x = c.math.Decimals(t.x, 2),
+            y = c.math.Decimals(t.y, 2),
+            z = c.math.Decimals(t.z, 2)
         }
     end
     --

@@ -58,6 +58,10 @@ function c.data.AddPlayer(source)
     table.insert(c.pdex, source)
 end
 
+function c.GetPlayer(source)
+    return c.data.GetPlayer(source)
+end
+
 function c.data.GetPlayer(source)
     return c.pdex[source]
 end
@@ -68,6 +72,10 @@ end
 
 function c.data.RemovePlayer(source)
     c.pdex[source] = false
+end
+
+function c.GetPlayers()
+    return c.data.GetPlayers()
 end
 
 function c.data.GetPlayers()
@@ -87,18 +95,18 @@ function c.data.ServerSync()
     SetTimeout(conf.serversync, Do)
 end
 
--- Server to check for missing players / remove them.
+-- Server to check for missing players / remove them. 
+--[[ CURRENTLY NOT IN USE.
 function c.data.PlayersSync()
     local function Do()
+        c.debug('[F] PlayersSync() : Starting.')
         local Players = GetPlayers()
         local xPlayers = c.data.GetPlayers()
         -- Is there a differance in size between the native and our Players Table?
         if c.table.SizeOf(Players) ~= c.table.SizeOf(xPlayers) then
             for i = 1, #xPlayers, 1 do
-                local ply = xPlayers[i]
-                local ping = GetPlayerPing(ply)
-                if ping <= 1 then
-                    local xPlayer = c.data.GetPlayer(ply)
+                local xPlayer = c.data.GetPlayer(xPlayers[i])
+                if xPlayer then
                     c.sql.SaveUser(xPlayer, function()
                         c.sql.SetCharacterInActive(xPlayer.Character_ID, function()
                             c.debug('[F] PlayersSync() : Player Disconnection.')
@@ -107,18 +115,22 @@ function c.data.PlayersSync()
                     end)
                 end
             end
-        end
+            c.debug('[F] PlayersSync() : Finished.')
         SetTimeout(conf.playersync, Do)
     end
     SetTimeout(conf.playersync, Do)
 end
+]]--
 
 -- ====================================================================================--
 
 function c.data.LoadPlayer(source, Character_ID)
     local src = tonumber(source)
-    local xPlayer = c.class.CreateUser(source, Character_ID)
-    xPlayer.Character = c.class.CreateCharacter(xPlayer.GetCharacter_ID())
+    -- Fuck Metatable inheritance.
+    local xUser = c.class.CreateUser(src)
+    local xCharacter = c.class.CreateCharacter(Character_ID)
+    --
+    local xPlayer = c.table.Merge(xUser, xCharacter)
     --
     c.sql.SetCharacterActive(Character_ID, function()
         c.data.SetPlayer(src, xPlayer)

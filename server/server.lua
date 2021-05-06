@@ -33,7 +33,7 @@ function OnStart()
     -- Players save to the DB.
     c.data.ServerSync()
     -- Players table is checked and cleaned.
-    c.data.PlayersSync()
+    --c.data.PlayersSync()
     --
 end
 -- ====================================================================================--
