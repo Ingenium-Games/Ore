@@ -87,4 +87,8 @@ BANK LOANS TIMES TO PAY:
 ]]--
 conf.loanpayment = {h = 12, m = 0}
 conf.loaninterest = {h = 15, m = 0}
+
+
+conf.defaulthealth = 400 -- DOUBE BOI
+conf.defaultarmour = 300 --(Oh Baby a TRIPPLE)
 -- ====================================================================================--

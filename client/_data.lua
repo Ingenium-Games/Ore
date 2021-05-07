@@ -52,18 +52,22 @@ function c.data.ClientSync()
 end
 
 function c.data.SendPacket()
+    local ped = PlayerPedId()
     local data = {}
-    -- 
-    -- data.ID = GetPlayerServerId(PlayerID())
+    -- Stats / HP vs 
+    data.Health = c.status.GetHealth()
+    data.Armour = c.status.GetArmour()
+    data.Hunger = c.status.GetHunger()
+    data.Thirst = c.status.GetThirst()
+    data.Stress = c.status.GetStress()
     -- Coords
-    local loc = GetEntityCoords(PlayerPedId())
-    local ords = {
+    local loc = GetEntityCoords(ped)
+    --
+    data.Coords = {
         x = c.math.Decimals(loc.x, 2),
         y = c.math.Decimals(loc.y, 2),
         z = c.math.Decimals(loc.z, 2)
     }
-    --
-    data.Coords = ords
     -- 
 
     TriggerServerEvent('Server:Packet:Update', data)
