@@ -56,6 +56,7 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
     local char = c.sql.GenerateCharacterID()
     local city = c.sql.GenerateCityID()
     local phone = c.sql.GeneratePhoneNumber()
+    local banknum = c.sql.GenerateAccountNumber()
     local prim = c.identifier(src)
     local data = {
         Primary_ID = prim,
@@ -69,9 +70,10 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
         Coords = json.encode(conf.spawn)
     }
     c.sql.CreateCharacter(data, function()
+        c.sql.CreateAccount(char, banknum)
         Wait(500)
+    end)
         c.data.LoadPlayer(src, char)
         TriggerClientEvent('Client:Character:FirstSpawn', src)
         TriggerClientEvent('creator:OpenCreator', src)
-    end)
 end)

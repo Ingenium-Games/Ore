@@ -11,6 +11,13 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
+RegisterCommand('test', function(source)
+
+end, false)
+
+-- ====================================================================================--
+
+
 TriggerEvent("chat:addSuggestion", "/switch", "Use to change your character(s).", {})
 
 RegisterCommand('switch', function(source)
@@ -45,16 +52,16 @@ RegisterCommand('ban', function(source, ...)
     local src = tonumber(source)
     local args = {...}
     if (type(args[1]) ~= 'number') then
-        TriggerEvent('HudText', src, 'Invalid Number Used for /ban Command.')
+        TriggerClientEvent('HudText', src, 'Invalid Number Used for /ban Command.')
     else
         if (args[1] == src) then
-            TriggerEvent('HudText', src, 'You cannot /ban yourself.')
+            TriggerClientEvent('HudText', src, 'You cannot /ban yourself.')
         else
             local Primary_ID = c.identifier(args[1])
             local xPlayer = c.data.GetPlayer(args[1])
             c.sql.SetBanned(Primary_ID, function()
                 xPlayer.Kick('You have been banned.')
-                TriggerEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been banned.')
+                TriggerClientEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been banned.')
             end)
         end
     end
@@ -71,14 +78,14 @@ RegisterCommand('kick', function(source, ...)
     local src = tonumber(source)
     local args = {...}
     if (type(args[1]) ~= 'number') then
-        TriggerEvent('HudText', src, 'Invalid Number Used for /kick Command.')
+        TriggerClientEvent('HudText', src, 'Invalid Number Used for /kick Command.')
     else
         if (args[1] == src) then
-            TriggerEvent('HudText', src, 'You cannot /kick yourself.')
+            TriggerClientEvent('HudText', src, 'You cannot /kick yourself.')
         else
             local xPlayer = c.data.GetPlayer(args[1])
             xPlayer.Kick('You have been kicked.')
-            TriggerEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been kicked.')
+            TriggerClientEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been kicked.')
         end
     end
 end, true)

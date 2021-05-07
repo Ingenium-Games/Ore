@@ -32,8 +32,6 @@ function OnStart()
     c.time.ServerSync()
     -- Players save to the DB.
     c.data.ServerSync()
-    -- Players table is checked and cleaned.
-    --c.data.PlayersSync()
     --
 end
 -- ====================================================================================--
@@ -43,53 +41,51 @@ AddEventHandler('Server:PlayerConnecting', function()
     local Primary_ID = c.identifier(src)
     local Steam_ID, FiveM_ID, License_ID, Discord_ID, IP_Address = c.identifiers(src)
     local Username = GetPlayerName(src)
-    local IsActive = c.data.GetPlayer(src)
     --
-    if (IsActive ~= false) then
+    if License_ID then
+        -- add player to index.
         c.data.AddPlayer(src)
-        if License_ID then
-            MySQL.Async.fetchScalar('SELECT `License_ID` FROM `users` WHERE `License_ID` = @License_ID LIMIT 1;', {
-                ['@License_ID'] = License_ID
-            }, function(r)
-                if (r ~= nil) then
-                    -- Update their steam, discord if they do not exist in the db and their ip address upon every login.
-                    MySQL.Async.execute(
-                        'UPDATE `users` SET `Username` = @Username, `Steam_ID` = IFNULL(`Steam_ID`,@Steam_ID), `FiveM_ID` = IFNULL(`FiveM_ID`,@FiveM_ID), `Discord_ID` = IFNULL(`Discord_ID`,@Discord_ID), `IP_Address` = @IP_Address, `Last_Login` = current_timestamp() WHERE `License_ID` = @License_ID;',
-                        {
-                            Username = Username,
-                            License_ID = License_ID,
-                            FiveM_ID = FiveM_ID,
-                            Steam_ID = Steam_ID,
-                            Discord_ID = Discord_ID,
-                            IP_Address = IP_Address
-                        }, function(r)
-                            -- User Found and Updated, Now ...
-                            TriggerClientEvent('Client:Character:OpeningMenu', src)
-                            TriggerEvent('Server:Character:Request:List', src, Primary_ID)
-                        end)
-                else
-                    MySQL.Async.execute(
-                        'INSERT INTO `users` (`Username`, `Steam_ID`, `License_ID`, `FiveM_ID`, `Discord_ID`, `Ace`, `Locale`, `Ban`, `IP_Address`) VALUES (@Username, @Steam_ID, @License_ID, @FiveM_ID, @Discord_ID, @Ace, @Locale, @Ban, @IP_Address);',
-                        {
-                            Username = Username,
-                            Steam_ID = Steam_ID,
-                            License_ID = License_ID,
-                            FiveM_ID = FiveM_ID,
-                            Discord_ID = Discord_ID,
-                            Ace = conf.ace,
-                            Locale = conf.locale,
-                            Ban = 0,
-                            IP_Address = IP_Address
-                        }, function(r)
-                            -- New User Created, Now ...
-                            TriggerClientEvent('Client:Character:OpeningMenu', src)
-                            TriggerEvent('Server:Character:Request:List', src, Primary_ID)
-                        end)
-                end
-            end)
-        else
-            DropPlayer(src, 'You are missing your license identifier, this is odd, make sure you have signed into FiveM and restart your client..')
-        end
+        MySQL.Async.fetchScalar('SELECT `License_ID` FROM `users` WHERE `License_ID` = @License_ID LIMIT 1;', {
+            ['@License_ID'] = License_ID
+        }, function(r)
+            if (r ~= nil) then
+                -- Update their steam, discord if they do not exist in the db and their ip address upon every login.
+                MySQL.Async.execute(
+                    'UPDATE `users` SET `Username` = @Username, `Steam_ID` = IFNULL(`Steam_ID`,@Steam_ID), `FiveM_ID` = IFNULL(`FiveM_ID`,@FiveM_ID), `Discord_ID` = IFNULL(`Discord_ID`,@Discord_ID), `IP_Address` = @IP_Address, `Last_Login` = current_timestamp() WHERE `License_ID` = @License_ID;',
+                    {
+                        Username = Username,
+                        License_ID = License_ID,
+                        FiveM_ID = FiveM_ID,
+                        Steam_ID = Steam_ID,
+                        Discord_ID = Discord_ID,
+                        IP_Address = IP_Address
+                    }, function(r)
+                        -- User Found and Updated, Now ...
+                        TriggerClientEvent('Client:Character:OpeningMenu', src)
+                        TriggerEvent('Server:Character:Request:List', src, Primary_ID)
+                    end)
+            else
+                MySQL.Async.execute(
+                    'INSERT INTO `users` (`Username`, `Steam_ID`, `License_ID`, `FiveM_ID`, `Discord_ID`, `Ace`, `Locale`, `Ban`, `IP_Address`) VALUES (@Username, @Steam_ID, @License_ID, @FiveM_ID, @Discord_ID, @Ace, @Locale, @Ban, @IP_Address);',
+                    {
+                        Username = Username,
+                        Steam_ID = Steam_ID,
+                        License_ID = License_ID,
+                        FiveM_ID = FiveM_ID,
+                        Discord_ID = Discord_ID,
+                        Ace = conf.ace,
+                        Locale = conf.locale,
+                        Ban = 0,
+                        IP_Address = IP_Address
+                    }, function(r)
+                        -- New User Created, Now ...
+                        TriggerClientEvent('Client:Character:OpeningMenu', src)
+                        TriggerEvent('Server:Character:Request:List', src, Primary_ID)
+                    end)
+            end
+        end)
+    else
+        DropPlayer(src, 'You are missing your license identifier, this is odd, make sure you have signed into FiveM and restart your client..')
     end
 end)
 

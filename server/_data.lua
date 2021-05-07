@@ -88,39 +88,12 @@ end
 function c.data.ServerSync()
     local function Do()
         c.sql.SaveData(function()
-            c.debug('Synced with Database.')
+            c.debug('[F] ServerSync() : Synced with Database.')
         end)
         SetTimeout(conf.serversync, Do)
     end
     SetTimeout(conf.serversync, Do)
 end
-
--- Server to check for missing players / remove them. 
---[[ CURRENTLY NOT IN USE.
-function c.data.PlayersSync()
-    local function Do()
-        c.debug('[F] PlayersSync() : Starting.')
-        local Players = GetPlayers()
-        local xPlayers = c.data.GetPlayers()
-        -- Is there a differance in size between the native and our Players Table?
-        if c.table.SizeOf(Players) ~= c.table.SizeOf(xPlayers) then
-            for i = 1, #xPlayers, 1 do
-                local xPlayer = c.data.GetPlayer(xPlayers[i])
-                if xPlayer then
-                    c.sql.SaveUser(xPlayer, function()
-                        c.sql.SetCharacterInActive(xPlayer.Character_ID, function()
-                            c.debug('[F] PlayersSync() : Player Disconnection.')
-                            c.data.RemovePlayer(player)
-                        end)
-                    end)
-                end
-            end
-            c.debug('[F] PlayersSync() : Finished.')
-        SetTimeout(conf.playersync, Do)
-    end
-    SetTimeout(conf.playersync, Do)
-end
-]]--
 
 -- ====================================================================================--
 

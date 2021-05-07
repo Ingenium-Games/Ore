@@ -36,30 +36,24 @@ AddEventHandler('entityCreated', function(ent)
     if DoesEntityExist(ent) then
         local model = GetEntityModel(ent)
         for _, v in pairs(conf.disable.vehicles) do
-            local restrictedVehicleModel = conf.disable.vehicles[i]
+            local restrictedVehicleModel = v
             if (model == restrictedVehicleModel) then
-                c.debug('Entity Deleted.')
+                c.debug('Entity has been Deleted.')
                 DeleteEntity(ent)
             end
         end
-    end
-    --
-    if (GetEntityType(ent) == 2) then
-        Entity(ent).state = c.class.VehicleClass(ent)
     end
 end)
 
 AddEventHandler('entityCreating', function(ent)
     local model = GetEntityModel(ent)
     for _, v in pairs(conf.disable.vehicles) do
-        local restrictedVehicleModel = conf.disable.vehicles[i]
+        local restrictedVehicleModel = v
         if (model == restrictedVehicleModel) then
             c.debug('Entity prevented from Spawning.')
             CancelEvent()
         end
     end
-    --
-    EnsureEntityStateBag(ent)
 end)
 
 AddEventHandler('entityRemoved', function()

@@ -175,6 +175,27 @@ function c.sql.GeneratePhoneNumber(cb)
     return new
 end
 
+function c.sql.GenerateAccountNumber(cb)
+    local bool = false
+    local new = nil
+    repeat
+        new = string.upper(c.rng.chars(8))
+        MySQL.Async.fetchScalar('SELECT `Character_ID` FROM `character_accounts` WHERE `Account_Number` = @Account_Number LIMIT 1;', {
+            ['@Account_Number'] = new
+        }, function(r)
+            if r then
+                bool = true
+            else
+                bool = false
+            end
+        end)
+    until bool == false
+    if cb then
+        cb()
+    end
+    return new
+end
+
 -- ====================================================================================--
 -- SHould remake htis one..
 function c.sql.CreateCharacter(t, cb)
@@ -190,6 +211,22 @@ function c.sql.CreateCharacter(t, cb)
             Birth_Date = t.Birth_Date,
             Phone = t.Phone,
             Coords = t.Coords
+        }, function(data)
+            if data then
+
+            end
+            if cb then
+                cb()
+            end
+        end)
+end
+
+function c.sql.CreateAccount(Character_ID, Account_Number, cb)
+    MySQL.Async.execute(
+        'INSERT INTO `character_accounts` (`Character_ID`, `Account_Number`, `Bank`) VALUES (@Character_ID, @Account_Number, @Bank);',{
+            ['@Character_ID'] = Character_ID,
+            ['@Account_Number'] = Account_Number,
+            ['@Bank'] = conf.startingbank,
         }, function(data)
             if data then
 

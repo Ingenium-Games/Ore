@@ -42,6 +42,10 @@ function c.class.CreateCharacter(character_id)
     self.Coords = json.decode(data.Coords)
     ---- FUNCTIONS
     --
+    -- esx support?
+    self.TriggerEvent = function(eventName, ...)
+		TriggerClientEvent(eventName, self.ID, ...)
+    end
     --
     self.GetCharacter_ID = function()
         return self.Character_ID

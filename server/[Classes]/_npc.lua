@@ -13,10 +13,6 @@ math.randomseed(c.Seed)
 
 function c.class.NpcClass(entity)
     local self = {}
-    -- enable table searching.
-    self.__index = self
-    -- disable altering the direct line of data, must use set and get.
-    self.__metatable = self
     --
     self.First_Name = c.rng.chars(10)
     self.Last_Name = c.rng.chars(10)

@@ -66,5 +66,4 @@ conf.disable.vehicles = {
 	`ZENTORNO`,
 	`ZORRUSSO`,
 	`FURIA`,
-
 }

@@ -75,9 +75,11 @@ INSTANCE/ROUTINGBUCKET :
     -- Default world for all players.
 ]]--
 conf.instancedefault = 0
-
-
-
+--[[
+BANK START AMOUNT
+    -- 
+]]--
+conf.startingbank = 2500
 --[[
 BANK LOANS TIMES TO PAY: 
     -- Repayment Time to take money from bank account
