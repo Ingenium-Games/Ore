@@ -31,11 +31,16 @@ end)
 -- Event to receive the data of the chosen character for the client.
 RegisterNetEvent('Client:Character:Loaded')
 AddEventHandler('Client:Character:Loaded', function(data)
+    -- Add routines to do upon resicing the data from server.
     c.data.SetPlayer(data)
+    c.status.SetPlayer(data)
+    --
+    Wait(200)
+    --
     c.data.SetLoadedStatus(true)
-    -- c.data.SetLocale() -- not yet implimented.
-    Wait(100)
+    --
     c.data.ClientSync()
+    --
     TriggerEvent('Client:Character:Ready')
 end)
 

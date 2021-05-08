@@ -55,8 +55,8 @@ function c.data.SendPacket()
     local ped = PlayerPedId()
     local data = {}
     -- Stats / HP vs 
-    data.Health = c.status.GetHealth()
-    data.Armour = c.status.GetArmour()
+    data.Health = c.math.Decimals(c.status.GetHealth(ped), 0)
+    data.Armour = c.math.Decimals(c.status.GetArmour(ped), 0)
     data.Hunger = c.status.GetHunger()
     data.Thirst = c.status.GetThirst()
     data.Stress = c.status.GetStress()

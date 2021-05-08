@@ -91,4 +91,9 @@ conf.loaninterest = {h = 15, m = 0}
 
 conf.defaulthealth = 400 -- DOUBE BOI
 conf.defaultarmour = 300 --(Oh Baby a TRIPPLE)
+
+conf.hungertime = conf.min * 4
+conf.thirsttime = conf.min * 3.2
+
+conf.clientnuisync = conf.sec * 2.2
 -- ====================================================================================--
