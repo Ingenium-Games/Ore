@@ -57,9 +57,9 @@ function c.data.SendPacket()
     -- Stats / HP vs 
     data.Health = c.math.Decimals(c.status.GetHealth(ped), 0)
     data.Armour = c.math.Decimals(c.status.GetArmour(ped), 0)
-    data.Hunger = c.status.GetHunger()
-    data.Thirst = c.status.GetThirst()
-    data.Stress = c.status.GetStress()
+    data.Hunger = c.math.Decimals(c.status.GetHunger(), 0)
+    data.Thirst = c.math.Decimals(c.status.GetThirst(), 0)
+    data.Stress = c.math.Decimals(c.status.GetStress(), 0)
     -- Coords
     local loc = GetEntityCoords(ped)
     --
