@@ -4,7 +4,7 @@
 c.stats = {
     _min = 0,
     _max = 100,
-    _time = {_sync = 1000, _hunger = 60000, _thirst = 60000, _stress = 60000 * 10} -- a minute each, except Stress, increases every 10 minutes 
+    _time = {_sync = 1000, _hunger = 60000, _thirst = 60000, _stress = 60000 * 10}, -- a minute each, except Stress, increases every 10 minutes 
     ["Hunger"] = 100, -- Min 0 Max 100
     ["Thirst"] = 100, -- Min 0 Max 100
     ["Stress"] = 0, -- Min 0 Max 100
@@ -21,10 +21,10 @@ math.randomseed(c.Seed)
 
 local function CheckV(v)
     local val = 0
-    if (type(v) ~= 'number') then
+    if type(v) ~= 'number' then
         return val
     else
-        if (v >= c.stats._min) and (v <= c.stats._max) then
+        if v >= c.stats._min and v <= c.stats._max then
             val = v
         else
             c.debug("Unable to add value lesser than 0, or greater than 100.")
@@ -72,7 +72,8 @@ end
 
 function c.status.AddHunger(v)
     local val = CheckV(v)
-    if (val + c.stats.Hunger) > 100 then
+    local calc = c.stats.Hunger + val
+    if calc >= 100 then
         c.stats.Hunger = c.stats._max
     else 
         c.stats.Hunger = c.stats.Hunger + val
@@ -81,7 +82,8 @@ end
 
 function c.status.RemoveHunger(v)
     local val = CheckV(v) 
-    if (val - c.stats.Hunger) < 0 then
+    local calc = c.stats.Hunger - val
+    if calc <= 0 then
         c.stats.Hunger = c.stats._min
     else 
         c.stats.Hunger = c.stats.Hunger - val
@@ -102,7 +104,8 @@ end
 
 function c.status.AddThirst(v)
     local val = CheckV(v)
-    if (val + c.stats.Thirst) > 100 then
+    local calc = c.stats.Thirst + val
+    if calc >= 100 then
         c.stats.Thirst = c.stats._max
     else 
         c.stats.Thirst = c.stats.Thirst + val
@@ -110,8 +113,9 @@ function c.status.AddThirst(v)
 end
 
 function c.status.RemoveThirst(v)
-    local val = CheckV(v) 
-    if (val - c.stats.Thirst) < 0 then
+    local val = CheckV(v)
+    local calc = c.stats.Thirst - val
+    if calc <= 0 then
         c.stats.Thirst = c.stats._min
     else 
         c.stats.Thirst = c.stats.Thirst - val
@@ -132,7 +136,8 @@ end
 
 function c.status.AddStress(v)
     local val = CheckV(v)
-    if (val + c.stats.Stress) > 100 then
+    local calc = c.stats.Stress + val
+    if calc >= 100 then
         c.stats.Stress = c.stats._max
     else 
         c.stats.Stress = c.stats.Stress + val
@@ -140,8 +145,9 @@ function c.status.AddStress(v)
 end
 
 function c.status.RemoveStress(v)
-    local val = CheckV(v) 
-    if (val - c.stats.Stress) < 0 then
+    local val = CheckV(v)
+    local calc = c.stats.Stress - val
+    if calc <= 0 then
         c.stats.Stress = c.stats._min
     else 
         c.stats.Stress = c.stats.Stress - val
@@ -158,10 +164,11 @@ function c.status.NUISync()
     SetTimeout(c.stats._time._sync, Do)
 end
 
+
 function c.status.StartHungerDecrease()
     local function Do()
         local default = 1 -- * c.modifier.GetHungerModifier()
-        c.stats.RemoveHunger(default)
+        c.status.RemoveHunger(default)
         SetTimeout(c.stats._time._hunger, Do)
     end
     SetTimeout(c.stats._time._hunger, Do)
@@ -170,7 +177,7 @@ end
 function c.status.StartThirstDecrease()
     local function Do()
         local default = 1 -- * c.modifier.GetThirstModifier()
-        c.stats.RemoveThisrt(default)
+        c.status.RemoveThirst(default)
         SetTimeout(c.stats._time._thirst, Do)
     end
     SetTimeout(c.stats._time._thirst, Do)
@@ -179,7 +186,7 @@ end
 function c.status.StartStressIncrease()
     local function Do()
         local default = 1 -- * c.modifier.GetStressModifier()
-        c.stats.AddStress(default)
+        c.status.AddStress(default)
         SetTimeout(c.stats._time._stress, Do)
     end
     SetTimeout(c.stats._time._stress, Do)
@@ -191,22 +198,22 @@ function c.status.SetPlayer(data)
     local ped = PlayerPedId()
     local ply = PlayerId()
     --
-    if GetEntityMaxHealth(ped) <= 200 or GetEntityMaxHealth(ped) >= 401 then
-        SetEntityMaxHealth(ped, conf.defaulthealth)
-        -- Set default hp to 400 on spawn
-        c.status.SetHealth(ped, conf.defaulthealth)
-    end
-    if GetPlayerMaxArmour(ply) <= 100 or GetPlayerMaxArmour(ply) >= 301 then
-        SetPlayerMaxArmour(ply, conf.defaultarmour)
-        -- Set default armour to 0 on spawn
-        c.status.SetArmour(ped, 0)
-    end
+    -- Set default hp to 400 on spawn
+    SetEntityMaxHealth(ped, conf.defaulthealth)
+    c.status.SetHealth(ped, conf.defaulthealth)
+    --
+    -- Set default armour to 0 on spawn
+    SetPlayerMaxArmour(ply, conf.defaultarmour)
+    c.status.SetArmour(ped, 0)
+    --
     -- These will be usesd in healing items.
     SetPlayerHealthRechargeLimit(ply, 0)
     SetPlayerHealthRechargeMultiplier(ply, 0)
     SetPedSuffersCriticalHits(ped, true) --  Headshot ratios boi.
+    --
     -- This may be true if you take like 50kgs of cocaine.
-    SetPlayerInvincible(ply, false) -- fuck off.
+    SetPlayerInvincible(ply, false)
+    --
     -- time to gain our data from the server.
     if data then
         if data.Health then

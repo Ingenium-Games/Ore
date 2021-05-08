@@ -23,7 +23,7 @@ function c.class.VehicleClass(entity)
     end
     --
     self.AddFuel = function(num)
-        if type(num) == 'integer' then
+        if type(num) == 'number' then
             self.Fuel = (self.Fuel + num)
             if self.Fuel >= 100 then
                 self.Fuel = 100
@@ -32,7 +32,7 @@ function c.class.VehicleClass(entity)
     end
     --
     self.RemoveFuel = function(num)
-        if type(num) == 'integer' then
+        if type(num) == 'number' then
             self.Fuel = (self.Fuel - num)
             if self.Fuel <= 0 then
                 self.Fuel = 0

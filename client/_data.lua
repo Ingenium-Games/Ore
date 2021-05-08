@@ -44,7 +44,9 @@ function c.data.ClientSync()
             Wait(conf.clientsync)
             if c.data.GetLoadedStatus() then
                 c.IsBusy()
+                Citizen.Wait(500)
                 c.data.SendPacket()
+                Citizen.Wait(500)
                 c.NotBusy()
             end
         end

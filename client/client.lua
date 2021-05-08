@@ -16,6 +16,7 @@ Citizen.CreateThread(function()
         Wait(0)
         if NetworkIsSessionStarted() then
             DisplayRadar(false)
+            RemoveMultiplayerHudCash()
             TriggerServerEvent('Server:PlayerConnecting')
             TriggerServerEvent('Server:Request:Time')
             return

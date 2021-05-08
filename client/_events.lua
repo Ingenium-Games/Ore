@@ -33,11 +33,10 @@ RegisterNetEvent('Client:Character:Loaded')
 AddEventHandler('Client:Character:Loaded', function(data)
     -- Add routines to do upon resicing the data from server.
     c.data.SetPlayer(data) -- Full table will be in here
-    c.status.SetPlayer(data) -- This will only use the Health, Armour, Hunger, Thirst and Stress as a sub table c.stats
-    --
+    c.data.SetLoadedStatus(true)
     Wait(250) -- Give yourself a moment prior to marked as loaded.
     --
-    c.data.SetLoadedStatus(true)
+    c.status.SetPlayer(c.data.GetPlayer()) -- This will only use the Health, Armour, Hunger, Thirst and Stress as a sub table c.stats
     --
     Wait(250) -- Give yourself a moment prior to Syncing from loaded.
     --
@@ -52,7 +51,7 @@ AddEventHandler('Client:Character:Ready', function()
     local ped = PlayerPedId()
     local ply = PlayerId()
     -- DisplayRadar(true)
-    RemoveMultiplayerHudCash()
+    
     --
     SetPedMinGroundTimeForStungun(ped, 12500)
     --

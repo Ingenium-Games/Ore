@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `Armour` int(3) NOT NULL DEFAULT 0,
   `Hunger` int(3) NOT NULL DEFAULT 100,
   `Thirst` int(3) NOT NULL DEFAULT 100,
-  `Stress` int(3) NOT NULL DEFAULT 100,
+  `Stress` int(3) NOT NULL DEFAULT 0,
   `Job` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unemployed',
   `Job_Grade` int(3) NOT NULL DEFAULT 0,
   `Coords` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{"x":-1050.30, "y":-2740.95, "z":14.6}' COMMENT 'Last Position Saved...',
@@ -72,27 +72,29 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `Is_Jailed` (`Is_Jailed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Character Table';
 
--- Dumping data for table db.characters: ~1 rows (approximately)
+-- Dumping data for table db.characters: ~2 rows (approximately)
 /*!40000 ALTER TABLE `characters` DISABLE KEYS */;
 /*!40000 ALTER TABLE `characters` ENABLE KEYS */;
 
 -- Dumping structure for table db.character_accounts
 CREATE TABLE IF NOT EXISTS `character_accounts` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Character_ID` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `Money` int(11) NOT NULL DEFAULT 0,
+  `Character_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Account_Number` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Bank` int(11) NOT NULL DEFAULT 0,
+  `Pin` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0000',
   `Loan` int(11) DEFAULT NULL,
   `Duration` int(3) DEFAULT NULL,
   `Active` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Character_ID` (`Character_ID`),
+  UNIQUE KEY `Account_Number` (`Account_Number`),
   KEY `Duration` (`Duration`),
   KEY `Active` (`Active`),
   CONSTRAINT `FK_character_accounts_characters` FOREIGN KEY (`Character_ID`) REFERENCES `characters` (`Character_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table db.character_accounts: ~0 rows (approximately)
+-- Dumping data for table db.character_accounts: ~2 rows (approximately)
 /*!40000 ALTER TABLE `character_accounts` DISABLE KEYS */;
 /*!40000 ALTER TABLE `character_accounts` ENABLE KEYS */;
 
@@ -137,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `Supporter_Status` (`Supporter`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Users Table';
 
--- Dumping data for table db.users: ~1 rows (approximately)
+-- Dumping data for table db.users: ~0 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 

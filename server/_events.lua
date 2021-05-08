@@ -57,9 +57,14 @@ RegisterNetEvent('Server:Packet:Update')
 AddEventHandler('Server:Packet:Update', function(data)
     local src = source
     local xPlayer = c.data.GetPlayer(src)
+    -- Status
+    xPlayer.SetHealth(data.Health)
+    xPlayer.SetArmour(data.Armour)
+    xPlayer.SetHunger(data.Hunger)
+    xPlayer.SetThirst(data.Thirst)
+    xPlayer.SetStress(data.Stress)
     -- Coords
     xPlayer.SetCoords(data.Coords)
-    -- 
 
 end)
 
