@@ -11,6 +11,17 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
+function c.data.Initilize(cb)
+    -- Get time and update every minute.
+    c.time.UpdateTime()
+    --
+
+    --
+    if cb then
+        cb()
+    end
+end
+
 function c.data.GetLocale()
     return c.locale
 end

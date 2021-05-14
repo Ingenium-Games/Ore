@@ -45,12 +45,6 @@ AddEventHandler("Server:Character:Death", function(data)
     end
 end)
 
-RegisterNetEvent('Server:Request:Time')
-AddEventHandler('Server:Request:Time', function(data)
-    local src = source
-    TriggerClientEvent('Client:Time:Recieve', src, c.times)
-end)
-
 -- ====================================================================================--
 
 RegisterNetEvent('Server:Packet:Update')

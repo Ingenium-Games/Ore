@@ -7,7 +7,6 @@ NOTES:
     -
     -
 ]] --
-
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
@@ -15,10 +14,13 @@ Citizen.CreateThread(function()
     while true do
         Wait(0)
         if NetworkIsSessionStarted() then
-            DisplayRadar(false)
-            RemoveMultiplayerHudCash()
-            TriggerServerEvent('Server:PlayerConnecting')
-            TriggerServerEvent('Server:Request:Time')
+            --    
+            c.data.Initilize(function()
+                DisplayRadar(false)
+                RemoveMultiplayerHudCash()
+                TriggerServerEvent('Server:PlayerConnecting')
+            end)
+            --
             return
         end
     end

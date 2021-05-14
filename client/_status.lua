@@ -21,6 +21,7 @@ math.randomseed(c.Seed)
 
 local function CheckV(v)
     local val = 0
+    assert(type(v) == 'number', 'Invalid Lua type at argument #1, expected number, got ' .. type(v))
     if type(v) ~= 'number' then
         return val
     else

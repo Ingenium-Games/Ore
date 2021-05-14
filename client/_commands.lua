@@ -36,3 +36,10 @@ end, false)
 RegisterKeyMapping('armhold', 'Arm Hold', 'keyboard', 'NumPad3')
 
 -- ====================================================================================--
+
+--[[
+if IsPlayerFreeAiming(PlayerId()) then
+    local bool, target = GetEntityPlayerIsFreeAimingAt(PlayerId())
+
+end
+]]--
