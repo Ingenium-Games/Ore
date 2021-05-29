@@ -17,7 +17,6 @@ end, false)
 
 -- ====================================================================================--
 
-
 TriggerEvent("chat:addSuggestion", "/switch", "Use to change your character(s).", {})
 
 RegisterCommand('switch', function(source)
@@ -34,7 +33,7 @@ end, false)
 
 -- ====================================================================================--
 
-TriggerEvent("chat:addSuggestion", "/noclip", "Admins Permission(s) Required.", {})
+TriggerEvent("chat:addSuggestion", "/noclip", "Admin Permission(s) Required.", {})
 
 RegisterCommand('noclip', function(source)
     local src = tonumber(source)
@@ -43,7 +42,7 @@ end, true)
 
 -- ====================================================================================--
 
-TriggerEvent("chat:addSuggestion", "/ban", "Admins Permission(s) Required.", {{
+TriggerEvent("chat:addSuggestion", "/ban", "Admin Permission(s) Required.", {{
     name = "TargetID",
     help = "The Target's server ID in this session."
 }})
@@ -69,7 +68,7 @@ end, true)
 
 -- ====================================================================================--
 
-TriggerEvent("chat:addSuggestion", "/kick", "Admins Permission(s) Required.", {{
+TriggerEvent("chat:addSuggestion", "/kick", "Admin Permission(s) Required.", {{
     name = "TargetID",
     help = "The Target's server ID in this session."
 }})

@@ -96,4 +96,12 @@ conf.hungertime = conf.min * 4
 conf.thirsttime = conf.min * 3.2
 
 conf.clientnuisync = conf.sec * 2.2
+
+
+--[[
+TIMEZONE ADJUSTMENT: 
+    -- Takes the server time, and change it based on -23,23 hours. 
+    -- You can do greater, but it will break your game.
+]]--
+conf.altertime = -4
 -- ====================================================================================--

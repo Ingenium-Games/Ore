@@ -19,6 +19,9 @@ Citizen.CreateThread(function()
                 DisplayRadar(false)
                 RemoveMultiplayerHudCash()
                 TriggerServerEvent('Server:PlayerConnecting')
+                --
+                c.time.UpdateTime()
+
             end)
             --
             return

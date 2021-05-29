@@ -179,6 +179,6 @@ end
 
 -- ====================================================================================--
 
-function c.GetEntityStateBag(entity)
+function c.GetState(entity)
     return Entity(entity).state
 end

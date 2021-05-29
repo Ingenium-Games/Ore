@@ -10,7 +10,7 @@ NOTES:
 ]] --
 math.randomseed(c.Seed)
 -- ====================================================================================--
--- I miss NetworkOverrideClockMillisecondsPerGameMinute() - It broke.
+-- I miss NetworkOverrideClockMillisecondsPerGameMinute()
 
 local time = {0,0}
 
