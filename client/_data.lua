@@ -73,16 +73,15 @@ function c.data.SendPacket()
     data.Hunger = c.math.Decimals(c.status.GetHunger(), 0)
     data.Thirst = c.math.Decimals(c.status.GetThirst(), 0)
     data.Stress = c.math.Decimals(c.status.GetStress(), 0)
+    -- Modifiers
+    data.Modifiers = c.modifiers.GetModifiers()
     -- Coords
     local loc = GetEntityCoords(ped)
-    --
     data.Coords = {
         x = c.math.Decimals(loc.x, 2),
         y = c.math.Decimals(loc.y, 2),
         z = c.math.Decimals(loc.z, 2)
     }
-    -- 
-
     TriggerServerEvent('Server:Packet:Update', data)
 end
 ------------------------------------------------------------------------------

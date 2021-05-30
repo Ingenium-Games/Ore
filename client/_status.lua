@@ -168,7 +168,7 @@ end
 
 function c.status.StartHungerDecrease()
     local function Do()
-        local default = 1 -- * c.modifier.GetHungerModifier()
+        local default = 1 * c.modifiers.GetHungerModifier()
         c.status.RemoveHunger(default)
         SetTimeout(c.stats._time._hunger, Do)
     end
@@ -177,7 +177,7 @@ end
 
 function c.status.StartThirstDecrease()
     local function Do()
-        local default = 1 -- * c.modifier.GetThirstModifier()
+        local default = 1 * c.modifiers.GetThirstModifier()
         c.status.RemoveThirst(default)
         SetTimeout(c.stats._time._thirst, Do)
     end
@@ -186,7 +186,7 @@ end
 
 function c.status.StartStressIncrease()
     local function Do()
-        local default = 1 -- * c.modifier.GetStressModifier()
+        local default = 1 * c.modifiers.GetStressModifier()
         c.status.AddStress(default)
         SetTimeout(c.stats._time._stress, Do)
     end
@@ -200,7 +200,7 @@ function c.status.SetPlayer(data)
     local ply = PlayerId()
     --
     -- Set default hp to 400 on spawn
-    SetEntityMaxHealth(ped, conf.defaulthealth)
+    SetPedMaxHealth(ped, conf.defaulthealth)
     c.status.SetHealth(ped, conf.defaulthealth)
     --
     -- Set default armour to 0 on spawn

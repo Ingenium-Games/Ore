@@ -115,6 +115,9 @@ function c.data.LoadPlayer(source, Character_ID)
     data.Hunger = xPlayer.GetHunger()
     data.Thirst = xPlayer.GetThirst()
     data.Stress = xPlayer.GetStress()
+    data.Modifiers = xPlayer.GetModifiers()
+    data.Apperance = xPlayer.GetApperance()
+
     --
     c.sql.SetCharacterActive(Character_ID, function()
         c.data.SetPlayer(src, xPlayer)

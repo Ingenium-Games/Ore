@@ -66,7 +66,7 @@ conf.discordperms = true
 conf.discordrole = '690445686365356072'
 --[[
 SCREENSHOTS :
-    -- Host URL
+    -- Host URL like 
 ]]--
 conf.imagehost = ''
 conf.imagetoken = ''
@@ -76,8 +76,8 @@ INSTANCE/ROUTINGBUCKET :
 ]]--
 conf.instancedefault = 0
 --[[
-BANK START AMOUNT
-    -- 
+BANK START AMOUNT :
+    -- What do you want in your bank accounts?
 ]]--
 conf.startingbank = 2500
 --[[
@@ -87,17 +87,15 @@ BANK LOANS TIMES TO PAY:
 ]]--
 conf.loanpayment = {h = 12, m = 0}
 conf.loaninterest = {h = 15, m = 0}
-
-
+--[[
+PLAYER HUNGER / THIRST / HP / ARMOUR: 
+    -- Values and times.
+]]--
 conf.defaulthealth = 400 -- DOUBE BOI
 conf.defaultarmour = 300 --(Oh Baby a TRIPPLE)
-
 conf.hungertime = conf.min * 4
 conf.thirsttime = conf.min * 3.2
-
 conf.clientnuisync = conf.sec * 2.2
-
-
 --[[
 TIMEZONE ADJUSTMENT: 
     -- Takes the server time, and change it based on -23,23 hours. 

@@ -17,7 +17,7 @@ math.randomseed(c.Seed)
 -- @local id for async store & Store Query
 local SaveData = -1
 MySQL.Async.store(
-    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Last_Seen` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
+    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Modifiers` = @Modifiers `Coords` = @Coords, `Last_Seen` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
     function(id)
         SaveData = id
     end)
@@ -34,9 +34,11 @@ function c.sql.SaveUser(data, cb)
         local Thirst = data.GetThirst()
         local Stress = data.GetStress()
 
+
         -- Tables require JSON Encoding.
         local Coords = json.encode(data.GetCoords())
-
+        local Modifiers = json.encode(data.GetModifiers())
+            
         local Character_ID = data.GetCharacter_ID()
 
         MySQL.Async.insert(SaveData, {
@@ -47,9 +49,10 @@ function c.sql.SaveUser(data, cb)
             ['@Hunger'] = Hunger,
             ['@Thirst'] = Thirst,
             ['@Stress'] = Stress,
-
+ 
             -- Table Informaiton.
             ['@Coords'] = Coords,
+            ['@Modifiers'] = Modifiers,
 
             ['@Character_ID'] = Character_ID
         }, function(r)
@@ -75,20 +78,22 @@ function c.sql.SaveData(cb)
 
             -- Tables require JSON Encoding.
             local Coords = json.encode(data.GetCoords())
-
+            local Modifiers = json.encode(data.GetModifiers())
+            
             local Character_ID = data.GetCharacter_ID()
-
+    
             MySQL.Async.insert(SaveData, {
-
+    
                 -- Other Variables.
                 ['@Health'] = Health,
                 ['@Armour'] = Armour,
                 ['@Hunger'] = Hunger,
                 ['@Thirst'] = Thirst,
                 ['@Stress'] = Stress,
-
+    
                 -- Table Informaiton.
                 ['@Coords'] = Coords,
+                ['@Modifiers'] = Modifiers,
 
                 ['@Character_ID'] = Character_ID
             }, function(r)

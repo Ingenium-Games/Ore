@@ -34,6 +34,9 @@ function c.class.CreateCharacter(character_id)
     self.Thirst = data.Thirst
     self.Stress = data.Stress
 
+    --
+    self.Modifiers = json.decode(data.Modifiers)
+
     -- Booleans
     self.Wanted = data.Wanted
 
@@ -121,6 +124,14 @@ function c.class.CreateCharacter(character_id)
     --
     self.SetStress = function(v)
         self.Stress = v
+    end
+    --
+    self.GetModifiers = function()
+        return self.Modifiers
+    end
+    --
+    self.SetModifiers = function(t)
+        self.Modifiers = t
     end
     --
     self.GetAppearance = function()

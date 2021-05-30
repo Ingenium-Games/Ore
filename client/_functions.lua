@@ -635,6 +635,11 @@ function c.SetVehicleProperties(vehicle, props)
     end
 end
 
-function c.GetEntityStateBag(entity)
+function c.GetEntityState(entity)
+    local p = promise.new()
+    EnsureEntityStateBag(entity)
+    
+    ObjToNet(entity)
+
     return Entity(entity).state
 end
