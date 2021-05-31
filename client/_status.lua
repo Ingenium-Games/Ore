@@ -2,9 +2,6 @@
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
 c.stats = {
-    _min = 0,
-    _max = 100,
-    _time = {_sync = 1000, _hunger = 60000, _thirst = 60000, _stress = 60000 * 10}, -- a minute each, except Stress, increases every 10 minutes 
     ["Hunger"] = 100, -- Min 0 Max 100
     ["Thirst"] = 100, -- Min 0 Max 100
     ["Stress"] = 0, -- Min 0 Max 100
@@ -19,22 +16,15 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
-local function CheckV(v)
-    local val = 0
-    assert(type(v) == 'number', 'Invalid Lua type at argument #1, expected number, got ' .. type(v))
-    if type(v) ~= 'number' then
-        return val
-    else
-        if v >= c.stats._min and v <= c.stats._max then
-            val = v
-        else
-            c.debug("Unable to add value lesser than 0, or greater than 100.")
-        end
-    end
-    return val
-end
+local _min = 0
+local _max = 100
+local _sync = c.sec
+local _hunger = c.min
+local _thirst = c.min
+local _stress = c.min * 10
 
----------- Health
+-- ====================================================================================--
+
 function c.status.GetHealth(ped)
     return GetEntityHealth(ped)
 end
@@ -43,10 +33,8 @@ function c.status.SetHealth(ped, health)
     SetEntityHealth(ped, health)
 end
 
-----------
+-- ====================================================================================--
 
-
----------- Armour
 function c.status.GetArmour(ped)
     return GetPedArmour(ped)
 end
@@ -59,10 +47,8 @@ function c.status.AddArmour(ped, armour)
     AddArmourToPed(ped, armour) 
 end
 
-----------
+-- ====================================================================================--
 
-
----------- Hunger
 function c.status.GetHunger()
     return c.stats.Hunger
 end
@@ -72,29 +58,27 @@ function c.status.SetHunger(v)
 end
 
 function c.status.AddHunger(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     local calc = c.stats.Hunger + val
     if calc >= 100 then
-        c.stats.Hunger = c.stats._max
+        c.stats.Hunger = _max
     else 
         c.stats.Hunger = c.stats.Hunger + val
     end
 end
 
 function c.status.RemoveHunger(v)
-    local val = CheckV(v) 
+    local val = c.check.Number(v, _min, _max)
     local calc = c.stats.Hunger - val
     if calc <= 0 then
-        c.stats.Hunger = c.stats._min
+        c.stats.Hunger = _min
     else 
         c.stats.Hunger = c.stats.Hunger - val
     end
 end
 
-----------
+-- ====================================================================================--
 
-
----------- Thisrt
 function c.status.GetThirst()
     return c.stats.Thirst
 end
@@ -104,29 +88,27 @@ function c.status.SetThirst(v)
 end
 
 function c.status.AddThirst(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     local calc = c.stats.Thirst + val
     if calc >= 100 then
-        c.stats.Thirst = c.stats._max
+        c.stats.Thirst = _max
     else 
         c.stats.Thirst = c.stats.Thirst + val
     end
 end
 
 function c.status.RemoveThirst(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     local calc = c.stats.Thirst - val
     if calc <= 0 then
-        c.stats.Thirst = c.stats._min
+        c.stats.Thirst = _min
     else 
         c.stats.Thirst = c.stats.Thirst - val
     end
 end
 
-----------
+-- ====================================================================================--
 
-
----------- Stress
 function c.status.GetStress()
     return c.stats.Stress
 end
@@ -136,64 +118,63 @@ function c.status.SetStress(v)
 end
 
 function c.status.AddStress(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     local calc = c.stats.Stress + val
     if calc >= 100 then
-        c.stats.Stress = c.stats._max
+        c.stats.Stress = _max
     else 
         c.stats.Stress = c.stats.Stress + val
     end
 end
 
 function c.status.RemoveStress(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     local calc = c.stats.Stress - val
     if calc <= 0 then
-        c.stats.Stress = c.stats._min
+        c.stats.Stress = _min
     else 
         c.stats.Stress = c.stats.Stress - val
     end
 end
 
-----------
+-- ====================================================================================--
 
 function c.status.NUISync()
     local function Do()
         -- SendNuiMessage()
-        SetTimeout(c.stats._time._sync, Do)
+        SetTimeout(_sync, Do)
     end
-    SetTimeout(c.stats._time._sync, Do)
+    SetTimeout(_sync, Do)
 end
-
 
 function c.status.StartHungerDecrease()
     local function Do()
         local default = 1 * c.modifiers.GetHungerModifier()
         c.status.RemoveHunger(default)
-        SetTimeout(c.stats._time._hunger, Do)
+        SetTimeout(_hunger, Do)
     end
-    SetTimeout(c.stats._time._hunger, Do)
+    SetTimeout(_hunger, Do)
 end
 
 function c.status.StartThirstDecrease()
     local function Do()
         local default = 1 * c.modifiers.GetThirstModifier()
         c.status.RemoveThirst(default)
-        SetTimeout(c.stats._time._thirst, Do)
+        SetTimeout(_thirst, Do)
     end
-    SetTimeout(c.stats._time._thirst, Do)
+    SetTimeout(_thirst, Do)
 end
 
 function c.status.StartStressIncrease()
     local function Do()
         local default = 1 * c.modifiers.GetStressModifier()
         c.status.AddStress(default)
-        SetTimeout(c.stats._time._stress, Do)
+        SetTimeout(_stress, Do)
     end
-    SetTimeout(c.stats._time._stress, Do)
+    SetTimeout(_stress, Do)
 end
 
-----------
+-- ====================================================================================--
 
 function c.status.SetPlayer(data)
     local ped = PlayerPedId()

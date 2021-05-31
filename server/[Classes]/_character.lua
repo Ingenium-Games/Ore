@@ -34,20 +34,20 @@ function c.class.CreateCharacter(character_id)
     self.Thirst = data.Thirst
     self.Stress = data.Stress
 
-    --
-    self.Modifiers = json.decode(data.Modifiers)
-
     -- Booleans
     self.Wanted = data.Wanted
 
     -- Tables (JSONIZE)
     self.Appearance = json.decode(data.Appearance)
+    self.Modifiers = json.decode(data.Modifiers)
     self.Coords = json.decode(data.Coords)
     ---- FUNCTIONS
-    --
-    -- esx support?
     self.TriggerEvent = function(eventName, ...)
 		TriggerClientEvent(eventName, self.ID, ...)
+    end
+    --
+    self.GetIdentifier = function()
+        return self.Character_ID
     end
     --
     self.GetCharacter_ID = function()
@@ -85,7 +85,7 @@ function c.class.CreateCharacter(character_id)
             return 'Male'
         end
     end
-    -- Getters n Setters.
+    -- 
     self.GetHealth = function()
         return self.Health
     end

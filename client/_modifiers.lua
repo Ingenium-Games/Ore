@@ -14,22 +14,12 @@ NOTES.
 ]]--
 math.randomseed(c.Seed)
 -- ====================================================================================--
-local _min, _max, _boost = 1, 10, 1
 
-local function CheckV(v)
-    local val = 1
-    assert(type(v) == 'number', 'Invalid Lua type at argument #1, expected number, got ' .. type(v))
-    if type(v) ~= 'number' then
-        return val
-    else
-        if v >= _min and v <= _max then
-            val = v
-        else
-            c.debug("Unable to add value lesser than 0, or greater than 100.")
-        end
-    end
-    return val
-end
+local _min = 1
+local _max = 10
+local _boost = 1
+
+-- ====================================================================================--
 
 function c.modifiers.GetModifiers()
     return c.modifier
@@ -39,40 +29,47 @@ function c.modifiers.SetModifiers(t)
     c.modifier = t
 end
 
+-- ====================================================================================--
+
 function c.modifiers.GetHungerModifier()
     return c.modifier.Hunger
 end
 
 function c.modifiers.SetHungerModifier(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     c.modifier.Hunger = val
 end
+
+-- ====================================================================================--
 
 function c.modifiers.GetThirstModifier()
     return c.modifier.Thirst
 end
 
 function c.modifiers.SetThirstModifier(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     c.modifier.Thirst = val
 end
 
+-- ====================================================================================--
 
 function c.modifiers.GetStressModifier()
     return c.modifier.Stress
 end
 
 function c.modifiers.SetStressModifier(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     c.modifier.Thirst = val
 end
+
+-- ====================================================================================--
 
 function c.modifiers.GetDegradeBoost()
     return _boost
 end
 
 function c.modifiers.SetDegradeBoost(v)
-    local val = CheckV(v)
+    local val = c.check.Number(v, _min, _max)
     _boost = val
 end
 
@@ -89,6 +86,8 @@ function c.modifiers.DegradeModifiers()
     c.modifiers.SetThirstModifier(c.modifier.Thirst)
     c.modifiers.SetStressModifier(c.modifier.Stress)
 end
+
+-- ====================================================================================--
 
 Citizen.CreateThread(function()
     while true do
