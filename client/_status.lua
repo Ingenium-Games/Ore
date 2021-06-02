@@ -18,7 +18,7 @@ math.randomseed(c.Seed)
 
 local _min = 0
 local _max = 100
-local _sync = c.sec
+local _sync = c.sec * 2
 local _hunger = c.min
 local _thirst = c.min
 local _stress = c.min * 10

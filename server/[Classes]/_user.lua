@@ -28,7 +28,7 @@ function c.class.CreateUser(req)
     self.IP_Address = IP_Address
     self.Ace = Ace
     self.Locale = Locale
-    self.RandomTemp = c.rng.chars(15)
+    self.Temp = c.rng.chars(15)
     --
     ExecuteCommand(('remove_principal identifier.%s group.%s'):format(self.License_ID, self.Ace))
     ExecuteCommand(('add_principal identifier.%s group.%s'):format(self.License_ID, self.Ace))

@@ -1,3 +1,7 @@
+* {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
 html {
     width: 100vw !important;
     height: 100vh !important;
@@ -5,8 +9,15 @@ html {
     overflow: scroll;
     overflow-x: hidden;
     overflow-y: hidden;
-    font-family: 'Josefin Sans', sans-serif;
 }
+
+.Animus-darkest {background-color: #101954}
+.Animus-darker {background-color: #15216e}
+.Animus-dark {background-color: #1a2887}
+.Animus {background-color: #1f30a1}
+.Animus-light {background-color: #2337ba}
+.Animus-lighter {background-color: #283fd4}
+.Animus-lightest {background-color: #2d47ed}
 
 ::-webkit-scrollbar {
     width: 15px;
