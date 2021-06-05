@@ -28,6 +28,7 @@ function c.class.CreateCharacter(character_id)
     self.Phone = data.Phone -- 200000 - 699999
     
     -- Integers
+    self.Instance = data.Instance
     self.Health = data.Health
     self.Armour = data.Armour
     self.Hunger = data.Hunger
@@ -107,14 +108,14 @@ function c.class.CreateCharacter(character_id)
         end
     end
     --
-    self.GetAccountMoney = function()
+    self.GetMoney = function()
         local acc = self.GetAccount('money')
         if acc then
             return acc.money
         end
     end
     --
-    self.SetAccountMoney = function(v)
+    self.SetMoney = function(v)
         local num = c.check.Number(v)
         if num >= 0 then
             local acc = self.GetAccount('money')
@@ -126,21 +127,21 @@ function c.class.CreateCharacter(character_id)
         end
     end
     --
-    self.AddAccountMoney = function(v)
+    self.AddMoney = function(v)
         local num = c.check.Number(v)
         if num > 0 then
-            local acc = self.getAccount('money')
+            local acc = self.GetAccount('money')
             if acc then
                 local nMoney = acc.money + c.math.Decimals(num, 0)
                 acc.money = nMoney
             end
         end
     end
-
-    self.RemoveAccountMoney = function(v)
+    --
+    self.RemoveMoney = function(v)
         local num = c.check.Number(v)
         if num > 0 then
-            local acc = self.getAccount('money')
+            local acc = self.GetAccount('money')
 
             if acc then
                 local nMoney = acc.money - c.math.Decimals(num, 0)
@@ -148,18 +149,18 @@ function c.class.CreateCharacter(character_id)
             end
         end
     end
-
-    self.GetAccountBank = function()
-        local acc = self.getAccount('bank')
+    --
+    self.GetBank = function()
+        local acc = self.GetAccount('bank')
         if acc then
             return acc.money
         end
     end
-
-    self.SetAccountBank = function(v)
+    --
+    self.SetBank = function(v)
         local num = c.check.Number(v)
         if num >= 0 then
-            local acc = self.getAccount('bank')
+            local acc = self.GetAccount('bank')
             if acc then
                 local pMoney = acc.money
                 local nMoney = c.math.Decimals(num, 0)
@@ -167,11 +168,11 @@ function c.class.CreateCharacter(character_id)
             end
         end
     end
-
-    self.AddAccountBank = function(v)
+    --
+    self.AddBank = function(v)
         local num = c.check.Number(v)
         if num > 0 then
-            local acc = self.getAccount('bank')
+            local acc = self.GetAccount('bank')
             if acc then
                 local nMoney = acc.money + c.math.Decimals(num, 0)
                 acc.money = nMoney
@@ -179,34 +180,33 @@ function c.class.CreateCharacter(character_id)
         end
     end
     --
-    self.RemoveAccountBank = function(v)
+    self.RemoveBank = function(v)
         local num = c.check.Number(v)
         if num > 0 then
-            local acc = self.getAccount('bank')
+            local acc = self.GetAccount('bank')
             if acc then
                 local nMoney = acc.money - c.math.Decimals(num, 0)
                 acc.money = nMoney
             end
         end
     end
-    --
+    -- esx style, except table format.
     self.GetJob = function()
         return self.Job
     end
     --
     self.SetJob = function(t)
         local tab = c.check.Table(t)
-        if c.DoesJobExist(t.job, t.grade) then
+        if c.job.Exist(t.job, t.grade) then
             local jobObject, gradeObject = c.jobs[t.job], c.jobs[t.job].grades[t.grade]
             --
-            self.Job.id = jobObject.id
-            self.Job.name = jobObject.name
-            self.Job.label = jobObject.label
+            self.Job.Name = jobObject.name
+            self.Job.Label = jobObject.label
             --
-            self.Job.grade = gradeObject.grade
-            self.Job.grade_name = gradeObject.name
-            self.Job.grade_label = gradeObject.label
-            self.Job.grade_salary = gradeObject.salary
+            self.Job.Grade = gradeObject.grade
+            self.Job.Grade_Name = gradeObject.name
+            self.Job.Grade_Label = gradeObject.label
+            self.Job.Grade_Salary = gradeObject.salary
             --
             TriggerEvent('Server:Character:SetJob', self.ID, self.GetJob())
             self.TriggerEvent('Client:Character:SetJob', self.GetJob())
@@ -222,6 +222,15 @@ function c.class.CreateCharacter(character_id)
     self.SetPhone = function(s)
         local str = c.check.String(s)
         self.Phone = str
+    end
+    -- 
+    self.GetInstance = function()
+        return self.Instance
+    end
+    --
+    self.SetInstance = function(v)
+        local num = c.check.Number(v)
+        self.Instance = num
     end
     -- 
     self.GetHealth = function()

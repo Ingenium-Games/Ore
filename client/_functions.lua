@@ -167,6 +167,10 @@ end
 
 -- ====================================================================================--
 
+function c.GetEntity(entity)
+    return Entity(entity).state
+end
+
 function c.IsNear(arrays)
     local dstchecked = 1000
     local plyPos = GetEntityCoords(GetPlayerPed(PlayerId()), false)
@@ -186,74 +190,130 @@ end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.
--- returns table{players}
-function c.GetPlayersInArea(coords, radius)
-    local peds = GetGamePool('CPed')
-    local players = {}
-    for _, v in pairs(peds) do
-        if IsPedAPlayer(v) then
-            local targetCoords = GetEntityCoords(v)
-            local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) -
-                                 vector3(coords.x, coords.y, coords.z))
-            if distance <= radius then
-                table.insert(players, v)
-            end
-        else
-            -- not a player
-        end
-    end
-    return players
-end
-
--- @coords - the {x,y,z}
--- @radius - the distance around.
--- returns table{pedsinarea}
-function c.GetPedsInArea(coords, radius)
-    local peds = GetGamePool('CPed')
-    local pedsinarea = {}
-    for _, v in pairs(peds) do
-        local targetCoords = GetEntityCoords(v)
-        local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) -
-                             vector3(coords.x, coords.y, coords.z))
-        if distance <= radius then
-            table.insert(pedsinarea, v)
-        end
-    end
-    return pedsinarea
-end
-
--- @coords - the {x,y,z}
--- @radius - the distance around.
+-- if minimal
 -- returns table{objinarea}
-function c.GetObjectsInArea(coords, radius)
-    local objs = GetGamePool('CObject')
-    local objinarea = {}
-    for _, v in pairs(objs) do
-        local targetCoords = GetEntityCoords(v)
-        local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) -
-                             vector3(coords.x, coords.y, coords.z))
-        if distance <= radius then
-            table.insert(objinarea, v)
+-- else
+-- [objectID] = {model = XYZ, coords=vec3}
+function c.GetPlayersInArea(ords, radius, minimal)
+    local coords = vector3(ords)
+    local objs = GetGamePool('CPed')
+    local obj = {}
+    if minimal then
+        for _, v in pairs(objs) do
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                table.insert(obj, v)
+            end
+        end
+    else   
+        for _, v in pairs(objs) do
+            local model = GetEntityModel(v)
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                --object number
+                obj[v] = {model=model,coords=target}
+            end   
         end
     end
-    return objinarea
+    return obj
 end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.
--- returns table{vehinarea}
-function c.GetVehiclesInArea(coords, radius)
-    local vehicles = GetGamePool('CVehicle')
-    local vehinarea = {}
-    for _, v in pairs(vehicles) do
-        local targetCoords = GetEntityCoords(v)
-        local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) -
-                             vector3(coords.x, coords.y, coords.z))
-        if distance <= radius then
-            table.insert(vehinarea, v)
+-- if minimal
+-- returns table{objinarea}
+-- else
+-- [objectID] = {model = XYZ, coords=vec3}
+function c.GetPedsInArea(ords, radius, minimal)
+    local coords = vector3(ords)
+    local objs = GetGamePool('CPed')
+    local obj = {}
+    if minimal then
+        for _, v in pairs(objs) do
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                table.insert(obj, v)
+            end
+        end
+    else   
+        for _, v in pairs(objs) do
+            local model = GetEntityModel(v)
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                --object number
+                obj[v] = {model=model,coords=target}
+            end   
         end
     end
-    return vehinarea
+    return obj
+end
+
+-- @coords - the {x,y,z}
+-- @radius - the distance around.
+-- if minimal
+-- returns table{objinarea}
+-- else
+-- [objectID] = {model = XYZ, coords=vec3}
+function c.GetObjectsInArea(ords, radius, minimal)
+    local coords = vector3(ords)
+    local objs = GetGamePool('CObject')
+    local obj = {}
+    if minimal then
+        for _, v in pairs(objs) do
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                table.insert(obj, v)
+            end
+        end
+    else   
+        for _, v in pairs(objs) do
+            local model = GetEntityModel(v)
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                --object number
+                obj[v] = {model=model,coords=target}
+            end   
+        end
+    end
+    return obj
+end
+
+-- @coords - the {x,y,z}
+-- @radius - the distance around.
+-- if minimal
+-- returns table{objinarea}
+-- else
+-- [objectID] = {model = XYZ, coords=vec3}
+function c.GetVehiclesInArea(ords, radius, minimal)
+    local coords = vector3(ords)
+    local objs = GetGamePool('CVehicle')
+    local obj = {}
+    if minimal then
+        for _, v in pairs(objs) do
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                table.insert(obj, v)
+            end
+        end
+    else   
+        for _, v in pairs(objs) do
+            local model = GetEntityModel(v)
+            local target = vector3(GetEntityCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                --object number
+                obj[v] = {model=model,coords=target}
+            end   
+        end
+    end
+    return obj
 end
 
 -- @coords - the {x,y,z}
@@ -633,13 +693,4 @@ function c.SetVehicleProperties(vehicle, props)
             SetVehicleLivery(vehicle, props.modLivery)
         end
     end
-end
-
-function c.GetEntityState(entity)
-    local p = promise.new()
-    EnsureEntityStateBag(entity)
-    
-    ObjToNet(entity)
-
-    return Entity(entity).state
 end

@@ -80,6 +80,7 @@ BANK START AMOUNT :
     -- What do you want in your bank accounts?
 ]]--
 conf.startingbank = 2500
+conf.startingloan = 0
 --[[
 BANK LOANS TIMES TO PAY: 
     -- Repayment Time to take money from bank account

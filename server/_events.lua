@@ -15,8 +15,6 @@ math.randomseed(c.Seed)
 RegisterNetEvent("Server:Character:Loaded")
 AddEventHandler("Server:Character:Loaded", function(data)
     local src = source
-    -- Set to default instance
-    c.inst.SetPlayerDefault(src)
 
 end)
 
@@ -27,14 +25,14 @@ AddEventHandler("Server:Character:Ready", function(data)
 
 end)
 
+-- Default player to instance listed in conf.defaultinstance
 RegisterNetEvent('Server:Instance:Player:Default')
-AddEventHandler('Server:Instance:Player:Default', function(data)
-    local src = source
-    -- Set to default instance
+AddEventHandler('Server:Instance:Player:Default', function(req)
+    local src = req or source
     c.inst.SetPlayerDefault(src)
-
 end)
 
+-- Server Death Handler - if was killed by a player or not.
 RegisterNetEvent("Server:Character:Death")
 AddEventHandler("Server:Character:Death", function(data)
     local src = source
@@ -43,6 +41,14 @@ AddEventHandler("Server:Character:Death", function(data)
     else
 
     end
+end)
+
+--@ req = server_id or source
+--@ t = {'name'='police','grade'=0}
+RegisterNetEvent("Server:Character:SetJob")
+AddEventHandler("Server:Character:SetJob", function(req, t)
+    local src = req or source
+
 end)
 
 -- ====================================================================================--

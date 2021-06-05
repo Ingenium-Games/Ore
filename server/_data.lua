@@ -17,8 +17,8 @@ function c.data.Initilize()
     c.debug('Loading Sequence Begin.')
     local num, loaded = 0, false
     local t = {
-        [1] = 'DB: Characters;',
-        [2] = 'DB: Vehicles;',
+        [1] = 'DB: Characters marked as In-Active;',
+        [2] = 'DB: Jobs have been Generated;',
         [3] = 'DB: Vehicles;',
         [4] = 'DB: Vehicles;',
         [5] = 'DB: Vehicles;',
@@ -36,7 +36,7 @@ function c.data.Initilize()
         -- [1]
         c.sql.ResetActiveCharacters(cb)
         -- [2]
-        -- c.sql.
+        c.sql.GrabJobs(cb)
         -- [3]
         -- c.sql.
         --
@@ -136,7 +136,6 @@ function c.data.LoadPlayer(source, Character_ID)
     data.Stress = xPlayer.GetStress()
     data.Modifiers = xPlayer.GetModifiers()
     data.Apperance = xPlayer.GetApperance()
-
     --
     c.sql.SetCharacterActive(Character_ID, function()
         c.data.SetPlayer(src, xPlayer)

@@ -27,6 +27,16 @@ function c.job.ActiveMembers()
     return tab
 end
 
+function c.job.Exist(job, grade)
+	grade = tostring(grade)
+	if job and grade then
+		if c.jobs[job] and c.jobs[job].grades[grade] then
+			return true
+		end
+	end
+	return false
+end
+
 -- req = source or number id calling event if internal
 -- t = {name = 'police', grade = 1}, Job and then Grade
 AddEventHandler('Server:Character:SetJob', function(req, t)

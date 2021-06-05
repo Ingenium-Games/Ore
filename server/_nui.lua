@@ -12,8 +12,8 @@ math.randomseed(c.Seed)
 -- ====================================================================================--
 --  Get Character Info for the NUI to allow character selection.
 RegisterNetEvent('Server:Character:Request:List')
-AddEventHandler('Server:Character:Request:List', function(source, Primary_ID)
-    local src = tonumber(source)
+AddEventHandler('Server:Character:Request:List', function(req, Primary_ID)
+    local src = tonumber(req) or source
     local Characters = c.sql.GetCharacters(Primary_ID)
     local Command = "OnJoin"
     -- Send the data table to the client that requested it...
@@ -67,10 +67,11 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
         Character_ID = char,
         City_ID = city,
         Phone = phone,
-        Coords = json.encode(conf.spawn)
+        Coords = json.encode(conf.spawn),
+        Accounts = json.encode({["bank"]=conf.startingbank,["money"]=125}),
     }
     c.sql.CreateCharacter(data, function()
-        c.sql.CreateAccount(char, banknum)
+        c.sql.CreateLoanAccount(char, banknum)
         Wait(500)
     end)
         c.data.LoadPlayer(src, char)

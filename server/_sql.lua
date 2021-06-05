@@ -110,6 +110,29 @@ function c.sql.SaveData(cb)
     end
 end
 
+function c.sql.GrabJobs(cb)
+    local IsBusy = true
+    local result = nil
+    MySQL.Async.fetchAll('SELECT * FROM `jobs`', {
+    }, function(data)
+        for i=1, #data, 1 do
+            if not c.jobs[i.Name] then
+                c.jobs[i.Name] = {}
+                c.jobs[i.Name].Label = i.Label
+                c.jobs[i.Name].Grades = {}
+            end
+            table.insert(c.jobs[i.Name].Grades, {Grade = i.Grade, Grade_Label = i.Grade_Label, Grade_Salary = i.Grade_Salary})
+        end
+        IsBusy = false
+    end)
+    while IsBusy do
+        Wait(0)
+    end
+    if cb then
+        cb()
+    end
+end
+
 -- ====================================================================================--
 -- CHARACTER CREATION QUERIES
 -- ====================================================================================--
@@ -205,7 +228,7 @@ end
 -- SHould remake htis one..
 function c.sql.CreateCharacter(t, cb)
     MySQL.Async.execute(
-        'INSERT INTO `characters` (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords);',
+        'INSERT INTO `characters` (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`, `Accounts`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords, @Accounts);',
         {
             Primary_ID = t.Primary_ID,
             Character_ID = t.Character_ID,
@@ -215,7 +238,8 @@ function c.sql.CreateCharacter(t, cb)
             Height = t.Height,
             Birth_Date = t.Birth_Date,
             Phone = t.Phone,
-            Coords = t.Coords
+            Coords = t.Coords,
+            Accounts = t.Accounts,
         }, function(data)
             if data then
 
@@ -226,12 +250,12 @@ function c.sql.CreateCharacter(t, cb)
         end)
 end
 
-function c.sql.CreateAccount(Character_ID, Account_Number, cb)
+function c.sql.CreateLoanAccount(Character_ID, Account_Number, cb)
     MySQL.Async.execute(
         'INSERT INTO `character_accounts` (`Character_ID`, `Account_Number`, `Bank`) VALUES (@Character_ID, @Account_Number, @Bank);',{
             ['@Character_ID'] = Character_ID,
             ['@Account_Number'] = Account_Number,
-            ['@Bank'] = conf.startingbank,
+            ['@Bank'] = conf.startingloan,
         }, function(data)
             if data then
 
@@ -574,6 +598,24 @@ function c.sql.SetCharacterActive(character_id, cb)
     local Character_ID = character_id
     MySQL.Async.execute('UPDATE `characters` SET `Active` = TRUE WHERE `Character_ID` = @Character_ID', {
         ['@Character_ID'] = Character_ID
+    }, function(data)
+        if data then
+            --
+        end
+        if cb then
+            cb()
+        end
+    end)
+end
+
+--- SET - The `Active` = TRUE `Character_ID` from the Primary_ID identifier
+-- @`Character_ID`
+function c.sql.SetCharacterInstance(character_id, instance_id, cb)
+    local Character_ID = character_id
+    local Instance = instance_id
+    MySQL.Async.execute('UPDATE `characters` SET `Instance` = @Instance WHERE `Character_ID` = @Character_ID', {
+        ['@Instance'] = Instance,
+        ['@Character_ID'] = Character_ID,
     }, function(data)
         if data then
             --

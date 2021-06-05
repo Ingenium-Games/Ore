@@ -30,6 +30,7 @@ end)
 
 AddEventHandler('explosionEvent', function()
     CancelEvent()
+    c.debug('Explosion has been Cancelled.')
 end)
 
 AddEventHandler('entityCreated', function(ent)

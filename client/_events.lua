@@ -47,5 +47,6 @@ AddEventHandler('Client:Character:Ready', function()
     --
     SetCanAttackFriendly(ped, true, false)
     NetworkSetFriendlyFireOption(true)
-    
+    --
+    TriggerServerEvent("Server:Character:Ready")
 end)
