@@ -62,6 +62,10 @@ function c.GetPlayer(source)
     return c.data.GetPlayer(source)
 end
 
+function c.GetPlayerFromId(source)
+	return c.data.GetPlayer(source)
+end
+
 function c.data.GetPlayer(source)
     return c.pdex[source]
 end
@@ -74,12 +78,27 @@ function c.data.RemovePlayer(source)
     c.pdex[source] = false
 end
 
+function c.data.GetPlayers()
+    return c.pdex
+end
+
 function c.GetPlayers()
     return c.data.GetPlayers()
 end
 
-function c.data.GetPlayers()
-    return c.pdex
+function c.data.GetPlayerByIdentifier(id)
+    for k,v in pairs(c.pdex) do
+        if v then
+            if v.Character_ID == id then
+                return c.GetPlayer(k)
+            end
+        end
+    end
+    return nil
+end
+
+function c.GetPlayerFromIdentifier(id)
+    return c.data.GetPlayerByIdentifier(id)
 end
 
 -- ====================================================================================--

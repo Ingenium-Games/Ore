@@ -222,5 +222,31 @@ function c.status.SetPlayer(data)
     c.status.StartHungerDecrease()
     c.status.StartThirstDecrease()
     c.status.StartStressIncrease()
-    --
 end
+
+--[[
+Things to make into variables for items or buffs.
+
+
+SetPlayerHealthRechargeLimit(ply, 0)
+SetPlayerHealthRechargeMultiplier(ply, 0)
+
+    x, 1.00 - 1.49
+SetRunSprintMultiplierForPlayer(player,multiplier)
+    x, 1.00 - 1.49
+SetSwimMultiplierForPlayer(player,multiplier)
+
+ShakeGameplayCam(shakeName, intensity)
+DEATH_FAIL_IN_EFFECT_SHAKE  
+DRUNK_SHAKE  
+FAMILY5_DRUG_TRIP_SHAKE  
+HAND_SHAKE  
+JOLT_SHAKE  
+LARGE_EXPLOSION_SHAKE  
+MEDIUM_EXPLOSION_SHAKE  
+SMALL_EXPLOSION_SHAKE  
+ROAD_VIBRATION_SHAKE  
+SKY_DIVING_SHAKE  
+VIBRATE_SHAKE
+
+]]--

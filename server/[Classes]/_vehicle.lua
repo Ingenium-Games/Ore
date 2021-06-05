@@ -14,6 +14,8 @@ math.randomseed(c.Seed)
 -- Too Add vehicle driving fuel consumption.
 
 function c.class.VehicleClass(entity)
+    local _min = 0
+    local _max = 100
     local self = {}
     --
     self.Fuel = math.random(73, 100)
@@ -23,29 +25,24 @@ function c.class.VehicleClass(entity)
     end
     --
     self.AddFuel = function(num)
-        if type(num) == 'number' then
-            self.Fuel = (self.Fuel + num)
-            if self.Fuel >= 100 then
-                self.Fuel = 100
-            end
+        local num = c.check.Number(num, _min, _max)
+        self.Fuel = (self.Fuel + num)
+        if self.Fuel >= 100 then
+           self.Fuel = 100
         end
     end
     --
     self.RemoveFuel = function(num)
-        if type(num) == 'number' then
-            self.Fuel = (self.Fuel - num)
-            if self.Fuel <= 0 then
-                self.Fuel = 0
-            end
+        local num = c.check.Number(num, _min, _max)
+        self.Fuel = (self.Fuel - num)
+        if self.Fuel <= 0 then
+           self.Fuel = 0
         end
     end
     --
     self.SetFuel = function(num)
-        if num > 100 or num < 0 then
-            c.debug("Unable to set vehicle fuel level above 100 or below 0.")
-        else
-            self.Fuel = num
-        end
+        local num = c.check.Number(num, _min, _max)
+        self.Fuel = num
     end
     --
     return self

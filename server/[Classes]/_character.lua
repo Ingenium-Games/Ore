@@ -26,7 +26,7 @@ function c.class.CreateCharacter(character_id)
     self.Full_Name = data.First_Name .. ' ' .. data.Last_Name
 
     self.Phone = data.Phone -- 200000 - 699999
-
+    
     -- Integers
     self.Health = data.Health
     self.Armour = data.Armour
@@ -38,12 +38,16 @@ function c.class.CreateCharacter(character_id)
     self.Wanted = data.Wanted
 
     -- Tables (JSONIZE)
+    self.Job = json.decode(data.Job)
+    self.Accounts = json.decode(data.Accounts)
+    
     self.Appearance = json.decode(data.Appearance)
     self.Modifiers = json.decode(data.Modifiers)
     self.Coords = json.decode(data.Coords)
+
     ---- FUNCTIONS
-    self.TriggerEvent = function(eventName, ...)
-		TriggerClientEvent(eventName, self.ID, ...)
+    self.TriggerEvent = function(event, ...)
+		TriggerClientEvent(event, self.ID, ...)
     end
     --
     self.GetIdentifier = function()
@@ -74,10 +78,6 @@ function c.class.CreateCharacter(character_id)
         return self.Full_Name
     end
     --
-    self.GetPhone = function()
-        return self.Phone
-    end
-    --
     self.GetGender = function()
         if self.Appearance["sex"] ~= 0 then
             return 'Female'
@@ -85,13 +85,154 @@ function c.class.CreateCharacter(character_id)
             return 'Male'
         end
     end
+    --
+    self.GetAccounts = function(b)
+        local bool = c.check.Boolean(b)
+        if bool then
+            local Accounts = {}
+            for k,v in ipairs(self.Accounts) do
+                Accounts[v.name] = v.money
+            end
+            return Accounts
+        else
+            return self.Accounts
+        end
+    end
+    --
+    self.GetAccount = function(acc)
+        for k, v in ipairs(self.Accounts) do
+            if v.name == acc then
+                return v
+            end
+        end
+    end
+    --
+    self.GetAccountMoney = function()
+        local acc = self.GetAccount('money')
+        if acc then
+            return acc.money
+        end
+    end
+    --
+    self.SetAccountMoney = function(v)
+        local num = c.check.Number(v)
+        if num >= 0 then
+            local acc = self.GetAccount('money')
+            if acc then
+                local pMoney = acc.money
+                local nMoney = c.math.Decimals(num, 0)
+                acc.money = nMoney
+            end
+        end
+    end
+    --
+    self.AddAccountMoney = function(v)
+        local num = c.check.Number(v)
+        if num > 0 then
+            local acc = self.getAccount('money')
+            if acc then
+                local nMoney = acc.money + c.math.Decimals(num, 0)
+                acc.money = nMoney
+            end
+        end
+    end
+
+    self.RemoveAccountMoney = function(v)
+        local num = c.check.Number(v)
+        if num > 0 then
+            local acc = self.getAccount('money')
+
+            if acc then
+                local nMoney = acc.money - c.math.Decimals(num, 0)
+                acc.money = nMoney
+            end
+        end
+    end
+
+    self.GetAccountBank = function()
+        local acc = self.getAccount('bank')
+        if acc then
+            return acc.money
+        end
+    end
+
+    self.SetAccountBank = function(v)
+        local num = c.check.Number(v)
+        if num >= 0 then
+            local acc = self.getAccount('bank')
+            if acc then
+                local pMoney = acc.money
+                local nMoney = c.math.Decimals(num, 0)
+                acc.money = nMoney
+            end
+        end
+    end
+
+    self.AddAccountBank = function(v)
+        local num = c.check.Number(v)
+        if num > 0 then
+            local acc = self.getAccount('bank')
+            if acc then
+                local nMoney = acc.money + c.math.Decimals(num, 0)
+                acc.money = nMoney
+            end
+        end
+    end
+    --
+    self.RemoveAccountBank = function(v)
+        local num = c.check.Number(v)
+        if num > 0 then
+            local acc = self.getAccount('bank')
+            if acc then
+                local nMoney = acc.money - c.math.Decimals(num, 0)
+                acc.money = nMoney
+            end
+        end
+    end
+    --
+    self.GetJob = function()
+        return self.Job
+    end
+    --
+    self.SetJob = function(t)
+        local tab = c.check.Table(t)
+        if c.DoesJobExist(t.job, t.grade) then
+            local jobObject, gradeObject = c.jobs[t.job], c.jobs[t.job].grades[t.grade]
+            --
+            self.Job.id = jobObject.id
+            self.Job.name = jobObject.name
+            self.Job.label = jobObject.label
+            --
+            self.Job.grade = gradeObject.grade
+            self.Job.grade_name = gradeObject.name
+            self.Job.grade_label = gradeObject.label
+            self.Job.grade_salary = gradeObject.salary
+            --
+            TriggerEvent('Server:Character:SetJob', self.ID, self.GetJob())
+            self.TriggerEvent('Client:Character:SetJob', self.GetJob())
+        else
+            c.debug('Ignoring invalid .SetJob() usage for "%s"'):format(self.Name)
+        end
+    end
+    --
+    self.GetPhone = function()
+        return self.Phone
+    end
+    --
+    self.SetPhone = function(s)
+        local str = c.check.String(s)
+        self.Phone = str
+    end
     -- 
     self.GetHealth = function()
         return self.Health
     end
     --
     self.SetHealth = function(v)
-        self.Health = v
+        local _min = 0
+        local _max = conf.defaulthealth
+        local num = c.check.Number(v, _min, _max)
+        self.Health = num
     end
     --
     self.GetArmour = function()
@@ -99,7 +240,10 @@ function c.class.CreateCharacter(character_id)
     end
     --
     self.SetArmour = function(v)
-        self.Armour = v
+        local _min = 0
+        local _max = conf.defaultarmour
+        local num = c.check.Number(v, _min, _max)        
+        self.Armour = num
     end
     --
     self.GetHunger = function()
@@ -107,7 +251,10 @@ function c.class.CreateCharacter(character_id)
     end
     --
     self.SetHunger = function(v)
-        self.Hunger = v
+        local _min = 0
+        local _max = 100
+        local num = c.check.Number(v, _min, _max)
+        self.Hunger = num
     end
     --
     self.GetThirst = function()
@@ -115,7 +262,10 @@ function c.class.CreateCharacter(character_id)
     end
     --
     self.SetThirst = function(v)
-        self.Thirst = v
+        local _min = 0
+        local _max = 100
+        local num = c.check.Number(v, _min, _max)
+        self.Thirst = num
     end
     --
     self.GetStress = function()
@@ -123,7 +273,10 @@ function c.class.CreateCharacter(character_id)
     end
     --
     self.SetStress = function(v)
-        self.Stress = v
+        local _min = 0
+        local _max = 100
+        local num = c.check.Number(v, _min, _max)
+        self.Stress = num
     end
     --
     self.GetModifiers = function()
@@ -131,15 +284,17 @@ function c.class.CreateCharacter(character_id)
     end
     --
     self.SetModifiers = function(t)
-        self.Modifiers = t
+        local tab = c.check.Table(t)
+        self.Modifiers = tab
     end
     --
     self.GetAppearance = function()
         return self.Appearance
     end
     --
-    self.SetAppearance = function(v)
-        self.Appearance = v
+    self.SetAppearance = function(t)
+        local tab = c.check.Table(t)
+        self.Appearance = tab
     end
     --
     self.GetCoords = function()
@@ -147,10 +302,11 @@ function c.class.CreateCharacter(character_id)
     end
     --
     self.SetCoords = function(t)
+        local tab = c.check.Table(t)
         self.Coords = {
-            x = c.math.Decimals(t.x, 2),
-            y = c.math.Decimals(t.y, 2),
-            z = c.math.Decimals(t.z, 2)
+            x = c.math.Decimals(tab.x, 2),
+            y = c.math.Decimals(tab.y, 2),
+            z = c.math.Decimals(tab.z, 2)
         }
     end
     --
@@ -159,9 +315,8 @@ function c.class.CreateCharacter(character_id)
     end
     --
     self.SetWanted = function(b)
-        if type(b) == 'boolean' then
-            self.Wanted = b
-        end
+        local b = c.check.Boolean(b)
+        self.Wanted = b
     end
     --
     c.debug('End Character Class Creation')
