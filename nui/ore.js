@@ -5,6 +5,7 @@
 let EnableDebug = false
 let Character_ID = null
 let PacketTemp = null
+let hudTemp = null
 
 function OnJoin(data) {
     if (data !== null) {
@@ -80,6 +81,37 @@ function CharacterMake() {
     OnAction(PacketTemp);
 };
 
+
+
+var hBar = $('.health-bar'),
+    bar = hBar.find('.bar'),
+    hit = hBar.find('.hit'),
+    total = hBar.data('total'),
+    value = hBar.data('value');
+
+function DoHealthUpdate(hp) {
+    var damage = value - hp;
+    var newValue = value - damage;
+    var barWidth = (newValue / total) * 100;
+    var hitWidth = (damage / value) * 100 + "%";
+
+    hit.css('width', hitWidth);
+    hBar.data('value', newValue);
+
+    setTimeout(function(){
+    hit.css({'width': '0'});
+    bar.css('width', barWidth + "%");
+    }, 500);
+};
+
+function UpdateHUDElements(packet) {
+    let data = packet
+    if (data.Health) {
+        DoHealthUpdate(data.Health)
+    };
+
+};
+
 $(document).ready(function () {
     $('#DateOfBirth').mask('00-00-0000', { clearIfNotMatch: true });
     $('#Height').mask('000', { clearIfNotMatch: true });
@@ -105,6 +137,23 @@ $(document).ready(function () {
                     $("#Sidebar").hide();
                     $("#CharacterList").hide();
                     $("#CharacterMake").show();
+                    break;
+                case 'CharacterHUD':
+                    if (EnableDebug) {
+                        console.log('   -= Message = CharacterHUD =-   ')
+                    }
+                    $("#Sidebar").hide();    
+                    $("#CharacterList").hide();
+                    $("#CharacterMake").hide();
+                    $("#CharacterHUD").show();
+                    break;
+                case 'UpdateHUD':
+                    if (EnableDebug) {
+                        console.log('   -= Message = UpdateHUD =-   ')
+                    }
+                    $("#CharacterHUD").show();
+                    hudTemp = data.packet;
+                    UpdateHUDElements(data.packet);
                     break;
                 case 'default':
                     if (EnableDebug) {

@@ -171,7 +171,6 @@ function c.GetEntity(entity)
     return Entity(entity).state
 end
 
-
 -- DrawMarker(t, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts)
 -- @num, select premade markers from table.
 function c.SelectMarker(v, ords)
@@ -179,28 +178,28 @@ function c.SelectMarker(v, ords)
     local markers = {
         [0] = function()
             -- Blue Static Circle.
-            DrawMarker(27, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
+            DrawMarker(27, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
         end,
         [1] = function()
             -- Blue Static $.
-            DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
+            DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
         end,
         [2] = function()
             -- Blue Static ?.
-            DrawMarker(32, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
+            DrawMarker(32, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
         end,
         [3] = function()
             -- Blue Static Chevron.
-            DrawMarker(20, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
+            DrawMarker(20, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
         end,
         [4] = function() -- Mainly for pickups or notes or anything found on ground.
             -- Small White Rotating Circle + Bouncing ? (on Ground)
-            DrawMarker(27, ords[1], ords[2], ords[3]-0.45, 0, 0, 0, 0, 0, 0, 0.2001, 0.2001, 1.7001, 240, 240, 240, 35, 0, 0, 2, 1)
-            DrawMarker(32, ords[1], ords[2], ords[3]-0.45, 0, 0, 0, 0, 0, 0, 0.2001, 0.2001, 1.7001, 240, 240, 240, 35, 1, 1, 2, 0)
+            DrawMarker(27, ords[1], ords[2], ords[3]-0.45, 0, 0, 0, 0, 0, 0, 0.4001, 0.4001, 0.4001, 240, 240, 240, 35, 0, 0, 2, 1)
+            DrawMarker(32, ords[1], ords[2], ords[3]-0.45, 0, 0, 0, 0, 0, 0, 0.2001, 0.4001, 0.8001, 240, 240, 240, 35, 1, 1, 2, 0)
         end,
         [5] = function()
             -- White Rotating Chevron Bouncing.
-            DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 240, 240, 240, 35, 1, 0, 2, 1)
+            DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 240, 240, 240, 35, 1, 0, 2, 1)
         end,
         [6] = function()
             -- Blue Static $.
@@ -212,7 +211,10 @@ function c.SelectMarker(v, ords)
     end
 end
 
-function c.IsNear(entity, arrays, cb)
+-- @entity - the object
+-- @arrays - locations in a table format
+-- @style - c.SelectMarker() - Pick Marker type.
+function c.IsNear(entity, arrays, style)
     local dstchecked = 1000
     local pos = vector3(GetEntityCoords(entity))
 	for i = 1, #arrays do
@@ -222,11 +224,10 @@ function c.IsNear(entity, arrays, cb)
 			dstchecked = comparedst
 		end
 		if comparedst < 5.0 then
-            if cb then
-                cb()
-                -- c.IsNear(entity, ordss, c.SelectMarker(...))
-                -- EG with funciton above.
-                -- in :: cb(3,ords)
+            if style then
+                c.SelectMarker(style, ords)
+            else
+                c.SelectMarker(0, ords)
             end
         end
 	end
@@ -235,10 +236,7 @@ end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.
--- if minimal
--- returns table{objinarea}
--- else
--- [objectID] = {model = XYZ, coords=vec3}
+-- @boolean - type to return, short list or detailed
 function c.GetPlayersInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CPed')
@@ -252,7 +250,7 @@ function c.GetPlayersInArea(ords, radius, minimal)
                     table.insert(obj, v)
                 end
             end
-        end
+        end -- {obj,obj,obj}
     else   
         for _, v in pairs(objs) do
             if IsPedAPlayer(v) then
@@ -260,21 +258,17 @@ function c.GetPlayersInArea(ords, radius, minimal)
                 local target = vector3(GetEntityCoords(v))
                 local distance = #(target - coords)
                 if distance <= radius then
-                    --object number
-                    obj[v] = {model=model,coords=target}
+                    obj[v] = {["model"] = model, ["coords"] = target}
                 end   
             end
-        end
+        end -- { [objectID] = {model = XYZ, coords=vec3}, [objectID] = {model = XYZ, coords=vec3} }
     end
     return obj
 end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.
--- if minimal
--- returns table{objinarea}
--- else
--- [objectID] = {model = XYZ, coords=vec3}
+-- @boolean - type to return, short list or detailed
 function c.GetPedsInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CPed')
@@ -286,27 +280,23 @@ function c.GetPedsInArea(ords, radius, minimal)
             if distance <= radius then
                 table.insert(obj, v)
             end
-        end
+        end -- {obj,obj,obj}
     else   
         for _, v in pairs(objs) do
             local model = GetEntityModel(v)
             local target = vector3(GetEntityCoords(v))
             local distance = #(target - coords)
             if distance <= radius then
-                --object number
-                obj[v] = {model=model,coords=target}
+                obj[v] = {["model"] = model, ["coords"] =target}
             end   
-        end
+        end -- { [objectID] = {model = XYZ, coords=vec3}, [objectID] = {model = XYZ, coords=vec3} }
     end
     return obj
 end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.
--- if minimal
--- returns table{objinarea}
--- else
--- [objectID] = {model = XYZ, coords=vec3}
+-- @boolean - type to return, short list or detailed
 function c.GetObjectsInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CObject')
@@ -318,27 +308,23 @@ function c.GetObjectsInArea(ords, radius, minimal)
             if distance <= radius then
                 table.insert(obj, v)
             end
-        end
+        end -- {obj,obj,obj}
     else   
         for _, v in pairs(objs) do
             local model = GetEntityModel(v)
             local target = vector3(GetEntityCoords(v))
             local distance = #(target - coords)
             if distance <= radius then
-                --object number
-                obj[v] = {model=model,coords=target}
+                obj[v] = {["model"] = model, ["coords"] = target}
             end   
-        end
+        end -- { [objectID] = {model = XYZ, coords=vec3}, [objectID] = {model = XYZ, coords=vec3} }
     end
     return obj
 end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.
--- if minimal
--- returns table{objinarea}
--- else
--- [objectID] = {model = XYZ, coords=vec3}
+-- @boolean - type to return, short list or detailed
 function c.GetVehiclesInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CVehicle')
@@ -350,36 +336,46 @@ function c.GetVehiclesInArea(ords, radius, minimal)
             if distance <= radius then
                 table.insert(obj, v)
             end
-        end
+        end -- {obj,obj,obj}
     else   
         for _, v in pairs(objs) do
             local model = GetEntityModel(v)
             local target = vector3(GetEntityCoords(v))
             local distance = #(target - coords)
             if distance <= radius then
-                --object number
-                obj[v] = {model=model,coords=target}
-            end   
-        end
+                obj[v] = {["model"] = model, ["coords"] = target}
+            end      
+        end -- { [objectID] = {model = XYZ, coords=vec3}, [objectID] = {model = XYZ, coords=vec3} }
     end
     return obj
 end
 
 -- @coords - the {x,y,z}
 -- @radius - the distance around.
--- returns table{pickinarea}
-function c.GetPickupssInArea(coords, radius)
-    local pickups = GetGamePool('CPickup')
-    local pickinarea = {}
-    for _, v in pairs(pickups) do
-        local targetCoords = GetEntityCoords(v)
-        local distance = #(vector3(targetCoords.x, targetCoords.y, targetCoords.z) -
-                             vector3(coords.x, coords.y, coords.z))
-        if distance <= radius then
-            table.insert(pickinarea, v)
-        end
+-- @boolean - type to return, short list or detailed
+function c.GetPickupssInArea(coords, radius, minimal)
+    local coords = vector3(ords)
+    local objs = GetGamePool('CPickup')
+    local obj = {}
+    if minimal then
+        for _, v in pairs(objs) do
+            local target = vector3(GetPickupCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                table.insert(obj, v)
+            end
+        end -- {obj,obj,obj}
+    else   
+        for _, v in pairs(objs) do
+            local model = GetPickupHash(v)
+            local target = vector3(GetPickupCoords(v))
+            local distance = #(target - coords)
+            if distance <= radius then
+                obj[v] = {["model"] = model, ["coords"] = target}
+            end      
+        end -- { [objectID] = {model = XYZ, coords=vec3}, [objectID] = {model = XYZ, coords=vec3} }
     end
-    return pickinarea
+    return obj
 end
 
 -- returns closestPlayer, closestDistance
