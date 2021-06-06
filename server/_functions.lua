@@ -124,24 +124,24 @@ end
 -- ====================================================================================--
 -- https://github.com/pitermcflebor/pmc-callbacks (MIT LICENSE)
 
-RegisterNetEvent('__pmc_callback:server')
-AddEventHandler('__pmc_callback:server', function(eventName, ticket, ...)
+RegisterNetEvent('Callback:Server')
+AddEventHandler('Callback:Server', function(eventName, ticket, ...)
     local s = source
     local p = promise.new()
 
-    TriggerEvent('s__pmc_callback:' .. eventName, function(...)
+    TriggerEvent('__CB:Server:' .. eventName, function(...)
         p:resolve({...})
     end, s, ...)
 
     local result = Citizen.Await(p)
-    TriggerClientEvent(('__pmc_callback:client:%s:%s'):format(eventName, ticket), s, table.unpack(result))
+    TriggerClientEvent(('Callback:Client:%s:%s'):format(eventName, ticket), s, table.unpack(result))
 end)
 
 RegisterServerCallback = function(eventName, fn)
     assert(type(eventName) == 'string', 'Invalid Lua type at argument #1, expected string, got ' .. type(eventName))
     assert(type(fn) == 'function', 'Invalid Lua type at argument #2, expected function, got ' .. type(fn))
 
-    AddEventHandler(('s__pmc_callback:%s'):format(eventName), function(cb, s, ...)
+    AddEventHandler(('__CB:Server:%s'):format(eventName), function(cb, s, ...)
         local result = {fn(s, ...)}
         cb(table.unpack(result))
     end)
@@ -153,15 +153,15 @@ TriggerClientCallback = function(src, eventName, ...)
 
     local p = promise.new()
 
-    RegisterNetEvent('__pmc_callback:server:' .. eventName)
-    local e = AddEventHandler('__pmc_callback:server:' .. eventName, function(...)
+    RegisterNetEvent('Callback:Server:' .. eventName)
+    local e = AddEventHandler('Callback:Server:' .. eventName, function(...)
         local s = source
         if src == s then
             p:resolve({...})
         end
     end)
 
-    TriggerClientEvent('__pmc_callback:client', src, eventName, ...)
+    TriggerClientEvent('Callback:Client', src, eventName, ...)
 
     local result = Citizen.Await(p)
     RemoveEventHandler(e)
