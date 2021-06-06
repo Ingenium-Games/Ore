@@ -90,20 +90,23 @@ var hBar = $('.health-bar'),
     value = hBar.data('value');
 
 function DoHealthUpdate(hp) {
-    var damage = value - hp;
-    var newValue = value - damage;
-    var barWidth = (newValue / total) * 100;
-    var hitWidth = (damage / value) * 100 + "%";
+    if (value != hp){
+        var damage = value - hp;
+        var newValue = value - damage;
+        var barWidth = (newValue / total) * 100;
+        var hitWidth = (damage / value) * 100 + "%";
 
-    hit.css('width', hitWidth);
-    hBar.data('value', newValue);
+        hit.css('width', hitWidth);
+        hBar.data('value', newValue);
 
-    setTimeout(function(){
-    hit.css({'width': '0'});
-    bar.css('width', barWidth + "%");
-    }, 500);
+        setTimeout(function(){
+        hit.css({'width': '0'});
+        bar.css('width', barWidth + "%");
+        }, 500);
+    }
 };
 
+// packet = c.stats {Health, Hunger, etc}
 function UpdateHUDElements(packet) {
     let data = packet
     if (data.Health) {
@@ -151,7 +154,6 @@ $(document).ready(function () {
                     if (EnableDebug) {
                         console.log('   -= Message = UpdateHUD =-   ')
                     }
-                    $("#CharacterHUD").show();
                     hudTemp = data.packet;
                     UpdateHUDElements(data.packet);
                     break;

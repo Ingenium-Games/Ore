@@ -26,7 +26,9 @@ function c.modifiers.GetModifiers()
 end
 
 function c.modifiers.SetModifiers(t)
-    c.modifier = t
+    if t.Modifiers then
+        c.modifier = t.Modifiers
+    end
 end
 
 -- ====================================================================================--

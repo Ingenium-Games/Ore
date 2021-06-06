@@ -21,12 +21,17 @@ end)
 -- Event to receive the data of the chosen character for the client.
 RegisterNetEvent('Client:Character:Loaded')
 AddEventHandler('Client:Character:Loaded', function(data)
+    -- Show the characters HP Bars etc...
+    SendNUIMessage({
+        message = "CharacterHUD",
+    })
     -- Add routines to do upon resicing the data from server.
     c.data.SetPlayer(data) -- Full table will be in here
     c.data.SetLoadedStatus(true)
     Wait(250) -- Give yourself a moment prior to marked as loaded.
-    --
-    c.status.SetPlayer(c.data.GetPlayer()) -- This will only use the Health, Armour, Hunger, Thirst and Stress as a sub table c.stats
+    -- SET STATUS
+    c.status.SetPlayer(data) -- This will only use the Health, Armour, Hunger, Thirst and Stress as a sub table c.stats
+    c.modifiers.SetModifiers(data)
     --
     Wait(250) -- Give yourself a moment prior to Syncing from loaded.
     --

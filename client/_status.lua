@@ -1,7 +1,7 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-c.stats = {
+c.stats = {    
     ["Hunger"] = 100, -- Min 0 Max 100
     ["Thirst"] = 100, -- Min 0 Max 100
     ["Stress"] = 0, -- Min 0 Max 100
@@ -18,7 +18,7 @@ math.randomseed(c.Seed)
 
 local _min = 0
 local _max = 100
-local _sync = c.sec * 2
+local _sync = c.sec
 local _hunger = c.min
 local _thirst = c.min
 local _stress = c.min * 10
@@ -139,9 +139,21 @@ end
 
 -- ====================================================================================--
 
+local function BuildTable()
+    local ped = PlayerPedId()
+    local Health = c.status.GetHealth(ped)
+    local Armour = c.status.GetArmour(ped)
+    c.stats["Health"] = Health
+    c.stats["Armour"] = Armour
+end
+
 function c.status.NUISync()
     local function Do()
-        -- SendNuiMessage()
+        BuildTable()
+        SendNUIMessage({
+            message = "UpdateHUD",
+            packet = c.stats
+        })
         SetTimeout(_sync, Do)
     end
     SetTimeout(_sync, Do)

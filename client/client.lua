@@ -19,9 +19,6 @@ Citizen.CreateThread(function()
                 DisplayRadar(false)
                 RemoveMultiplayerHudCash()
                 TriggerServerEvent('Server:PlayerConnecting')
-                --
-                c.time.UpdateTime()
-
             end)
             --
             return
@@ -36,7 +33,6 @@ Citizen.CreateThread(function()
         HideAreaAndVehicleNameThisFrame()
         HideHudComponentThisFrame(19)
         HudWeaponWheelIgnoreSelection()
-        ThefeedHideThisFrame()
     end
 end)
 

@@ -11,6 +11,7 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
+-- functions to run prior to the player connecting server sequence.
 function c.data.Initilize(cb)
     -- Get time and update every minute.
     c.time.UpdateTime()
