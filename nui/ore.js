@@ -1,3 +1,7 @@
+/*
+
+*/
+
 let EnableDebug = false
 let Character_ID = null
 let PacketTemp = null
@@ -113,8 +117,35 @@ $(document).ready(function () {
         });
     };
 
-    // ________________________________________________________________________________________________________
-    // End Character Login section of NUI page for the Core resource.
-    // ========================================================================================================
+    $('#CharacterMake').submit(function (e) {
+        e.preventDefault();
+    }).validate({
+        rules: {
+            FirstName: {
+                minlength: 1,
+                maxlength: 35,
+                required: true
+            },
+            LastName: {
+                minlength: 1,
+                maxlength: 35,
+                required: true
+            },
+            Height: {
+                minlength: 3,
+                maxlength: 3,
+                required: true
+            },
+            DateOfBirth: {
+                minlength: 10,
+                maxlength: 10,
+                required: true
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
+            CharacterMake();
+        }
+    });
 
 });

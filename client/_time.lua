@@ -17,7 +17,7 @@ local time = {0,0}
 function c.time.GetTime()
     local time = GetConvar("Time", "00:00")
     local hour = tonumber(time:sub(1,2))
-    local min  = tonumber(time:sub(4,5))
+    local min = tonumber(time:sub(4,5))
     return {hour, min}
 end
 
