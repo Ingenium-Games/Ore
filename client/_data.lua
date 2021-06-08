@@ -11,7 +11,8 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
--- functions to run prior to the player connecting server sequence.
+--- Upon joining, these are core functions to run internally prior to sending the join request to the server
+---@param cb function "Callback function to run if any provided."
 function c.data.Initilize(cb)
     -- Get time and update every minute.
     c.time.UpdateTime()
@@ -23,33 +24,42 @@ function c.data.Initilize(cb)
     end
 end
 
+--- Returns the local from the local variable. String
 function c.data.GetLocale()
     return c.locale
 end
 
+--- Takes local information from the `user` SQL table and sets it for the client.
 function c.data.SetLocale()
     local xPlayer = c.data.GetPlayer()
     c.data.locale = xPlayer.GetLocale()
 end
 
+--- Sets the client as receieved the character data. Boolean
+---@param bool boolean "Set loaded status to true or false."
 function c.data.SetLoadedStatus(bool)
     if type(bool) == 'boolean' then
         c.CharacterLoaded = bool
     end
 end
 
+--- Returns if the client has finished loading. Boolean
 function c.data.GetLoadedStatus()
     return c.CharacterLoaded
 end
 
+--- Sets the data to the local table on the client side.
+---@param t table "Contains the table of data provided by the server to clinet on character selection."
 function c.data.SetPlayer(t)
     c.Character = t
 end
 
+--- Returns the xPlayer passed from the server. Table
 function c.data.GetPlayer()
     return c.Character
 end
 
+--- Shows a Spinny in the bottom left while sending data to the server.
 function c.data.ClientSync()
     Citizen.CreateThread(function()
         while true do
@@ -65,6 +75,7 @@ function c.data.ClientSync()
     end)
 end
 
+--- Sends the packet of data to the server to register and update xPlayer
 function c.data.SendPacket()
     local ped = PlayerPedId()
     local data = {}

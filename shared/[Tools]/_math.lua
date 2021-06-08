@@ -20,13 +20,8 @@ function c.math.Decimals(num, dec)
     end
 end
 
-function c.math.Round(num, dec)
-    local p = 10 ^ dec
-    if num ~= nil then
-        return math.floor((num * p) + 0.5) / (p)
-    else
-        return math.floor(num + 0.5)
-    end
+function c.math.Round(num)
+    return math.floor(num + 0.5)
 end
 
 function c.math.Trim(num)

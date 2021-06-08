@@ -91,21 +91,26 @@ end
 
 -- ====================================================================================--
 
+--- Preduce a Busy Spinner
 function c.IsBusy()
     BeginTextCommandBusyspinnerOn('FM_COR_AUTOD')
     EndTextCommandBusyspinnerOn(5)
 end
 
+--- Remvoe a Busy Spinner
 function c.NotBusy()
     BusyspinnerOff()
     PreloadBusyspinner()
 end
 
+--- Produce a Busy Spinner with a "Please Wait"
 function c.PleaseWait()
     BeginTextCommandBusyspinnerOn('PM_WAIT')
     EndTextCommandBusyspinnerOn(5)
 end
 
+--- Informs the client to Please Wait with a Busy Spinner over a timeframe.
+---@param ms number "Milisecons to wait."
 function c.IsBusyPleaseWait(ms)
     c.PleaseWait()
     --
@@ -116,53 +121,16 @@ end
 
 -- ====================================================================================--
 
+--- Return the Entity's state bag.
+---@param entity any "Typically a number or string"
 function c.GetEntity(entity)
     return Entity(entity).state
-end
-
--- DrawMarker(t, posX, posY, posZ, dirX, dirY, dirZ, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, red, green, blue, alpha, bobUpAndDown, faceCamera, p19, rotate, textureDict, textureName, drawOnEnts)
--- @num, select premade markers from table.
-function c.SelectMarker(v, ords)
-    local num = c.check.Number(v)
-    local markers = {
-        [0] = function()
-            -- Blue Static Circle.
-            DrawMarker(27, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
-        end,
-        [1] = function()
-            -- Blue Static $.
-            DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
-        end,
-        [2] = function()
-            -- Blue Static ?.
-            DrawMarker(32, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
-        end,
-        [3] = function()
-            -- Blue Static Chevron.
-            DrawMarker(20, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
-        end,
-        [4] = function() -- Mainly for pickups or notes or anything found on ground.
-            -- Small White Rotating Circle + Bouncing ? (on Ground)
-            DrawMarker(27, ords[1], ords[2], ords[3]-0.45, 0, 0, 0, 0, 0, 0, 0.4001, 0.4001, 0.4001, 240, 240, 240, 35, 0, 0, 2, 1)
-            DrawMarker(32, ords[1], ords[2], ords[3]-0.45, 0, 0, 0, 0, 0, 0, 0.2001, 0.4001, 0.8001, 240, 240, 240, 35, 1, 1, 2, 0)
-        end,
-        [5] = function()
-            -- White Rotating Chevron Bouncing.
-            DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 240, 240, 240, 35, 1, 0, 2, 1)
-        end,
-        [6] = function()
-            -- Blue Static $.
-            DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
-        end,
-    }
-    if num then
-        return markers[num]
-    end
 end
 
 -- @entity - the object
 -- @arrays - locations in a table format
 -- @style - c.SelectMarker() - Pick Marker type.
+--[[
 function c.IsNear(entity, arrays, style)
     local dstchecked = 1000
     local pos = vector3(GetEntityCoords(entity))
@@ -182,10 +150,12 @@ function c.IsNear(entity, arrays, style)
 	end
 	return dstchecked
 end
+]]--
 
--- @coords - the {x,y,z}
--- @radius - the distance around.
--- @boolean - type to return, short list or detailed
+--- Returns Players within the designated radius.
+---@param ords table "Generally a {x,y,z} or vector3"
+---@param radius number "Radius to return objects within"
+---@param minimal boolean "Return just the found objects or their model and coords as well?"
 function c.GetPlayersInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CPed')
@@ -215,9 +185,10 @@ function c.GetPlayersInArea(ords, radius, minimal)
     return obj
 end
 
--- @coords - the {x,y,z}
--- @radius - the distance around.
--- @boolean - type to return, short list or detailed
+--- Returns All Peds (including Players) within the designated radius.
+---@param ords table "Generally a {x,y,z} or vector3"
+---@param radius number "Radius to return objects within"
+---@param minimal boolean "Return just the found objects or their model and coords as well?"
 function c.GetPedsInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CPed')
@@ -243,9 +214,10 @@ function c.GetPedsInArea(ords, radius, minimal)
     return obj
 end
 
--- @coords - the {x,y,z}
--- @radius - the distance around.
--- @boolean - type to return, short list or detailed
+--- Returns Objects within the designated radius.
+---@param ords table "Generally a {x,y,z} or vector3"
+---@param radius number "Radius to return objects within"
+---@param minimal boolean "Return just the found objects or their model and coords as well?"
 function c.GetObjectsInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CObject')
@@ -271,9 +243,10 @@ function c.GetObjectsInArea(ords, radius, minimal)
     return obj
 end
 
--- @coords - the {x,y,z}
--- @radius - the distance around.
--- @boolean - type to return, short list or detailed
+--- Returns Vehicles within the designated radius.
+---@param ords table "Generally a {x,y,z} or vector3"
+---@param radius number "Radius to return objects within"
+---@param minimal boolean "Return just the found objects or their model and coords as well?"
 function c.GetVehiclesInArea(ords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CVehicle')
@@ -299,9 +272,10 @@ function c.GetVehiclesInArea(ords, radius, minimal)
     return obj
 end
 
--- @coords - the {x,y,z}
--- @radius - the distance around.
--- @boolean - type to return, short list or detailed
+--- Returns Pickups within the designated radius.
+---@param ords table "Generally a {x,y,z} or vector3"
+---@param radius number "Radius to return objects within"
+---@param minimal boolean "Return just the found objects or their model and coords as well?"
 function c.GetPickupssInArea(coords, radius, minimal)
     local coords = vector3(ords)
     local objs = GetGamePool('CPickup')

@@ -12,7 +12,7 @@ math.randomseed(c.Seed)
 
 Citizen.CreateThread(function()
     while true do
-        Wait(0)
+        Citizen.Wait(0)
         if NetworkIsSessionStarted() then
             --    
             c.data.Initilize(function()
@@ -29,7 +29,7 @@ end)
 -- Per Frame natives to enhance the role play experience.
 Citizen.CreateThread(function()
     while true do
-        Wait(0)
+        Citizen.Wait(0)
         HideAreaAndVehicleNameThisFrame()
         HideHudComponentThisFrame(19)
         HudWeaponWheelIgnoreSelection()
@@ -41,6 +41,6 @@ Citizen.CreateThread(function()
     while true do
         InvalidateIdleCam()
         N_0x9e4cfff989258472()
-        Wait(5000)
+        Citizen.Wait(5000)
     end
 end)
