@@ -56,12 +56,10 @@ end
 
 --- Produce A loop of markers to generate based on criteria.
 ---@param t table "Contains {["coords"] = vector3(), ["number"] = 0,X}"
----@param t2 table "Contains {["job"] = any, ["item"] = any, ["vehicle"] = any}"
+---@param t2 table "Contains two values, first should be job, item or vehicle. Second is a Callback. ie {["vehicle"] = class, ["func"] = cb()}"
 function c.markers.CreateThreadLoop(t, t2)
-    if not t2 then t2 = false end
     local tab = c.check.Table(t)
     local size = c.table.SizeOf(tab)
-    -- Based on the param's passed, does the t2 exist?
     if not t2 then
         -- Create the loop based on the Coordinates and marker style provided.
         Citizen.CreateThread(function()
@@ -93,9 +91,113 @@ function c.markers.CreateThreadLoop(t, t2)
                 end
             end
         end)
-    else
-    -- based on t2 being a table of info to create blipbs based on job roles, items or vehicle hases we ned to prep the local variables prior to creating the loop. and make it tynamic if the role or item or vehicle dissapear.
-        
-
+    elseif t2["job"] then
+        -- Create the loop based on the Coordinates and marker style provided.
+        Citizen.CreateThread(function()
+            local tab = tab
+            local size = size
+            while true do
+                local found = false
+                local close = true
+                local ped = PlayerPedId()
+                local pos = vector3(GetEntityCoords(ped))
+                local job = c.data.GetPlayer().Job.Name
+                Citizen.Wait(1)    
+                if c.data.GetLoadedStatus() then
+                    if job == t2["job"] then
+                        for i=1, size, 1 do
+                            local ords = tab[i].coords
+                            local num = tab[i].number
+                            if (Vdist(pos, ords) < 20) then
+                                found = true
+                                -- Draw marker
+                                c.markers.SelectMarker(num, ords)
+                                if (Vdist(pos, ords) < 5) then
+                                    close = true
+                                    -- Help notifications??
+                                    if IsControlJustPressed(0, 54) then --E
+                                        t2["func"]()
+                                    end
+                                end
+                            end
+                        end
+                    end
+                else
+                    Citizen.Wait(1250)
+                end
+            end
+        end)
+    elseif t2["item"] then
+        -- Create the loop based on the Coordinates and marker style provided.
+        Citizen.CreateThread(function()
+            local tab = tab
+            local size = size
+            while true do
+                local found = false
+                local close = true
+                local ped = PlayerPedId()
+                local pos = vector3(GetEntityCoords(ped))
+                local item = exports["inventory"].HasItem(t2["item"])
+                Citizen.Wait(1)    
+                if c.data.GetLoadedStatus() then        
+                    if item then
+                        for i=1, size, 1 do
+                            local ords = tab[i].coords
+                            local num = tab[i].number
+                            if (Vdist(pos, ords) < 20) then
+                                found = true
+                                -- Draw marker
+                                c.markers.SelectMarker(num, ords)
+                                if (Vdist(pos, ords) < 5) then
+                                    close = true
+                                    -- Help notifications??
+                                    if IsControlJustPressed(0, 54) then --E
+                                        t2["func"]()
+                                    end
+                                end
+                            end
+                        end
+                    end
+                else
+                    Citizen.Wait(1250)
+                end
+            end
+        end)
+    elseif t2["vehicle"] then
+        -- Create the loop based on the Coordinates and marker style provided.
+        Citizen.CreateThread(function()
+            local tab = tab
+            local size = size
+            while true do
+                local found = false
+                local close = true
+                local ped = PlayerPedId()
+                local pos = vector3(GetEntityCoords(ped))
+                local vehclass = GetVehicleClass(GetVehiclePedIsIn(ped))
+                Citizen.Wait(1)    
+                if c.data.GetLoadedStatus() then        
+                    if vehclass == t2["vehicle"] then
+                        for i=1, size, 1 do
+                            local ords = tab[i].coords
+                            local num = tab[i].number
+                            if (Vdist(pos, ords) < 35) then
+                                found = true
+                                -- Draw marker
+                                c.markers.SelectMarker(num, ords)
+                                if (Vdist(pos, ords) < 5) then
+                                    close = true
+                                    -- Help notifications??
+                                    if IsControlJustPressed(0, 54) then --E
+                                        t2["func"]()
+                                    end
+                                end
+                            end
+                        end
+                    end
+                else
+                    Citizen.Wait(1250)
+                end
+            end
+        end)
     end
 end

@@ -46,6 +46,8 @@ end
 
 -- ====================================================================================--
 
+--- Returns Primary_ID as set by conf.lua. String
+---@param source number "license: etc..."
 function c.identifier(source)
     local src = tonumber(source)
     local id = nil
@@ -57,6 +59,8 @@ function c.identifier(source)
     return id
 end
 
+--- Returns Steam, FiveM, License, Discord and IP identifiers in that order. Strings
+---@param source number "license: etc..."
 function c.identifiers(source)
     local src = tonumber(source)
     local steam, fivem, license, discord, ip = nil, nil, nil, nil, nil

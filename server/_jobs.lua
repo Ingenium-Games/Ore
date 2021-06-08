@@ -1,8 +1,8 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-c.jobs = {} -- DB Pull
 c.job = {} -- Function Table
+c.jobs = {} -- DB Pull
 --[[
 NOTES.
     -
@@ -14,6 +14,7 @@ math.randomseed(c.Seed)
 
 local CurrentlyActive = {}
 
+--- Return 
 function c.job.ActiveMembers()
     local tab = {}
     for k,v in ipairs(CurrentlyActive) do
@@ -27,6 +28,9 @@ function c.job.ActiveMembers()
     return tab
 end
 
+--- 
+---@param job string
+---@param grade string
 function c.job.Exist(job, grade)
 	grade = tostring(grade)
 	if job and grade then

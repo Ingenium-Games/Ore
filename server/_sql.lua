@@ -7,24 +7,18 @@ NOTES.
     - All sql querys should have a call back as a function at the end to chain code execution upon completion.
     - All data should be encoded or decoded here, if possible. the fetchALL commands are decoded in the _data.lua
 ]] --
-
 math.randomseed(c.Seed)
-
 -- ====================================================================================--
--- SAVING VALUES TO THE DATABASE AS PER SYNC FUNCTIONS IN _DATA.LUA
--- ====================================================================================--
-
--- @local id for async store & Store Query
 local SaveData = -1
 MySQL.Async.store(
-    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Modifiers` = @Modifiers `Coords` = @Coords, `Last_Seen` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
+    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Modifiers` = @Modifiers, `Accounts` = @Accounts, `Last_Seen` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
     function(id)
         SaveData = id
     end)
 
 --- Save Single User/Character
--- @source
--- @callback
+---@param data table "xPlayer table"
+---@param cb function "To be called on SQL 'UPDATE' statement completion."
 function c.sql.SaveUser(data, cb)
     if data then
         -- Other Variables.
@@ -33,27 +27,24 @@ function c.sql.SaveUser(data, cb)
         local Hunger = data.GetHunger()
         local Thirst = data.GetThirst()
         local Stress = data.GetStress()
-
-
         -- Tables require JSON Encoding.
         local Coords = json.encode(data.GetCoords())
+        local Accounts = json.encode(data.GetAccounts())
         local Modifiers = json.encode(data.GetModifiers())
-            
+        -- 
         local Character_ID = data.GetCharacter_ID()
-
         MySQL.Async.insert(SaveData, {
-
             -- Other Variables.
             ['@Health'] = Health,
             ['@Armour'] = Armour,
             ['@Hunger'] = Hunger,
             ['@Thirst'] = Thirst,
             ['@Stress'] = Stress,
- 
             -- Table Informaiton.
             ['@Coords'] = Coords,
             ['@Modifiers'] = Modifiers,
-
+            ['@Accounts'] = Accounts,
+            --
             ['@Character_ID'] = Character_ID
         }, function(r)
             -- do
@@ -64,9 +55,12 @@ function c.sql.SaveUser(data, cb)
     end
 end
 
+--- Save All Characters from the xPLayer Table.
+---@param cb function "To be called on SQL 'UPDATE' statements are completed."
 function c.sql.SaveData(cb)
     local xPlayers = c.data.GetPlayers()
-    for i = 1, #xPlayers, 1 do
+    local size = c.table.Size(xPlayers)
+    for i = 1, size, 1 do
         local data = c.data.GetPlayer(i)
         if data then
             -- Other Variables.
@@ -75,41 +69,37 @@ function c.sql.SaveData(cb)
             local Hunger = data.GetHunger()
             local Thirst = data.GetThirst()
             local Stress = data.GetStress()
-
             -- Tables require JSON Encoding.
             local Coords = json.encode(data.GetCoords())
+            local Accounts = json.encode(data.GetAccounts())
             local Modifiers = json.encode(data.GetModifiers())
-            
+            -- 
             local Character_ID = data.GetCharacter_ID()
-    
             MySQL.Async.insert(SaveData, {
-    
                 -- Other Variables.
                 ['@Health'] = Health,
                 ['@Armour'] = Armour,
                 ['@Hunger'] = Hunger,
                 ['@Thirst'] = Thirst,
                 ['@Stress'] = Stress,
-    
                 -- Table Informaiton.
                 ['@Coords'] = Coords,
                 ['@Modifiers'] = Modifiers,
-
+                ['@Accounts'] = Accounts,
+                --
                 ['@Character_ID'] = Character_ID
             }, function(r)
                 -- Do nothing.
             end)
-        else
-            -- The data is false, there fore the table of date is not there tobe saved.
         end
     end
-    -- These will all be completed prior to cb being run.
-    -- upon the entire loop of saving/pasing data to the DB via a stored query, run the cb passed.
     if cb then
         cb()
     end
 end
 
+--- Takes Job information from the Database and imports it into the Server Upon the Initialise() function.
+---@param cb function "Callback function if any, called after the SQL statement."
 function c.sql.GrabJobs(cb)
     local IsBusy = true
     local result = nil

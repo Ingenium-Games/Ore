@@ -13,6 +13,7 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
+--- Used on startup prior to the server really running.
 function c.data.Initilize()
     c.debug('Loading Sequence Begin.')
     local num, loaded = 0, false
@@ -27,7 +28,7 @@ function c.data.Initilize()
     --
     function cb()
         num = num + 1
-        return t[num]
+        c.debug(t[num])
     end
     --
     MySQL.ready(function()
@@ -54,38 +55,55 @@ end
 
 -- ====================================================================================--
 
+--- Adds player to the player index.
+---@param source number "source [server_id]"
 function c.data.AddPlayer(source)
     table.insert(c.pdex, source)
 end
 
+--- Gets player from the player table.
+---@param source number
 function c.GetPlayer(source)
     return c.data.GetPlayer(source)
 end
 
-function c.GetPlayerFromId(source)
-	return c.data.GetPlayer(source)
-end
-
+--- Same as above.
+---@param source number
 function c.data.GetPlayer(source)
     return c.pdex[source]
 end
 
+--- Same as above.
+---@param source number
+function c.GetPlayerFromId(source)
+	return c.data.GetPlayer(source)
+end
+
+--- Set the player id to the table.
+---@param source number
+---@param data table
 function c.data.SetPlayer(source, data)
     c.pdex[source] = data
 end
 
+--- Set to false.
+---@param source number
 function c.data.RemovePlayer(source)
     c.pdex[source] = false
 end
 
+--- Get the player table
 function c.data.GetPlayers()
     return c.pdex
 end
 
+--- Wrapper for the above.
 function c.GetPlayers()
     return c.data.GetPlayers()
 end
 
+--- Return corresponding player data from character_id
+---@param id string "Character_ID"
 function c.data.GetPlayerByIdentifier(id)
     for k,v in pairs(c.pdex) do
         if v then
@@ -97,6 +115,7 @@ function c.data.GetPlayerByIdentifier(id)
     return nil
 end
 
+--- Wrapper for the above.
 function c.GetPlayerFromIdentifier(id)
     return c.data.GetPlayerByIdentifier(id)
 end
@@ -116,6 +135,9 @@ end
 
 -- ====================================================================================--
 
+--- Create xPlayer table and pass to client.
+---@param source number
+---@param Character_ID string
 function c.data.LoadPlayer(source, Character_ID)
     local src = tonumber(source)
     -- Fuck Metatable inheritance.

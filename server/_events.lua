@@ -63,9 +63,10 @@ AddEventHandler('Server:Packet:Update', function(data)
     xPlayer.SetHunger(data.Hunger)
     xPlayer.SetThirst(data.Thirst)
     xPlayer.SetStress(data.Stress)
+    xPlayer.SetModifiers(data.Modifiers)
     -- Coords
     xPlayer.SetCoords(data.Coords)
-
+    
 end)
 
 -- ====================================================================================--
