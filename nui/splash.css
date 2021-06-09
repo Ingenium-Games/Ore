@@ -62,9 +62,10 @@ body {
 #data-container-heading {
     z-index: 20;
     padding-left: 1.62vw;
+    top: 4vh !important;
     left: 1vw !important;
     bottom: 25vh !important;
-    width: 12.99vw !important;
+    width: 8.99vw !important;
     height: 6.72vh !important;    
     border-color:#2d47edaf !important;
     border-width: 1px !important;

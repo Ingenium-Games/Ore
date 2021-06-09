@@ -25,6 +25,7 @@ end
 
 --- func desc
 function c.time.ServerSync()
+    c.time.Update()
     local function Do()
         c.time.Update()
         SetTimeout(c.min, Do)
@@ -35,10 +36,10 @@ end
 --- func desc
 ---@param h number "Can do any, but really only 0,23 will work."
 function c.time.AlterTime(h)
-    local timealter = conf.timealter
+    local timealter = conf.altertime
     if timealter <= -23 then timealter = -23 end
     if timealter >= 23 then timealter = 23 end
-    local newhour = h - timealter
+    local newhour = h + timealter
     if newhour <= hours._min then
         newhour = (hours._max - newhour)
     end

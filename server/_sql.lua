@@ -106,6 +106,7 @@ function c.sql.GrabJobs(cb)
     MySQL.Async.fetchAll('SELECT * FROM `jobs`', {
     }, function(data)
         for i=1, #data, 1 do
+            local i = data[i]
             if not c.jobs[i.Name] then
                 c.jobs[i.Name] = {}
                 c.jobs[i.Name].Label = i.Label

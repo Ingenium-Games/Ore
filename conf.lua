@@ -63,7 +63,7 @@ DEFERALS :
 ]]--
 conf.forcename = true
 conf.discordperms = true
-conf.discordrole = '690445686365356072'
+conf.discordrole = '834191331844030524'
 --[[
 SCREENSHOTS :
     -- Host URL like 
@@ -96,11 +96,11 @@ conf.defaulthealth = 400 -- DOUBE BOI
 conf.defaultarmour = 300 --(Oh Baby a TRIPPLE)
 conf.hungertime = conf.min * 4
 conf.thirsttime = conf.min * 3.2
-conf.clientnuisync = conf.sec * 2.2
+conf.clientnuisync = conf.sec
 --[[
 TIMEZONE ADJUSTMENT: 
     -- Takes the server time, and change it based on -23,23 hours. 
     -- You can do greater, but it will break your game.
 ]]--
-conf.altertime = -4
+conf.altertime = -6
 -- ====================================================================================--
