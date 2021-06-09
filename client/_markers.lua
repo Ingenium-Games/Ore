@@ -71,7 +71,7 @@ function c.markers.CreateThreadLoop(t)
         local size = size
         while true do
             local found = false
-            local close = false
+            local near = false
             local ped = PlayerPedId()
             local pos = vector3(GetEntityCoords(ped))
             Citizen.Wait(1)
@@ -81,12 +81,14 @@ function c.markers.CreateThreadLoop(t)
                     local num = tab[i].number
                     local text = tab[i].notification
                     local cb = tab[i].callback
-                    if (Vdist(pos, ords) < 20) then
+                    -- no point calculating distance twice in a loop, derp me.
+                    local dist = Vdist(pos, ords)
+                    if dist < 20 then
                         found = true
                         -- Draw marker
                         c.markers.SelectMarker(num, ords)
-                        if (Vdist(pos, ords) < 5) then
-                            close = true
+                        if dist < 5 then
+                            near = true
                             -- Show help
                             c.text.DisplayHelp(text[1], text[2])
                             if IsControlJustPressed(0, 38) then

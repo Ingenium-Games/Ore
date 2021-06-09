@@ -72,7 +72,7 @@ function c.inst.SetPlayerDefault(source)
     SetPlayerRoutingBucket(source, conf.instancedefault)
     SetEntityRoutingBucket(GetPlayerPed(source), conf.instancedefault)
     xPlayer.SetInstance(conf.instancedefault)
-    c.sql.SetCharacterInstance(xPlayer.GetIdentifier(), conf.instancedefault, c.debug(xPlayer.Name.." added to Instance: "..conf.instancedefault))
+    c.sql.SetCharacterInstance(xPlayer.GetIdentifier(), conf.instancedefault, c.debug(xPlayer.Name.." added to Global Instance."))
 end
 
 --- Set entity routing bucket
