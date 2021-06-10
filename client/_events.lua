@@ -31,7 +31,7 @@ AddEventHandler('Client:Character:Loaded', function(data)
     Wait(250) -- Give yourself a moment prior to marked as loaded.
     -- SET STATUS
     c.status.SetPlayer(data) -- This will only use the Health, Armour, Hunger, Thirst and Stress as a sub table c.stats
-    c.modifiers.SetModifiers(data)
+    c.modifier.SetModifiers(data)
     --
     Wait(250) -- Give yourself a moment prior to Syncing from loaded.
     --

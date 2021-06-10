@@ -86,7 +86,7 @@ function c.data.SendPacket()
     data.Thirst = c.math.Decimals(c.status.GetThirst(), 0)
     data.Stress = c.math.Decimals(c.status.GetStress(), 0)
     -- Modifiers
-    data.Modifiers = c.modifiers.GetModifiers()
+    data.Modifiers = c.modifier.GetModifiers()
     -- Coords
     local loc = GetEntityCoords(ped)
     data.Coords = {

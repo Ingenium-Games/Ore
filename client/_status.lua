@@ -161,7 +161,7 @@ end
 
 function c.status.StartHungerDecrease()
     local function Do()
-        local default = 1 * c.modifiers.GetHungerModifier()
+        local default = 1 * c.modifier.GetHungerModifier()
         c.status.RemoveHunger(default)
         SetTimeout(_hunger, Do)
     end
@@ -170,7 +170,7 @@ end
 
 function c.status.StartThirstDecrease()
     local function Do()
-        local default = 1 * c.modifiers.GetThirstModifier()
+        local default = 1 * c.modifier.GetThirstModifier()
         c.status.RemoveThirst(default)
         SetTimeout(_thirst, Do)
     end
@@ -179,7 +179,7 @@ end
 
 function c.status.StartStressIncrease()
     local function Do()
-        local default = 1 * c.modifiers.GetStressModifier()
+        local default = 1 * c.modifier.GetStressModifier()
         c.status.AddStress(default)
         SetTimeout(_stress, Do)
     end

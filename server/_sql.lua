@@ -59,7 +59,7 @@ end
 ---@param cb function "To be called on SQL 'UPDATE' statements are completed."
 function c.sql.SaveData(cb)
     local xPlayers = c.data.GetPlayers()
-    local size = c.table.Size(xPlayers)
+    local size = c.table.SizeOf(xPlayers)
     for i = 1, size, 1 do
         local data = c.data.GetPlayer(i)
         if data then
@@ -219,7 +219,7 @@ end
 -- SHould remake htis one..
 function c.sql.CreateCharacter(t, cb)
     MySQL.Async.execute(
-        'INSERT INTO `characters` (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`, `Accounts`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords, @Accounts);',
+        'INSERT INTO `characters` (`Primary_ID`, `Character_ID`, `City_ID`, `First_Name`, `Last_Name`, `Height`, `Birth_Date`, `Phone`, `Coords`, `Accounts`, `Modifiers`) VALUES (@Primary_ID, @Character_ID, @City_ID, @First_Name, @Last_Name, @Height, @Birth_Date, @Phone, @Coords, @Accounts, @Modifiers);',
         {
             Primary_ID = t.Primary_ID,
             Character_ID = t.Character_ID,
@@ -231,6 +231,7 @@ function c.sql.CreateCharacter(t, cb)
             Phone = t.Phone,
             Coords = t.Coords,
             Accounts = t.Accounts,
+            Modifiers = t.Modifiers,
         }, function(data)
             if data then
 
