@@ -58,3 +58,7 @@ end)
 TriggerEvent('Server:Character:SetJob', self.ID, self.GetJob())
 self.TriggerEvent('Client:Character:SetJob', self.GetJob())
 ]]--
+
+function c.job.GetJobs()
+    return c.jobs
+end

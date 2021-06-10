@@ -20,8 +20,8 @@ function c.data.Initilize()
     local t = {
         [1] = 'DB: Characters marked as In-Active;',
         [2] = 'DB: Jobs have been Generated;',
-        [3] = 'DB: Vehicles;',
-        [4] = 'DB: Vehicles;',
+        [3] = 'DB: Finding Job Accounts or Creating them;',
+        [4] = 'DB: Job Accounts have been Generated;',
         [5] = 'DB: Vehicles;',
         [6] = 'DB: Vehicles;'
     }
@@ -39,7 +39,9 @@ function c.data.Initilize()
         -- [2]
         c.sql.GrabJobs(cb)
         -- [3]
-        -- c.sql.
+        c.sql.SetupJobs(cb)
+        -- [4]
+        c.sql.GrabJobAccounts(cb)
         --
         loaded = true
     end)

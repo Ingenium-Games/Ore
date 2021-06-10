@@ -103,4 +103,6 @@ TIMEZONE ADJUSTMENT:
     -- You can do greater, but it will break your game.
 ]]--
 conf.altertime = -6
+
+conf.defaultjobaccounts = {["bank"] = 25000, ["safe"] = 0}
 -- ====================================================================================--
