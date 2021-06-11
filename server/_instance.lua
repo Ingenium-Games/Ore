@@ -29,16 +29,22 @@ end
 --- Sets the player and their ped entity to a routing bucket.
 ---@param source number ""
 ---@param num number "The number of the istance/routing bucket"
-function c.inst.SetPlayer(source, num)
+---@param bool boolean "Is this a new join or in character already"
+function c.inst.SetPlayer(source, num, bool)
     local src = tonumber(source)
     local xPlayer = c.data.GetPlayer(source)
     local current = GetPlayerRoutingBucket(source)
-    if current ~= num then
-        -- to add mumble changes based on either pmavoice or frazzles mumble script
+    if bool then
         SetPlayerRoutingBucket(source, num)
         SetEntityRoutingBucket(GetPlayerPed(source), num)
-        xPlayer.SetInstance(num)
-        c.sql.SetCharacterInstance(xPlayer.GetIdentifier(), num, c.debug(xPlayer.Name.." added to Instance: "..num))
+    else
+        if current ~= num then
+            -- to add mumble changes based on either pmavoice or frazzles mumble script
+            SetPlayerRoutingBucket(source, num)
+            SetEntityRoutingBucket(GetPlayerPed(source), num)
+            xPlayer.SetInstance(num)
+            c.sql.SetCharacterInstance(xPlayer.GetIdentifier(), num, c.debug(xPlayer.Name.." added to Instance: "..num))
+        end
     end
 end
 

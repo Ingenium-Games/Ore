@@ -177,6 +177,7 @@ function c.sql.GrabJobAccounts(cb)
             c.jobs[i.Name].Accounts = json.decode(i.Accounts)
             c.jobs[i.Name].Members = json.decode(i.Members)
             c.jobs[i.Name].Boss = i.Boss
+            c.jobs[i.Name].Name = i.Name
             c.jobs[i.Name].Description = i.Description
         end
         IsBusy = false

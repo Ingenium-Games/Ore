@@ -59,6 +59,22 @@ TriggerEvent('Server:Character:SetJob', self.ID, self.GetJob())
 self.TriggerEvent('Client:Character:SetJob', self.GetJob())
 ]]--
 
+function c.job.GetJob(str)
+    return c.jobs[str]
+end
+
 function c.job.GetJobs()
     return c.jobs
+end
+
+function c.job.CreateJobObjects()
+    local jobs = c.job.GetJobs()
+    for k,v in pairs(jobs) do
+        c.jobs[k].Object = c.class.CreateJob(k)
+    end
+end
+
+function c.job.GetPlayerJob(str)
+    local job = c.job.GetJob(str)
+    return job.Object
 end

@@ -19,7 +19,7 @@ AddEventHandler('Server:Character:Request:List', function(req, Primary_ID)
     -- Send the data table to the client that requested it...
     TriggerClientEvent('Client:Character:Open', src, Command, Characters)
     -- Place the user in their own instance until the user has joined and loaded.
-    c.inst.SetPlayer(src, c.inst.New())
+    c.inst.SetPlayer(src, c.inst.New(), true)
 end)
 ------------------------------------------------------------------------------
 -- When they click the tick...

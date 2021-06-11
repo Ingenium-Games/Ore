@@ -161,11 +161,11 @@ function c.data.LoadPlayer(source, Character_ID)
     data.Thirst = xPlayer.GetThirst()
     data.Stress = xPlayer.GetStress()
     data.Modifiers = xPlayer.GetModifiers()
-    data.Apperance = xPlayer.GetApperance()
+    data.Appearance = xPlayer.GetAppearance()
     --
     c.sql.SetCharacterActive(Character_ID, function()
         c.data.SetPlayer(src, xPlayer)
-        --
+        c.inst.SetPlayer(source, xPlayer.GetInstance())
         TriggerClientEvent('Client:Character:Loaded', src, data)
     end)
 end
