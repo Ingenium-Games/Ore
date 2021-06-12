@@ -30,5 +30,13 @@
     </div> 
     <div class="loadbar"><div class="thingy Animus"></div></div>
     <img id="data-picture" src="img/ore.png" onclick="location.href='https://www.ingenium.games'"></img>
+    <script type="text/javascript">
+        window.addEventListener('DOMContentLoaded', () => {
+            var data = window.nuiHandoverData
+            var stamp = new Date(data.last * 1000).toLocaleString()
+            document.querySelector('#data-name > span').innerText = data.name;
+            document.querySelector('#data-lastjoin > span').innerText = stamp;
+        });
+    </script>
 </body>
 </html>

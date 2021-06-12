@@ -27,5 +27,5 @@ server_exports {"c"}
 dependencies {"mysql-async", "freecam", "discordroles"}
 ------------------------------------------------------------------------------
 -- files
-files { "nui/splash.js", "nui/splash.css", "nui/splash.html", "nui/ore.js", "nui/ore.css", "nui/ore.html", "nui/img/*.png", "nui/jquery-3.5.1.min.js",
+files { "nui/splash.js", "nui/splash.css", "nui/splash.html", "nui/ore.js", "nui/ore.css", "nui/ore.html", "nui/img/*.png", "nui/img/*.jpg", "nui/jquery-3.5.1.min.js",
        "nui/jquery.mask.min.js", "nui/jquery.validate.min.js"}

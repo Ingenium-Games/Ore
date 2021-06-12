@@ -2,14 +2,6 @@
 
 */
 
-window.addEventListener('DOMContentLoaded', () => {
-    var data = window.nuiHandoverData
-    var stamp = new Date(data.last * 1000).toLocaleString()
-    
-    document.querySelector('#Name > span').innerText = data.name;
-    document.querySelector('#Lastplayed > span').innerText = stamp;
-});
-
 var count = 0;
 var thisCount = 0;
 
