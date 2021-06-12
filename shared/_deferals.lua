@@ -6,7 +6,12 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
     local src = source
     local playerName = GetPlayerName(src)
     local id = c.identifier(src)
-    deferrals.update('Checking User Status.')
+    local last = c.sql.GetLastLogin(id)
+    deferrals.handover({
+        name = playerName,
+        last = last
+    })    
+    deferrals.update('Checking User Status')
     Citizen.Wait(250)
     -- If you have/use discordperms..
     if conf.discordperms then
