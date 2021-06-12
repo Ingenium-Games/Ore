@@ -13,6 +13,7 @@ math.randomseed(c.Seed)
 
 function c.check.Number(num, min, max)
     local v = 0
+    if num == nil then num = v end
     assert(type(num) == 'number', 'Invalid variable type at argument #1, expected number, got '..type(num))
     if type(num) ~= 'number' then
         return v
@@ -28,6 +29,7 @@ end
 
 function c.check.Boolean(bool)
     local v = false
+    if bool == nil then bool = v end
     assert(type(bool) == 'boolean', 'Invalid variable type at argument #1, expected boolean, got '..type(bool))
     if type(bool) ~= 'boolean' then
         return v
@@ -38,6 +40,7 @@ end
 
 function c.check.Table(t)
     local v = {}
+    if t == nil then t = v end
     assert(type(t) == 'table', 'Invalid variable type at argument #1, expected table, got '..type(t))
     if type(t) ~= 'table' then
         return v
@@ -48,6 +51,7 @@ end
 
 function c.check.String(str)
     local v = ""
+    if str == nil then str = v end
     assert(type(str) == 'boolean', 'Invalid variable type at argument #1, expected boolean, got '..type(str))
     if type(str) ~= 'boolean' then
         return v

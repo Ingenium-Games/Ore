@@ -21,7 +21,7 @@ Citizen.CreateThread(function()
         local loc = GetEntityCoords(player)
         -- Target Peds as the array and 25 being the distance around the player.
         -- This is not a normal L function.
-        local data = c.GetPedsInArea(loc, 68)
+        local data = c.GetPedsInArea(loc, 68, true)
         -- For each ped inside the Target array pulled from L.
         for _, v in pairs(data) do
             -- Are we sure its a ped?
