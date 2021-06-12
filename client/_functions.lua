@@ -130,13 +130,12 @@ end
 -- @entity - the object
 -- @arrays - locations in a table format
 -- @style - c.SelectMarker() - Pick Marker type.
-
-function c.IsNear(entity, arrays, style)
+function c.IsNear(coords, arrays, style)
     local dstchecked = 1000
-    local pos = vector3(GetEntityCoords(entity))
+    local pos = coords
 	for i = 1, #arrays do
-		local ords = vector3(arrays[i])
-		local comparedst = #(pos - ords)
+		local ords = arrays[i]
+		local comparedst = Vdist(pos - ords)
 		if comparedst < dstchecked then
 			dstchecked = comparedst
 		end
@@ -150,7 +149,6 @@ function c.IsNear(entity, arrays, style)
 	end
 	return dstchecked
 end
-
 
 --- Returns Players within the designated radius.
 ---@param ords table "Generally a {x,y,z} or vector3"
