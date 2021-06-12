@@ -23,7 +23,7 @@ local _boost = 1
 
 --- Return the table of active modifiers. Table
 function c.modifier.GetModifiers()
-    return c.modifier
+    return c.modifiers
 end
 
 --- Sets the table of active modifiers.
@@ -38,42 +38,42 @@ end
 
 --- Returns the Hunger modifier. Number
 function c.modifier.GetHungerModifier()
-    return c.modifier.Hunger
+    return c.modifiers.Hunger
 end
 
 --- Sets the Hunger modifier between (1,10).
 ---@param v number "Can only be a number."
 function c.modifier.SetHungerModifier(v)
     local val = c.check.Number(v, _min, _max)
-    c.modifier.Hunger = val
+    c.modifiers.Hunger = val
 end
 
 -- ====================================================================================--
 
 --- returns the Thirst modifier. Number
 function c.modifier.GetThirstModifier()
-    return c.modifier.Thirst
+    return c.s.Thirst
 end
 
 --- Sets the Thirst modifier between (1,10)
 ---@param v number "Can only be a number." 
 function c.modifier.SetThirstModifier(v)
     local val = c.check.Number(v, _min, _max)
-    c.modifier.Thirst = val
+    c.modifiers.Thirst = val
 end
 
 -- ====================================================================================--
 
 --- Returns the Stress modifier. Number
 function c.modifier.GetStressModifier()
-    return c.modifier.Stress
+    return c.modifiers.Stress
 end
 
 --- Sets the Stress modifier between (1,10).
 ---@param v number "Can only be a number."
 function c.modifier.SetStressModifier(v)
     local val = c.check.Number(v, _min, _max)
-    c.modifier.Thirst = val
+    c.modifiers.Thirst = val
 end
 
 -- ====================================================================================--
@@ -92,7 +92,7 @@ end
 
 --- Loop over the modifers and decrease them.
 function c.modifier.DegradeModifiers()
-    for k,v in pairs(c.modifier) do    
+    for k,v in pairs(c.modifiers) do    
         if v < _min then v = 1 end
         if v > _max then v = 10 end
         if v <= 10 and v > 1 then
