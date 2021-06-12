@@ -30,7 +30,7 @@ end
 ---@param t table "Typically passed from the server as an internal table."
 function c.modifier.SetModifiers(t)
     if t.Modifiers then
-        c.modifier = t.Modifiers
+        c.modifiers = t.Modifiers
     end
 end
 
@@ -52,7 +52,7 @@ end
 
 --- returns the Thirst modifier. Number
 function c.modifier.GetThirstModifier()
-    return c.s.Thirst
+    return c.modifiers.Thirst
 end
 
 --- Sets the Thirst modifier between (1,10)

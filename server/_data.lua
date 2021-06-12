@@ -54,7 +54,7 @@ function c.data.Initilize()
     c.debug('Loading Sequence Complete.')
     c.Running = true
     -- Testing Table builds from SQL builds.
-    c.debug(c.table.Dump(c.jobs))
+    --c.debug(c.table.Dump(c.jobs))
 end
 
 -- ====================================================================================--
