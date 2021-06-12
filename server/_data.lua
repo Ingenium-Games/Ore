@@ -65,16 +65,21 @@ function c.data.AddPlayer(source)
     table.insert(c.pdex, source)
 end
 
+
 --- Gets player from the player table.
 ---@param source number
-function c.GetPlayer(source)
-    return c.data.GetPlayer(source)
+function c.data.GetPlayer(source)
+    if type(c.pdex[source]) == 'table' then
+        return c.pdex[source]
+    else
+        return false
+    end
 end
 
 --- Same as above.
 ---@param source number
-function c.data.GetPlayer(source)
-    return c.pdex[source]
+function c.GetPlayer(source)
+    return c.data.GetPlayer(source)
 end
 
 --- Same as above.

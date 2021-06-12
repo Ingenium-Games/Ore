@@ -18,7 +18,7 @@ math.randomseed(c.Seed)
 
 local _min = 0
 local _max = 100
-local _sync = c.sec
+local _sync = c.sec * 2
 local _hunger = c.min
 local _thirst = c.min
 local _stress = c.min * 10
@@ -141,18 +141,20 @@ end
 
 local function BuildTable()
     local ped = PlayerPedId()
-    local Health = c.status.GetHealth(ped)
-    local Armour = c.status.GetArmour(ped)
-    c.stats["Health"] = Health
-    c.stats["Armour"] = Armour
+    local t = {}
+    t.Health = c.status.GetHealth(ped)
+    t.Armour = c.status.GetArmour(ped)
+    t.Hunger = c.status.GetHunger()
+    t.Thirst = c.status.GetThirst()
+    t.Stress = c.status.GetStress()
+    return t
 end
 
 function c.status.NUISync()
     local function Do()
-        BuildTable()
         SendNUIMessage({
             message = "UpdateHUD",
-            packet = c.stats
+            packet = BuildTable()
         })
         SetTimeout(_sync, Do)
     end

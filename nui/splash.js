@@ -8,9 +8,7 @@ var thisCount = 0;
 const handlers = {
     startInitFunctionOrder(data) {
         count = data.count;
-
-        document.querySelector('.letni h3').innerHTML += [data.type][data.order - 1] || '';
-    },
+   },
 
     initFunctionInvoking(data) {
         document.querySelector('.thingy').style.left = '0%';
@@ -19,8 +17,6 @@ const handlers = {
 
     startDataFileEntries(data) {
         count = data.count;
-
-        document.querySelector('.letni h3').innerHTML += "\u{1f358}";
     },
 
     performMapLoadFunction(data) {
@@ -30,9 +26,6 @@ const handlers = {
         document.querySelector('.thinyg').style.width = ((thisCount / count) * 100) + '%';
     },
 
-    onLogLine(data) {
-
-    }
 };
 
 window.addEventListener('message', function (e) {
