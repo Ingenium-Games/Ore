@@ -139,28 +139,6 @@ end
 
 -- ====================================================================================--
 
-local function BuildTable()
-    local ped = PlayerPedId()
-    local t = {}
-    t.Health = c.status.GetHealth(ped)
-    t.Armour = c.status.GetArmour(ped)
-    t.Hunger = c.status.GetHunger()
-    t.Thirst = c.status.GetThirst()
-    t.Stress = c.status.GetStress()
-    return t
-end
-
-function c.status.NUISync()
-    local function Do()
-        SendNUIMessage({
-            message = "UpdateHUD",
-            packet = BuildTable()
-        })
-        SetTimeout(_sync, Do)
-    end
-    SetTimeout(_sync, Do)
-end
-
 function c.status.StartHungerDecrease()
     local function Do()
         local default = 1 * c.modifier.GetHungerModifier()
@@ -228,8 +206,6 @@ function c.status.SetPlayer(data)
             c.status.SetStress(data.Stress)
         end
     end
-    -- Begin the NUI Sync
-    c.status.NUISync()
     -- Give it 30 seconds then begin the routines
     Wait(c.sec * 30)
     -- Begin Routines / Timeouts
