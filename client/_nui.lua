@@ -42,10 +42,8 @@ end)
 
 ------------------------------------------------------------------------------
 --  While in join menu, Events and Triggers
---  Inspired by Kashacters. Still to rebuild once the cameras.lua is built.
 
-local cam, cam2, cam3, cam4
-
+local cam, cam2, cam3
 
 RegisterNetEvent('Client:Character:OpeningMenu')
 AddEventHandler('Client:Character:OpeningMenu', function()
@@ -53,7 +51,7 @@ AddEventHandler('Client:Character:OpeningMenu', function()
     c.data.SetLoadedStatus(false)
     SetEntityCoords(GetPlayerPed(-1), 0, 0, 0)
     FreezeEntityPosition(GetPlayerPed(-1), true)
-    cam = c.cameras.MakeBasic(313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00)
+    cam = c.camera.Basic(313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00)
     SetCamActive(intro, true)
     RenderScriptCams(true, false, 1, true, true)
 end)
@@ -63,11 +61,11 @@ RegisterNetEvent('Client:Character:ReSpawn')
 AddEventHandler('Client:Character:ReSpawn', function(Character_ID, Coords)
     c.IsBusyPleaseWait(1500)
     SetEntityCoords(GetPlayerPed(-1), Coords.x, Coords.y, Coords.z)
-    cam2 = c.cameras.MakeBasic(313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00)
+    cam2 = c.camera.Basic(313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00)
     PointCamAtCoord(cam2, Coords.x, Coords.y, Coords.z + 200)
     SetCamActiveWithInterp(cam2, cam, 900, 1, 1)
     c.IsBusyPleaseWait(900)
-    cam3 = c.cameras.MakeBasic(Coords.x, Coords.y, Coords.z + 200, 300.00, 0.00, 0.00, 100.00)
+    cam3 = c.camera.Basic(Coords.x, Coords.y, Coords.z + 200, 300.00, 0.00, 0.00, 100.00)
     PointCamAtCoord(cam, Coords.x, Coords.y, Coords.z + 2)
     SetCamActiveWithInterp(cam3, cam2, 3700, 1, 1)
     c.IsBusyPleaseWait(3700)

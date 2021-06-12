@@ -18,7 +18,7 @@ function c.camera.NewName(t)
     local val
     local find = false
     repeat
-        val = c.rng.chars(15)
+        val = "CAM-"..c.rng.chars(5).."-"..c.rng.chars(5).."-"..c.rng.chars(5).."-"..c.rng.chars(5)..""
         if c.cameras[val] then
             find = true
         else
@@ -31,7 +31,7 @@ end
 
 -- ====================================================================================--
 
-function c.camera.MakeBasic(px, py, pz, rx, ry, rz, fov)
+function c.camera.Basic(px, py, pz, rx, ry, rz, fov)
     local t = {
         ['type'] = "DEFAULT_SCRIPTED_CAMERA",
         ['px'] = px,
