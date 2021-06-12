@@ -21,10 +21,6 @@ end)
 -- Event to receive the data of the chosen character for the client.
 RegisterNetEvent('Client:Character:Loaded')
 AddEventHandler('Client:Character:Loaded', function(data)
-    -- Show the characters HP Bars etc...
-    SendNUIMessage({
-        message = "CharacterHUD",
-    })
     -- Add routines to do upon resicing the data from server.
     c.data.SetPlayer(data) -- Full table will be in here
     c.data.SetLoadedStatus(true)

@@ -44,32 +44,18 @@ end)
 --  While in join menu, Events and Triggers
 --  Inspired by Kashacters. Still to rebuild once the cameras.lua is built.
 
-local cam = nil
-local cam2 = nil
-local intro = nil
+local cam, cam2, cam3, cam4
 
---
+
 RegisterNetEvent('Client:Character:OpeningMenu')
 AddEventHandler('Client:Character:OpeningMenu', function()
     -- Set false for switch command.
     c.data.SetLoadedStatus(false)
     SetEntityCoords(GetPlayerPed(-1), 0, 0, 0)
     FreezeEntityPosition(GetPlayerPed(-1), true)
-    intro =
-        CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00, false, 0)
+    cam = c.cameras.MakeBasic(313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00)
     SetCamActive(intro, true)
     RenderScriptCams(true, false, 1, true, true)
-end)
-
--- Taken over by the creator resource for initial creation...
-RegisterNetEvent('Client:Character:FirstSpawn')
-AddEventHandler('Client:Character:FirstSpawn', function(Character_ID)
-    SetCamActive(cam, false)
-    SetCamActive(cam2, false)
-    SetCamActive(intro, false)
-    DestroyCam(cam, true)
-    DestroyCam(cam2, true)
-    DestroyCam(intro, true)
 end)
 
 -- Respawn in on last saved coords.
@@ -77,26 +63,18 @@ RegisterNetEvent('Client:Character:ReSpawn')
 AddEventHandler('Client:Character:ReSpawn', function(Character_ID, Coords)
     c.IsBusyPleaseWait(1500)
     SetEntityCoords(GetPlayerPed(-1), Coords.x, Coords.y, Coords.z)
-    cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", 313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00, false, 0)
+    cam2 = c.cameras.MakeBasic(313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00)
     PointCamAtCoord(cam2, Coords.x, Coords.y, Coords.z + 200)
-    SetCamActiveWithInterp(cam2, intro, 900, 1, 1)
+    SetCamActiveWithInterp(cam2, cam, 900, 1, 1)
     c.IsBusyPleaseWait(900)
-    cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", Coords.x, Coords.y, Coords.z + 200, 300.00, 0.00, 0.00, 100.00,
-              false, 0)
+    cam3 = c.cameras.MakeBasic(Coords.x, Coords.y, Coords.z + 200, 300.00, 0.00, 0.00, 100.00)
     PointCamAtCoord(cam, Coords.x, Coords.y, Coords.z + 2)
-    SetCamActiveWithInterp(cam, cam2, 3700, 1, 1)
+    SetCamActiveWithInterp(cam3, cam2, 3700, 1, 1)
     c.IsBusyPleaseWait(3700)
     PlaySoundFrontend(-1, "Zoom_Out", "DLC_HEIST_PLANNING_BOARD_SOUNDS", 1)
     RenderScriptCams(false, true, 500, 1, 1)
     PlaySoundFrontend(-1, "CAR_BIKE_WHOOSH", "MP_LOBBY_SOUNDS", 1)
     FreezeEntityPosition(GetPlayerPed(-1), false)
     c.IsBusyPleaseWait(500)
-    SetCamActive(cam, false)
-    SetCamActive(cam2, false)
-    SetCamActive(intro, false)
-    DestroyCam(cam, true)
-    DestroyCam(cam2, true)
-    DestroyCam(intro, true)
-    --
     TriggerServerEvent('skin:LoadSkin')
 end)

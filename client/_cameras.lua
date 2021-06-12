@@ -1,8 +1,8 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
+c.camera = {}
 c.cameras = {}
-c.cameras.store = {}
 
 --[[
 NOTES.
@@ -14,16 +14,15 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
-function c.cameras.NewName(t)
+function c.camera.NewName(t)
     local val
     local find = false
     repeat
         val = c.rng.chars(15)
-        if c.cameras.store[val] then
+        if c.cameras[val] then
             find = true
         else
-            table.insert(c.cameras.store, val)
-            c.cameras.store[val] = t
+            c.cameras[val] = t
             find = false
         end
     until find == false
@@ -32,8 +31,9 @@ end
 
 -- ====================================================================================--
 
-function c.cameras.MakeBasic(px, py, pz, rx, ry, rz, fov)
+function c.camera.MakeBasic(px, py, pz, rx, ry, rz, fov)
     local t = {
+        ['type'] = "DEFAULT_SCRIPTED_CAMERA",
         ['px'] = px,
         ['py'] = py,
         ['pz'] = pz,
@@ -42,13 +42,14 @@ function c.cameras.MakeBasic(px, py, pz, rx, ry, rz, fov)
         ['rz'] = rz,
         ['fov'] = fov
     }
-    local name = c.cameras.NewName(t)
-    name = CreateCamWithParams(name, px, py, pz, rx, ry, rz, fov, false, 0)
+    local name = c.camera.NewName(t)
+    name = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", px, py, pz, rx, ry, rz, fov, false, 0)
     return name
 end
 
-function c.cameras.MakeAdvanced(px, py, pz, rx, ry, rz, fov)
+function c.camera.MakeAdvanced(type, px, py, pz, rx, ry, rz, fov)
     local t = {
+        ['type'] = type,
         ['px'] = px,
         ['py'] = py,
         ['pz'] = pz,
@@ -57,7 +58,7 @@ function c.cameras.MakeAdvanced(px, py, pz, rx, ry, rz, fov)
         ['rz'] = rz,
         ['fov'] = fov
     }
-    local name = c.cameras.NewName(t)
-    name = CreateCamWithParams(name, px, py, pz, rx, ry, rz, fov, false, 0)
+    local name = c.camera.NewName(t)
+    name = CreateCamWithParams(type, px, py, pz, rx, ry, rz, fov, false, 0)
     return name
 end
