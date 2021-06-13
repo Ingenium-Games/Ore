@@ -15,167 +15,159 @@ SetThisScriptCanRemoveBlipsCreatedByAnyScript(true)
 -- https://docs.fivem.net/docs/game-references/blips/
 -- https://runtime.fivem.net/doc/natives/?_0x9029B2F3DA924928
 
---- Generate Blips, based on table passed.
----@param t table "title, coords, sprite, colour, size"
-function c.blip.CreateBlips(t)
-    local tab = c.check.Table(t)
-    for i=1, #tab, 1 do
-        local i = tab[i]
-        local blip = AddBlipForCoord(i.coords)
-        SetBlipSprite(blip, i.sprite)
-        SetBlipDisplay(blip, 2)
-        SetBlipScale(blip, i.size)
-        SetBlipColour(blip, i.colour)
-        SetBlipAsShortRange(blip, true)
-        BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString(i.title)
-        EndTextCommandSetBlipblip(blip)        
-    end
-end
+--[[
+-- Category
+1 = No distance shown in legend
+2 = Distance shown in legend
+7 = "Other Players" category, also shows distance in legend
+10 = "Property" category
+11 = "Owned Property" category
+]] --
 
---- Generate advanced Blip, based on table passed.
----@param t table "title, coords, sprite, colour, size, display, category, short, flashes, legend"
-function c.blip.CreateNew(t)
-    local tab = c.check.Table(t)
-    local blip = AddBlipForCoord(tab.coords)
-    SetBlipSprite(blip, tab.sprite)
-    SetBlipDisplay(blip, tab.display)
-    SetBlipScale(blip, tab.size)
-    SetBlipColour(blip, tab.colour)
-    SetBlipFlashes(tab.flashes)
-    if tab.flashes then
-        SetBlipFlashInterval(blip, 500)
-        SetBlipFlashTimer(blip, 50000)
+--- func desc
+---@param coords table ""
+---@param sprite number
+---@param colour number
+---@param text string
+---@param scale number
+---@param flash table
+---@param fade table
+---@param short boolean
+---@param high boolean
+---@param display number
+---@param category number
+---@param legend boolean
+function c.blip.Blip(coords, sprite, colour, text, scale, flash, fade, short, high, display, category, legend)
+    local blip = AddBlipForCoord((coords or vector3(0.0, 0.0, 0.0)))
+    SetBlipSprite(blip, (sprite or 1))
+    SetBlipDisplay(blip, (display or 6))
+    SetBlipScale(blip, (scale or 0.82))
+    SetBlipColour(blip, (colour or 4))
+    SetBlipFlashes(blip, (flash.state or false))
+    if flash.state then
+        SetBlipFlashInterval(blip, flash.interval)
+        SetBlipFlashTimer(blip, flash.timer)
     end
-    SetBlipCategory(blip, tab.category)
-    SetBlipAsShortRange(blip, tab.short)
-    SetBlipHiddenOnLegend(blip, tab.legend)
+    if fade.state then
+        SetBlipFade(blip, fade.state, fade.duration)
+    end
+    SetBlipCategory(blip, (category or 1))
+    SetBlipAsShortRange(blip, (short or true))
+    SetBlipHighDetail(blip, (high or true))
+    SetBlipHiddenOnLegend(blip, (legend or false))
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString(tab.title)
-    EndTextCommandSetBlipblip(blip)
+    AddTextComponentString((text or "Blip " .. tostring(blip)))
+    EndTextCommandSetBlipName(blip)
+
+    return {
+        handle = blip,
+        coords = (coords or vector3(0.0, 0.0, 0.0)),
+        sprite = (sprite or 1),
+        display = (display or 6),
+        scale = (scale or 0.82),
+        color = (colour or 4),
+        short = (short or false),
+        high = (high or true),
+        text = (text or "Blip " .. tostring(blip)),
+        legend = (legend or false),
+        category = (category or 1),
+        flash = (flash or false),
+        fade = (fade or false)
+    }
 end
 
-Blip = function(x,y,z,sprite,color,text,scale,display,shortRange,highDetail)
-    local blip = AddBlipForCoord((x or 0.0),(y or 0.0),(z or 0.0))
-    SetBlipSprite               (blip, (sprite or 1))
-    SetBlipDisplay              (blip, (display or 3))
-    SetBlipScale                (blip, (scale or 1.0))
-    SetBlipColour               (blip, (color or 4))
-    SetBlipAsShortRange         (blip, (shortRange or false))
-    SetBlipHighDetail           (blip, (highDetail or true))
-    BeginTextCommandSetBlipName ("STRING")
-    AddTextComponentString      ((text or "Blip "..tostring(blip)))
-    EndTextCommandSetBlipName   (blip)
-  
-    return {
-      handle = blip,
-      x = (x or 0.0),
-      y = (y or 0.0),
-      z = (z or 0.0),
-      sprite = (sprite or 1),
-      display = (display or 3),
-      scale = (scale or 1.0),
-      color = (color or 4),
-      shortRange = (shortRange or false),
-      highDetail = (highDetail or true),
-      text = (text or "Blip "..tostring(blip)),
-      pos = vector3((x or 0.0),(y or 0.0),(z or 0.0))
-    }
-  end
-  
-  RadiusBlip = function(x,y,z,range,color,alpha,highDetail)
-    local blip = AddBlipForRadius((x or 0.0),(y or 0.0),(z or 0.0),(range or 100.0))
+--- func desc
+---@param coords any
+---@param range any
+---@param color any
+---@param alpha any
+---@param high any
+function c.blip.RadiusBlip(coords, range, color, alpha, high)
+    local blip = AddBlipForRadius((coords or vector3(0.0, 0.0, 0.0)), (range or 100.0))
     SetBlipColour(blip, (color or 1))
-    SetBlipAlpha (blip, (alpha or 80))
-    SetBlipHighDetail(blip, (highDetail or true))
-  
+    SetBlipAlpha(blip, (alpha or 80))
+    SetBlipHighDetail(blip, (high or true))
+
     return {
-      handle = blip,
-      x = (x or 0.0),
-      y = (y or 0.0),
-      z = (z or 0.0),
-      range = (range or 100.0),
-      color = (color or 1),
-      alpha = (alpha or 80),
-      highDetail = (highDetail or true),
-      pos = vector3((x or 0.0),(y or 0.0),(z or 0.0))
+        handle = blip,
+        coords = (coords or 0.0),
+        range = (range or 100.0),
+        color = (color or 1),
+        alpha = (alpha or 80),
+        high = (high or true)
     }
-  end
-  
-  AreaBlip = function(x,y,z,width,height,heading,color,alpha,highDetail,display,shortRange)
-    local blip = AddBlipForArea((x or 0.0),(y or 0.0),(z or 0.0),(width or 100.0),(height or 100.0))
+end
+
+
+--- func desc
+---@param coords any
+---@param width any
+---@param height any
+---@param heading any
+---@param color any
+---@param alpha any
+---@param high any
+---@param display any
+---@param short any
+function c.blip.AreaBlip(coords, width, height, heading, color, alpha, high, display, short)
+    local blip = AddBlipForArea((coords or vector3(0.0, 0.0, 0.0)), (width or 100.0), (height or 100.0))
     SetBlipColour(blip, (color or 1))
-    SetBlipAlpha (blip, (alpha or 80))
-    SetBlipHighDetail(blip, (highDetail or true))
+    SetBlipAlpha(blip, (alpha or 80))
+    SetBlipHighDetail(blip, (high or true))
     SetBlipRotation(blip, (heading or 0.0))
     SetBlipDisplay(blip, (display or 4))
-    SetBlipAsShortRange(blip, (shortRange or true))
-  
+    SetBlipAsShortRange(blip, (short or true))
+
     return {
-      handle = blip,
-      x = (x or 0.0),
-      y = (y or 0.0),
-      z = (z or 0.0),
-      width = (width or 100.0),
-      display = (display or 4),
-      height = (height or 100.0),
-      heading = (heading or 0.0),
-      color = (color or 1),
-      alpha = (alpha or 80),
-      highDetail = (highDetail or true),
-      pos = vector3((x or 0.0),(y or 0.0),(z or 0.0))
+        handle = blip,
+        coords = (coords or vector3(0.0, 0.0, 0.0)),
+        width = (width or 100.0),
+        display = (display or 4),
+        height = (height or 100.0),
+        heading = (heading or 0.0),
+        color = (color or 1),
+        alpha = (alpha or 80),
+        high = (high or true),
+        short = (short or true)
     }
-  end
+end
 
-  local blips = {}
 
-local actions = {
-  alpha = SetBlipAlpha,
-  color = SetBlipColour,
-  scale = SetBlipScale,
-}
+--- func desc
+function c.blip.CreateBlip(...)
+    local handle = #c.blips + 1
+    local blip = c.blip.Blip(...)
+    c.blips[handle] = blip
+    return handle
+end
 
-exports('AddBlip', function(...)
-  local handle = #blips+1
-  local blip = Blip(...)
-  blips[handle] = blip
-  return handle
-end)
+--- func desc
+function c.blip.CreateRadius(...)
+    local handle = #c.blips + 1
+    local blip = c.blip.RadiusBlip(...)
+    c.blips[handle] = blip
+    return handle
+end
 
-exports('AddRadiusBlip', function(...)
-  local handle = #blips+1
-  local blip = RadiusBlip(...)
-  blips[handle] = blip
-  return handle
-end)
+--- func desc
+function c.blip.CreateArea(...)
+    local handle = #c.blips + 1
+    local blip = c.blip.AreaBlip(...)
+    c.blips[handle] = blip
+    return handle
+end
 
-exports('AddAreaBlip', function(...)
-  local handle = #blips+1
-  local blip = AreaBlip(...)
-  blips[handle] = blip
-  return handle
-end)
+--- func desc
+---@param handle any
+function c.blip.GetBlip(handle)
+    return c.blips[handle]
+end
 
-exports('GetBlip', function(handle)
-  return blips[handle]
-end)
-
-exports('SetBlip', function(handle,key,val)  
-  local blip = blips[handle]
-  blip[key] = val
-  if actions[key] then actions[key](blip["handle"],val); end 
-end)
-
-exports('RemoveBlip', function(handle)
-  local blip = blips[handle]
-  if blip then
-    RemoveBlip(blip["handle"])
-  end
-end)
-
-exports('TeleportToBlip', function(handle)
-  local blip = blips[handle]
-  if blip then
-    TeleportPlayer(blip.pos)
-  end
-end)
+--- func desc
+---@param handle any
+function c.blip.Remove(handle)
+    local blip = c.blips[handle]
+    if blip then
+        RemoveBlip(blip["handle"])
+    end
+end

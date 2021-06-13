@@ -8,11 +8,12 @@ NOTES.
     -
     -
     -
-]]--
+]] --
 math.randomseed(c.Seed)
 -- ====================================================================================--
 -- https://docs.fivem.net/docs/game-references/markers/
 
+--[[
 Marker = function(type,posX,posY,posZ,dirX,dirY,dirZ,rotX,rotY,rotZ,scaleX,scaleY,scaleZ,red,green,blue,alpha,bobUpAndDown,faceCamera,p19,rotate,textureDict,textureName,drawOnEnts,textDist,text,doFunc,onKey,funcArgs)
     return {
       type = (type or 0),
@@ -48,22 +49,19 @@ Marker = function(type,posX,posY,posZ,dirX,dirY,dirZ,rotX,rotY,rotZ,scaleX,scale
     }
   end
 
-  local markers = {}
+local markers = {}
 local chunk = {}
 
 local lastChunk = false
 local chunkDist = 100.0
-local drawDist  =  50.0
-
-local PlayerPos = function()
-  return GetEntityCoords(GetPlayerPed(-1))
-end
+local drawDist  =  20.0
 
 local ReChunk = function()
   local newChunk = {}
-  local plyPos = PlayerPos()
+  local ped = PlayerPedId()
+  local pos = GetEntityCoords(ped)
   for k,v in pairs(markers) do
-    local dist = Vector.Dist(plyPos,v.pos)
+    local dist = Vdist(pos,v.pos)
     if dist < chunkDist then
       newChunk[#newChunk+1] = v
     end
@@ -78,7 +76,7 @@ end
 local DrawMarkers = function()
   local plyPos = PlayerPos()
   for k,v in pairs(chunk) do
-    local dist = Vector.Dist(plyPos,v.pos)
+    local dist = Vdist(plyPos,v.pos)
     if dist < drawDist then
       RenderMarker(v)
       if v.textDist and v.text then
@@ -98,14 +96,15 @@ end
 
 Citizen.CreateThread(function()
   while true do
+    Citizen.Wait(0)
     local timeNow = GetGameTimer()
     local timer = math.ceil(math.max(1,math.min(10,#markers))*100)
     if (not lastChunk or (timeNow - lastChunk > timer)) then
       lastChunk = timeNow
       chunk = ReChunk()
     end
+    Citizen.Wait(1)
     DrawMarkers()
-    Wait(0)
   end
 end)
 
@@ -127,15 +126,7 @@ exports('RemoveMarker',function(handle)
     markers[handle] = nil
   end
 end)
-
-exports('TeleportToMarker', function(handle)
-  local marker = markers[handle]
-  if marker then
-    TeleportPlayer(marker.pos)
-  end
-end)
-
-
+]] --
 
 --- Select a premade marker style.
 ---@param v number "A number to select corresponding local array value."
@@ -144,7 +135,8 @@ function c.marker.SelectMarker(v, ords)
     local markers = {
         [0] = function()
             -- Blue Static Circle.
-            DrawMarker(27, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
+            DrawMarker(27, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2,
+                0)
         end,
         [1] = function()
             -- Blue Static $.
@@ -179,8 +171,8 @@ function c.marker.SelectMarker(v, ords)
                 0)
         end
     }
-    if v then
-        return markers[v]
+    if markers[v] then
+        markers[v]()
     end
 end
 
@@ -192,13 +184,14 @@ function c.marker.CreateThreadLoop(t)
     Citizen.CreateThread(function()
         local tab = tab
         while true do
-            local found = false
-            local near = false
             local ped = PlayerPedId()
             local pos = vector3(GetEntityCoords(ped))
-            Citizen.Wait(1)
+            local found = false
+            local near = false
+            local open = false
+            Citizen.Wait(0)
             if c.data.GetLoadedStatus() then
-                for i = 1, size, 1 do
+                for i = 1, #tab, 1 do
                     local ords = tab[i].coords
                     local num = tab[i].number
                     local text = tab[i].notification
@@ -214,14 +207,21 @@ function c.marker.CreateThreadLoop(t)
                             -- Show help
                             c.text.DisplayHelp(text[1], text[2])
                             if IsControlJustPressed(0, 38) then
+                                open = true
                                 -- Do action.
                                 cb()
+                            else
+                                open = false
                             end
+                        else
+                            near = false
                         end
+                    else
+                        found = false
                     end
                 end
             else
-                Citizen.Wait(1250)
+                Citizen.Wait(150 * #tab)
             end
         end
     end)
