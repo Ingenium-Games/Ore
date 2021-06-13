@@ -141,9 +141,9 @@ function c.IsNear(coords, arrays, style)
 		end
 		if comparedst < 5.0 then
             if style then
-                c.SelectMarker(style, ords)
+                c.marker.SelectMarker(style, ords)
             else
-                c.SelectMarker(0, ords)
+                c.marker.SelectMarker(0, ords)
             end
         end
 	end

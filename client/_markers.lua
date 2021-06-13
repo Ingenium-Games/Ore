@@ -1,7 +1,7 @@
 -- ====================================================================================--
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
-c.markers = {}
+c.marker = {}
 --[[
 NOTES.
     -
@@ -15,8 +15,7 @@ math.randomseed(c.Seed)
 --- Select a premade marker style.
 ---@param v number "A number to select corresponding local array value."
 ---@param ords table "a vector3() or {x,y,z}"
-function c.markers.SelectMarker(v, ords)
-    local num = c.check.Number(v)
+function c.marker.SelectMarker(v, ords)
     local markers = {
         [0] = function()
             -- Blue Static Circle.
@@ -55,20 +54,18 @@ function c.markers.SelectMarker(v, ords)
                 0)
         end
     }
-    if num then
-        return markers[num]
+    if v then
+        return markers[v]
     end
 end
 
 --- Produce A loop of markers to generate based on criteria.
 ---@param t table 'Contains coords as vector3, number for marker selection with c.marker functions, notification for dynamic entry with c.text functions and a func for callback function to do. {["coords"] = vector3(), ["number"] = 0,X, ["notification"] = {"KEYBOARD_USE", "DO X Y Z"}, ["callback"] = cb()}'
-function c.markers.CreateThreadLoop(t)
+function c.marker.CreateThreadLoop(t)
     local tab = c.check.Table(t)
-    local size = c.table.SizeOf(tab)
     -- Create the loop based on the Coordinates and marker style provided.
     Citizen.CreateThread(function()
         local tab = tab
-        local size = size
         while true do
             local found = false
             local near = false
@@ -86,7 +83,7 @@ function c.markers.CreateThreadLoop(t)
                     if dist < 20 then
                         found = true
                         -- Draw marker
-                        c.markers.SelectMarker(num, ords)
+                        c.marker.SelectMarker(num, ords)
                         if dist < 5 then
                             near = true
                             -- Show help

@@ -31,3 +31,8 @@ const handlers = {
 window.addEventListener('message', function (e) {
     (handlers[e.data.eventName] || function () { })(e.data);
 });
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#data-name > span').innerText = window.nuiHandoverData.name;
+    document.querySelector('#data-lastjoin > span').innerText = window.nuiHandoverData.last;
+});

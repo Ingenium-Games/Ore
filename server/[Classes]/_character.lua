@@ -92,7 +92,7 @@ function c.class.CreateCharacter(character_id)
         if bool then
             local Accounts = {}
             for k,v in ipairs(self.Accounts) do
-                Accounts[v.name] = v.money
+                Accounts[k] = v
             end
             return Accounts
         else

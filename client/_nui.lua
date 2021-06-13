@@ -10,6 +10,9 @@ NOTES.
 
 math.randomseed(c.Seed)
 -- ====================================================================================--
+
+local cam, cam2, cam3
+
 RegisterNetEvent('Client:Character:Open')
 AddEventHandler('Client:Character:Open', function(Command, Data)
     c.IsBusyPleaseWait(1000)
@@ -37,13 +40,14 @@ end)
 RegisterNUICallback('Client:Character:Create', function(Data, cb)
     SetNuiFocus(false, false)
     TriggerServerEvent('Server:Character:Request:Create', Data.First_Name, Data.Last_Name, Data.Height, Data.Birth_Date)
+    SetCamActive(cam,false)
+    SetCamActive(cam2,false)
+    SetCamActive(cam3,false)
     cb("ok")
 end)
 
 ------------------------------------------------------------------------------
 --  While in join menu, Events and Triggers
-
-local cam, cam2, cam3
 
 RegisterNetEvent('Client:Character:OpeningMenu')
 AddEventHandler('Client:Character:OpeningMenu', function()
@@ -52,7 +56,7 @@ AddEventHandler('Client:Character:OpeningMenu', function()
     SetEntityCoords(GetPlayerPed(-1), 0, 0, 0)
     FreezeEntityPosition(GetPlayerPed(-1), true)
     cam = c.camera.Basic(313.78, -1403.07, 189.53, 0.00, 0.00, 45.00, 100.00)
-    SetCamActive(intro, true)
+    SetCamActive(cam, true)
     RenderScriptCams(true, false, 1, true, true)
 end)
 
@@ -75,4 +79,7 @@ AddEventHandler('Client:Character:ReSpawn', function(Character_ID, Coords)
     FreezeEntityPosition(GetPlayerPed(-1), false)
     c.IsBusyPleaseWait(500)
     TriggerServerEvent('skin:LoadSkin')
+    SetCamActive(cam,false)
+    SetCamActive(cam2,false)
+    SetCamActive(cam3,false)
 end)
