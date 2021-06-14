@@ -38,7 +38,8 @@ SetThisScriptCanRemoveBlipsCreatedByAnyScript(true)
 ---@param category number
 ---@param legend boolean
 function c.blip.Blip(coords, sprite, colour, text, scale, flash, fade, short, high, display, category, legend)
-    local blip = AddBlipForCoord((coords or vector3(0.0, 0.0, 0.0)))
+    local x,y,z = table.unpack(coords) or 0.0, 0.0, 0.0
+    local blip = AddBlipForCoord(x,y,z)
     SetBlipSprite(blip, (sprite or 1))
     SetBlipDisplay(blip, (display or 6))
     SetBlipScale(blip, (scale or 0.82))
@@ -83,7 +84,8 @@ end
 ---@param alpha any
 ---@param high any
 function c.blip.RadiusBlip(coords, range, color, alpha, high)
-    local blip = AddBlipForRadius((coords or vector3(0.0, 0.0, 0.0)), (range or 100.0))
+    local x,y,z = table.unpack(coords) or 0.0, 0.0, 0.0
+    local blip = AddBlipForRadius(x,y,z, (range or 100.0))
     SetBlipColour(blip, (color or 1))
     SetBlipAlpha(blip, (alpha or 80))
     SetBlipHighDetail(blip, (high or true))
@@ -110,7 +112,8 @@ end
 ---@param display any
 ---@param short any
 function c.blip.AreaBlip(coords, width, height, heading, color, alpha, high, display, short)
-    local blip = AddBlipForArea((coords or vector3(0.0, 0.0, 0.0)), (width or 100.0), (height or 100.0))
+    local x,y,z = table.unpack(coords) or 0.0, 0.0, 0.0
+    local blip = AddBlipForArea(x,y,z, (width or 100.0), (height or 100.0))
     SetBlipColour(blip, (color or 1))
     SetBlipAlpha(blip, (alpha or 80))
     SetBlipHighDetail(blip, (high or true))
