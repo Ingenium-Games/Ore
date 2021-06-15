@@ -6,7 +6,7 @@ description "ore: A FiveM C-ORE Resource to BUILD WITH"
 version "0.5.5"
 ------------------------------------------------------------------------------
 ui_page "nui/ore.html"
-loadscreen "nui/splash.html"
+loadscreen "https://www.ingenium.games/"
 ------------------------------------------------------------------------------
 -- shared
 shared_scripts {"conf.lua", "conf.cars.lua", "conf.disable.lua", "shared/_c.lua"}
@@ -27,5 +27,5 @@ server_exports {"c"}
 dependencies {"mysql-async", "freecam", "discordroles"}
 ------------------------------------------------------------------------------
 -- files
-files { "nui/splash.js", "nui/splash.css", "nui/splash.html", "nui/ore.js", "nui/ore.css", "nui/ore.html", "nui/img/*.png", "nui/img/*.jpg", "nui/jquery-3.5.1.min.js",
+files { "nui/ore.js", "nui/ore.css", "nui/ore.html", "nui/img/*.png", "nui/img/*.jpg", "nui/jquery-3.5.1.min.js",
        "nui/jquery.mask.min.js", "nui/jquery.validate.min.js"}

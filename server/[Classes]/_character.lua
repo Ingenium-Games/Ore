@@ -45,7 +45,11 @@ function c.class.CreateCharacter(character_id)
     self.Appearance = json.decode(data.Appearance)
     self.Modifiers = json.decode(data.Modifiers)
     self.Coords = json.decode(data.Coords)
-
+    
+    -- Create a entry for Inventory.
+    self.Inventory = false
+    
+    
     ---- FUNCTIONS
     self.TriggerEvent = function(event, ...)
 		TriggerClientEvent(event, self.ID, ...)
@@ -77,6 +81,14 @@ function c.class.CreateCharacter(character_id)
     --
     self.GetFull_Name = function()
         return self.Full_Name
+    end
+    --
+    self.Get = function(k)
+        return self[k]
+    end
+    --
+    self.Set = function(k,v)
+        self[k] = v
     end
     --
     self.GetGender = function()
