@@ -32,10 +32,11 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `Job` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{"job":unemployed,"grade":0}',
   `Notes` varchar(4500) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `Photo` longtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'img/icons8-team-100.png',
-  `Accounts` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Appearance` longtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{"sex":0}',
+  `Inventory` longtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}',
+  `Accounts` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Modifiers` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Health` int(3) NOT NULL DEFAULT 100,
+  `Health` int(3) NOT NULL DEFAULT 400,
   `Armour` int(3) NOT NULL DEFAULT 0,
   `Hunger` int(3) NOT NULL DEFAULT 100,
   `Thirst` int(3) NOT NULL DEFAULT 100,
@@ -67,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `Instance` (`Instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Character Table';
 
--- Dumping data for table db.characters: ~1 rows (approximately)
+-- Dumping data for table db.characters: ~3 rows (approximately)
 /*!40000 ALTER TABLE `characters` DISABLE KEYS */;
 /*!40000 ALTER TABLE `characters` ENABLE KEYS */;
 
@@ -76,7 +77,8 @@ CREATE TABLE IF NOT EXISTS `character_accounts` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Character_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Account_Number` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `Bank` int(11) NOT NULL DEFAULT 0,
+  `Bank_Name` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT 'Maze',
+  `Bank` int(11) DEFAULT NULL,
   `Pin` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0000',
   `Loan` int(11) DEFAULT NULL,
   `Duration` int(3) DEFAULT NULL,
@@ -86,10 +88,11 @@ CREATE TABLE IF NOT EXISTS `character_accounts` (
   UNIQUE KEY `Account_Number` (`Account_Number`),
   KEY `Duration` (`Duration`),
   KEY `Active` (`Active`),
+  KEY `Bank` (`Bank_Name`) USING BTREE,
   CONSTRAINT `FK_character_accounts_characters` FOREIGN KEY (`Character_ID`) REFERENCES `characters` (`Character_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table db.character_accounts: ~0 rows (approximately)
+-- Dumping data for table db.character_accounts: ~2 rows (approximately)
 /*!40000 ALTER TABLE `character_accounts` DISABLE KEYS */;
 /*!40000 ALTER TABLE `character_accounts` ENABLE KEYS */;
 
@@ -103,16 +106,49 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `Grade_Salary` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`) USING BTREE,
   KEY `Name` (`Name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table db.jobs: ~5 rows (approximately)
+-- Dumping data for table db.jobs: ~38 rows (approximately)
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
 INSERT INTO `jobs` (`ID`, `Name`, `Label`, `Grade`, `Grade_Label`, `Grade_Salary`) VALUES
-	(1, 'unemployed', 'Unemployed', 0, 'Unemployed', 12),
-	(2, 'police', 'Police', 0, 'Cadet', 25),
-	(3, 'police', '', 1, 'Junior Officer', 29),
-	(4, 'police', '', 2, 'Officer', 34),
-	(5, 'police', '', 3, 'Senior Officer', 40);
+	(1, 'none', 'Unemployed', 0, 'Unemployed', 8),
+	(2, 'cop', 'Police Department', 0, 'Cadet', 17),
+	(3, 'cop', '', 1, 'Junior Officer', 22),
+	(4, 'cop', '', 2, 'Officer', 26),
+	(5, 'cop', '', 3, 'Senior Officer', 29),
+	(6, 'ems', 'Emergancy Medical Services', 0, 'Trainee', 19),
+	(7, 'ems', NULL, 1, 'Paramedic', 24),
+	(8, 'ems', NULL, 2, 'Doctor', 29),
+	(9, 'pdm', 'Premium Motor Sport', 0, 'Pre-Delivery', 13),
+	(10, 'pdm', NULL, 1, 'Floor Sales', 18),
+	(11, 'pdm', NULL, 2, 'Sales Expert', 23),
+	(12, 'pdm', NULL, 3, 'Operations Director', 27),
+	(13, 'ems', NULL, 3, 'Cheif Medical Officer', 33),
+	(14, 'cop', NULL, 4, 'Cheif of Police', 33),
+	(15, 'benny', 'Benny\'s Original Motorworks', 0, 'Apprentice', 12),
+	(16, 'benny', NULL, 1, 'Mechanic', 22),
+	(17, 'benny', NULL, 2, 'Import Logistics', 26),
+	(18, 'benny', NULL, 3, 'Boss Man', 30),
+	(19, 'news', 'Wezeal News', 0, 'Intern', 10),
+	(20, 'news', NULL, 1, 'Camera Crew', 16),
+	(21, 'news', NULL, 2, 'Reporter', 21),
+	(22, 'news', NULL, 3, 'DJ Mixer', 25),
+	(23, 'news', NULL, 4, 'News Anchor', 29),
+	(24, 'bins', 'Desperado\'s Waste Services', 0, 'Waste Colector', 15),
+	(25, 'bins', NULL, 1, 'Heavy Colections', 22),
+	(26, 'bins', NULL, 2, 'Renew Technition', 25),
+	(27, 'bins', NULL, 3, 'Service Logistic Manager', 28),
+	(28, 'varg', 'Vargo', 0, 'Repin Yellow', 5),
+	(29, 'ball', 'Baller', 0, 'Repin Purple', 5),
+	(30, 'grov', 'Grove', 0, 'Repin Green', 5),
+	(31, 'king', 'King\'s', 0, 'Repin Red', 5),
+	(32, 'pepe', 'Pepe\'s Pizzaria', 0, 'Delivery Driver', 10),
+	(33, 'pepe', NULL, 1, 'Pizza Chef', 18),
+	(34, 'pepe', NULL, 2, 'Franchisee', 24),
+	(35, 'gopo', 'Go Postal', 0, 'Delivery Driver', 13),
+	(36, 'mine', 'Caveat Cutters Union', 0, 'Miner', 13),
+	(37, 'lumb', 'Chippy Chop\'ns Wood Shop\'n', 0, 'Wood Cutter', 13),
+	(38, 'chic', 'Cluckin\' Bell', 0, 'Chicken Packer', 13);
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 
 -- Dumping structure for table db.job_accounts
@@ -125,10 +161,27 @@ CREATE TABLE IF NOT EXISTS `job_accounts` (
   `Accounts` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   KEY `Name` (`Name`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table db.job_accounts: ~0 rows (approximately)
+-- Dumping data for table db.job_accounts: ~14 rows (approximately)
 /*!40000 ALTER TABLE `job_accounts` DISABLE KEYS */;
+INSERT INTO `job_accounts` (`ID`, `Name`, `Description`, `Boss`, `Members`, `Accounts`) VALUES
+	(1, 'none', 'Unemployed : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(2, 'cop', 'Police Department : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(3, 'news', 'Wezeal New\'s : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(4, 'grov', 'Grove : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(5, 'ball', 'Baller : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(6, 'ems', 'Emergancy Medical Services : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(7, 'pdm', 'Premium Motor Sport : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(8, 'benny', 'Benny\'s Original Motorworks : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(9, 'king', 'King\'s : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(10, 'bins', 'Desperardo Waste Management : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(11, 'varg', 'Vargo : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(12, 'chic', 'Cluckin\' Bell : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(13, 'pepe', 'Pepe\'s Pizzaria : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(14, 'mine', 'Caveat Cutters Union : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(15, 'lumb', 'Chippy Chop\'ns Wood Shop\'n : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
+	(16, 'gopo', 'Go Postal : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}');
 /*!40000 ALTER TABLE `job_accounts` ENABLE KEYS */;
 
 -- Dumping structure for table db.users
@@ -154,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `Ace` (`Ace`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Users Table';
 
--- Dumping data for table db.users: ~0 rows (approximately)
+-- Dumping data for table db.users: ~3 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 

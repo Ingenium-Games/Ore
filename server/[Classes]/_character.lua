@@ -43,14 +43,18 @@ function c.class.CreateCharacter(character_id)
     self.Accounts = json.decode(data.Accounts)
     
     self.Appearance = json.decode(data.Appearance)
+    self.Inventory = json.decode(data.Inventory)
     self.Modifiers = json.decode(data.Modifiers)
     self.Coords = json.decode(data.Coords)
     
-    -- Create a entry for Inventory.
-    self.Inventory = false
-    
+    self.Supporter = data.Supporter
     
     ---- FUNCTIONS
+    -- This one is to check if they are a VIP/Supporter of the server, ie tebex linked.
+    self.IsSupporter = function()
+        return self.Supporter
+    end
+    --
     self.TriggerEvent = function(event, ...)
 		TriggerClientEvent(event, self.ID, ...)
     end
