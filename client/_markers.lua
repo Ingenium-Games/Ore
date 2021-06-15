@@ -140,27 +140,30 @@ function c.marker.SelectMarker(v, ords)
         }
     end
     if v == 1 then
-    -- Blue Static Circle.
-    DrawMarker(27, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
+        -- Blue Static Circle.
+        DrawMarker(27, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.0001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
     elseif v == 2 then
-      -- Blue Static $.
-      DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
-    elseif v == 3 then    
-      -- Blue Static ?.
-      DrawMarker(32, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
-          elseif v == 4 then
-            -- Blue Static Chevron.
-      DrawMarker(20, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
+        -- Blue Static $.
+        DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
+    elseif v == 3 then
+        -- Blue Static ?.
+        DrawMarker(32, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
+    elseif v == 4 then
+        -- Blue Static Chevron.
+        DrawMarker(20, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 0, 55, 240, 35, 0, 0, 2, 0)
     elseif v == 5 then
-      -- Small White Rotating Circle + Bouncing ? (on Ground)
-      DrawMarker(27, ords[1], ords[2], ords[3] - 0.45, 0, 0, 0, 0, 0, 0, 0.4001, 0.4001, 0.4001, 240, 240, 240, 35, 0, 0, 2, 1)
-        elseif v == 6 then
-          DrawMarker(32, ords[1], ords[2], ords[3] - 0.45, 0, 0, 0, 0, 0, 0, 0.2001, 0.4001, 0.8001, 240, 240, 240, 35, 1, 1, 2, 0)
-        elseif v == 7 then
-          -- White Rotating Chevron Bouncing.
-      DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 240, 240, 240, 35, 1, 0, 2, 1)
+        -- Small White Rotating Circle + Bouncing ? (on Ground)
+        DrawMarker(27, ords[1], ords[2], ords[3] - 0.45, 0, 0, 0, 0, 0, 0, 0.4001, 0.4001, 0.4001, 240, 240, 240, 35, 0,
+            0, 2, 1)
+    elseif v == 6 then
+        DrawMarker(32, ords[1], ords[2], ords[3] - 0.45, 0, 0, 0, 0, 0, 0, 0.2001, 0.4001, 0.8001, 240, 240, 240, 35, 1,
+            1, 2, 0)
+    elseif v == 7 then
+        -- White Rotating Chevron Bouncing.
+        DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 0.7001, 1.0001, 0.3001, 240, 240, 240, 35, 1, 0, 2,
+            1)
     elseif v == 8 then
-    -- Blue Static $.
+        -- Blue Static $.
         DrawMarker(29, ords[1], ords[2], ords[3], 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 1.7001, 0, 55, 240, 35, 0, 0, 2, 0)
     end
 end
@@ -182,7 +185,7 @@ function c.marker.CreateThreadLoop(t)
             if c.data.GetLoadedStatus() then
                 for i = 1, #tab, 1 do
                     local ords = tab[i].coords
-                    local marker = tab[i].marker
+                    local style = tab[i].number
                     local text = tab[i].notification
                     local cb = tab[i].callback
                     -- no point calculating distance twice in a loop, derp me.
@@ -190,7 +193,7 @@ function c.marker.CreateThreadLoop(t)
                     if dist < 20 then
                         found = true
                         -- Draw marker
-                        c.marker.SelectMarker(marker, ords)
+                        c.marker.SelectMarker(style, ords)
                         if dist < 5 then
                             near = true
                             -- Show help

@@ -143,7 +143,7 @@ function c.IsNear(coords, arrays, style)
             if style then
                 c.marker.SelectMarker(style, ords)
             else
-                c.marker.SelectMarker(0, ords)
+                c.marker.SelectMarker(1, ords)
             end
         end
 	end
