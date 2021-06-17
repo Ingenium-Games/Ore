@@ -641,7 +641,7 @@ function c.SetVehicleProps(vehicle, props)
     end
   end
   
-function c.GetVehicleProps(vehicle)
+function c.GetVehicleModifications(vehicle)
     local color1, color2 = GetVehicleColours(vehicle)
     local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
     local extras = {}
@@ -736,6 +736,95 @@ function c.GetVehicleProps(vehicle)
       modLivery         = GetVehicleLivery(vehicle)
     }
   end
+
+function c.GetVehicleCondition(vehicle)
+  local eng = GetVehicleEngineHealth(vehicle)
+  local tank = GetVehiclePetrolTankHealth(vehicle)
+  local body = GetVehicleBodyHealth(vehicle)
+  local numwheels = GetVehicleNumberOfWheels(vehicle)
+  local wheels = {}
+  for i=1, numwheels, 0 do
+    wheels[i] = {
+      ['ConBurst'] = IsVehicleTyreBurst(vehicle, i, false),
+      ['ConGone'] = DoesVehicleTyreExist(vehicle, i),
+      ['ConTyre'] = GetTyreHealth(vehicle, i),
+      ['ConWheel'] = GetVehicleWheelHealth(vehicle, i),
+    }
+  end
+  local numdoors = GetNumberOfVehicleDoors(vehicle)
+  local doors = {}
+  for i=1, numdoors, 0 do
+    doors[i] = {
+      ['ConValid'] = GetIsDoorValid(vehicle, i),
+      ['ConDamaged'] = IsVehicleDoorDamaged(vehicle, i),
+    }
+  end
+  --
+  return {
+    ['ConWheels'] = wheels,
+    ['ConDoors'] = doors,
+    ['ConEng'] = eng,
+    ['ConTank'] = tank,
+    ['ConBody'] = body,
+  }
+end
+
+function c.SetVehicleCondition(vehicle, cons)
+  
+  if cons.ConEng ~= nil then
+    SetVehicleEngineHealth(vehicle, cons.ConEng)
+  end
+  
+  if cons.ConTank ~= nil then
+    SetVehiclePetrolTankHealth(vehicle, cons.ConTank)
+  end
+  
+  if cons.ConBody ~= nil then
+    SetVehicleBodyHealth(vehicle, cons.ConBody)
+  end
+  
+  if cons.ConWheels ~= nil then
+    for i=1, #cons.ConWheels, 0 do
+      if cons.ConWheels[i]['ConGone'] then
+        SetVehicleTyreBurst(vehicle, i, true, 1000.0)
+      end
+      if cons.ConWheels[i]['ConBurst'] then
+        SetVehicleTyreBurst(vehicle, i, false, 250.0)
+      end
+      SetVehicleWheelHealth(vehicle, i, cons.ConWheels[i]['ConWheel'])
+      SetTyreHealth(vehicle, i, cons.ConWheels[i]['ConTyre'])
+      if not cons.ConWheels[i]['ConBurst'] and not cons.ConWheels[i]['ConGone'] then
+        SetVehicleTyreFixed(vehicle, i)
+      end
+    end
+  end
+
+  if cons.ConDoors ~= nil then
+    for i=1, #cons.ConDoors, 0 do
+      local a,b = cons.ConDoors[i]['ConValid'], cons.ConDoors[i]['ConDamaged']
+      if a and b then
+        SetVehicleDoorBroken(vehicle, i, true)
+      elseif a or b then
+        SetVehicleDoorBroken(vehicle, i, false)
+      end
+    end
+  end
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   Scaleforms = {}
 

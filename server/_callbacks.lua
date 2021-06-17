@@ -69,7 +69,7 @@ c.RegisterServerCallback('Request:CountActiveCharactersByJob', function(source, 
     return Count
 end)
 
-c.RegisterServerCallback('Request:Create:Vehicle', function(source, networkid, plate)
+c.RegisterServerCallback('Request:Create:VehicleClass', function(source, networkid, plate)
     local xCar = c.class.VehicleClass(networkid, true, plate)
         c.vehicle.SetVehicle(plate, xCar)
     return true

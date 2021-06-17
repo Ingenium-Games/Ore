@@ -6,6 +6,7 @@ NOTES.
     - Reasoning behind duplicating it as a state and class table.
     - Just incase it goes arse up and state bags become fucked.
     - Preemuch the reason. So, Why rely on one, when you can have two?
+    - FUka you.
 ]] --
 
 math.randomseed(c.Seed)
@@ -41,12 +42,17 @@ function c.class.VehicleClass(networkid, owned, plate)
     EnsureEntityStateBag(self.Entity)
     --
     self.SetState = function(k,v)
+        if type(k) ~= 'string' then k = tostring(k) end
         Entity(self.Entity).state[k] = v
     end
     --
     self.GetState = function(k)
+        if type(k) ~= 'string' then k = tostring(k) end
         return Entity(self.Entity).state[k]
     end
+----------------------------------------------------------------------
+-- START SEPERATION OF TYPE FOR CLASS, IS IT OWNEND BY THE DB OR NOT!.
+----------------------------------------------------------------------
     -- If is not owned by a player on creation, do...
     if not owned then
         -- Declare
@@ -106,11 +112,63 @@ function c.class.VehicleClass(networkid, owned, plate)
         self.GetInventory = function()
             return self.GetState('Inventory')
         end
-        --
+        -- Rather than do individual transactions, better to let the inventory functions (soontm) deal with all that.
         self.SetInventory = function(t)
-            self.Inventory = t
+            self.SetState('Inventory', t)
         end
         --
+        self.GetKeys = function()
+            return self.GetState('Keys')
+        end
+        --
+        self.SetKeys = function(t)
+            self.SetState('Keys', t)
+        end
+        --
+        self.AddKey = function(id)
+            local t = self.GetState('Keys')
+            if not t[id] then
+                table.insert(t,id)
+                self.SetState('Keys', t)
+            else
+                c.debug('User: '..id..' Already has key to this vehicle.')
+            end
+        end
+        --
+        self.RemoveKey = function(id)
+            local t = self.GetState('Keys')
+            if t[id] then
+                table.remove(t,id)
+                self.SetState('Keys', t)
+            else
+                c.debug('User: '..id..' Never had a key to this vehicle.')    
+            end
+        end
+        --
+        self.CheckKey = function(id)
+            local t = self.GetState('Keys')
+            if t[id] then
+                return true
+            else
+                return false
+            end
+        end
+        -- Reminder, clients to set need to use Entity(ent).state:Set('Condition', {TABLE OF ALL STUFFS}, TRUE) << to replicate to the server
+        self.GetCondition = function()
+            return self.GetState('Condition')
+        end
+        --
+        self.SetCondition = function(t)
+            self.SetState('Condition', t)
+        end
+        --
+
+-------------------------------------------------------------------------
+-- To recap, what we are doing, is duplicating the functions to be identical,
+-- that if a owned or unowned vehicle is queryed by another script it will
+-- still provide similar or the same informaiton to what is calling it.
+-------------------------------------------------------------------------        
+
         -- If it IS owned by a player, DO...
     elseif owned then
         local data = c.sql.GetVehicleByPlate(plate)
@@ -168,6 +226,72 @@ function c.class.VehicleClass(networkid, owned, plate)
             }
             self.SetState('Coords', self.Coords)
         end
+        --
+        self.GetKeys = function()
+            return self.Keys
+        end
+        --
+        self.SetKeys = function(t)
+            self.Keys = t
+            self.SetState('Keys', self.Keys)
+        end
+        --
+        self.AddKey = function(id)
+            if not self.Keys[id] then
+                table.insert(self.Keys, id)
+                self.SetState('Key', self.Keys)
+            else
+                c.debug('User: '..id..' Already has key to this vehicle.')
+            end
+        end
+        --
+        self.RemoveKey = function(id)
+            if self.Keys[id] then
+                table.remove(self.Keys, id)
+                self.SetState('Key', self.Keys)
+            else
+                c.debug('User: '..id..' Never had a key to this vehicle.')    
+            end
+        end
+        --
+        self.CheckKey = function(id)
+            if self.Keys[id] then
+                return true
+            else
+                return false
+            end
+        end
+        --
+        self.GetCondition = function()
+            if not self.Condition or type(self.Condition) ~= 'table' then
+                local ConDirt = GetVehicleDirtLevel(self.Entity)
+                local ConEng = GetVehicleEngineHealth(self.Entity)
+                local ConBod = GetVehicleBodyHealth(self.Entity)
+                local ConFuel = GetVehiclePetrolTankHealth(self.Entity)
+                local Con = {
+                    ['ConDirt'] = ConDirt,
+                    ['ConEng'] = ConEng,
+                    ['ConBod'] = ConBod,
+                    ['ConFuel'] = ConFuel,
+                }
+                return Con
+            else
+                return self.Condition
+            end
+        end
+        --
+        self.SetCondition = function(Con)
+            self.Condition = Con
+            self.SetState('Condition', self.Condition)
+        end
+        --
+
+
+        
+        
+        
+        
+        
         --
         self.Fuel = self.Modifications.Fuel
         --
