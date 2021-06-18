@@ -299,6 +299,7 @@ function c.GetPickupsInArea(coords, radius, minimal)
     return obj
 end
 
+
 -- returns closestPlayer, closestDistance
 function c.GetClosestPlayer()
     local players = GetActivePlayers()
@@ -321,6 +322,7 @@ function c.GetClosestPlayer()
     return closestPlayer, closestDistance
 end
 
+
 -- returns closestVeh, closestDistance
 function c.GetClosestVehicle()
     local closestDistance = -1
@@ -340,6 +342,7 @@ function c.GetClosestVehicle()
     return closestVeh, closestDistance
 end
 
+
 function c.GetVehicleInDirection()
     local playerPed = PlayerPedId()
     local playerCoords = GetEntityCoords(playerPed)
@@ -352,8 +355,8 @@ function c.GetVehicleInDirection()
     return nil
 end
 
+
 function c.CreateVehicle(model,x,y,z,h)
-    local attempt = 0
     local hash = (GetHashKey(model) or model)
     --
     if not IsModelInCdimage(hash) then 
@@ -379,70 +382,63 @@ function c.CreateVehicle(model,x,y,z,h)
     return vehicle, net, spawn
 end
   
-function c.SetVehicleProps(vehicle, props)
+
+function c.SetVehicleModifications(vehicle, mods)
     SetVehicleModKit(vehicle, 0)
   
-    if props.plate ~= nil then
-      SetVehicleNumberPlateText(vehicle, props.plate)
+    if mods.Plate ~= nil then
+      SetVehicleNumberPlateText(vehicle, mods.Plate)
     end
   
-    if props.plateIndex ~= nil then
-      SetVehicleNumberPlateTextIndex(vehicle, props.plateIndex)
+    if mods.PlateIndex ~= nil then
+      SetVehicleNumberPlateTextIndex(vehicle, mods.PlateIndex)
     end
   
-    if props.bodyHealth ~= nil then
-      SetVehicleBodyHealth(vehicle, props.bodyHealth + 0.0)
+    if mods.Fuel ~= nil then
+      SetVehicleFuelLevel(vehicle, mods.Fuel + 0.0)
     end
   
-    if props.engineHealth ~= nil then
-      SetVehicleEngineHealth(vehicle, props.engineHealth + 0.0)
+    if mods.Dirt ~= nil then
+      SetVehicleDirt(vehicle, mods.Dirt + 0.0)
     end
   
-    if props.Fuel ~= nil then
-      SetVehicleFuelLevel(vehicle, props.Fuel + 0.0)
+    if mods.Colour_1 ~= nil then
+      local Colour_1, Colour_2 = GetVehicleColours(vehicle)
+      SetVehicleColours(vehicle, mods.Colour_1, Colour_2)
     end
   
-    if props.dirtLevel ~= nil then
-      SetVehicleDirtLevel(vehicle, props.dirtLevel + 0.0)
+    if mods.Colour_2 ~= nil then
+      local Colour_1, Colour_2 = GetVehicleColours(vehicle)
+      SetVehicleColours(vehicle, Colour_1, mods.Colour_2)
     end
   
-    if props.color1 ~= nil then
-      local color1, color2 = GetVehicleColours(vehicle)
-      SetVehicleColours(vehicle, props.color1, color2)
+    if mods.Pearlescent ~= nil then
+      local Pearlescent, WheelColor = GetVehicleExtraColours(vehicle)
+      SetVehicleExtraColours(vehicle, mods.Pearlescent, WheelColor)
     end
   
-    if props.color2 ~= nil then
-      local color1, color2 = GetVehicleColours(vehicle)
-      SetVehicleColours(vehicle, color1, props.color2)
+    if mods.WheelColor ~= nil then
+      local Pearlescent, WheelColor = GetVehicleExtraColours(vehicle)
+      SetVehicleExtraColours(vehicle, Pearlescent, mods.WheelColor)
     end
   
-    if props.pearlescentColor ~= nil then
-      local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
-      SetVehicleExtraColours(vehicle, props.pearlescentColor, wheelColor)
+    if mods.Wheels ~= nil then
+      SetVehicleWheelType(vehicle, mods.Wheels)
     end
   
-    if props.wheelColor ~= nil then
-      local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
-      SetVehicleExtraColours(vehicle, pearlescentColor, props.wheelColor)
+    if mods.WindowTint ~= nil then
+      SetVehicleWindowTint(vehicle, mods.WindowTint)
     end
   
-    if props.wheels ~= nil then
-      SetVehicleWheelType(vehicle, props.wheels)
+    if mods.NeonEnabled ~= nil then
+      SetVehicleNeonLightEnabled(vehicle, 0, mods.NeonEnabled[1])
+      SetVehicleNeonLightEnabled(vehicle, 1, mods.NeonEnabled[2])
+      SetVehicleNeonLightEnabled(vehicle, 2, mods.NeonEnabled[3])
+      SetVehicleNeonLightEnabled(vehicle, 3, mods.NeonEnabled[4])
     end
   
-    if props.windowTint ~= nil then
-      SetVehicleWindowTint(vehicle, props.windowTint)
-    end
-  
-    if props.neonEnabled ~= nil then
-      SetVehicleNeonLightEnabled(vehicle, 0, props.neonEnabled[1])
-      SetVehicleNeonLightEnabled(vehicle, 1, props.neonEnabled[2])
-      SetVehicleNeonLightEnabled(vehicle, 2, props.neonEnabled[3])
-      SetVehicleNeonLightEnabled(vehicle, 3, props.neonEnabled[4])
-    end
-  
-    if props.extras ~= nil then
-      for id,enabled in pairs(props.extras) do
+    if mods.Extras ~= nil then
+      for id,enabled in pairs(mods.Extras) do
         if enabled then
           SetVehicleExtra(vehicle, tonumber(id), 0)
         else
@@ -451,304 +447,284 @@ function c.SetVehicleProps(vehicle, props)
       end
     end
   
-    if props.neonColor ~= nil then
-      SetVehicleNeonLightsColour(vehicle, props.neonColor[1], props.neonColor[2], props.neonColor[3])
+    if mods.NeonColor ~= nil then
+      SetVehicleNeonLightsColour(vehicle, mods.NeonColor[1], mods.NeonColor[2], mods.NeonColor[3])
     end
   
-    if props.modSmokeEnabled ~= nil then
+    if mods.TyreSmoke ~= nil then
       ToggleVehicleMod(vehicle, 20, true)
     end
   
-    if props.tyreSmokeColor ~= nil then
-      SetVehicleTyreSmokeColor(vehicle, props.tyreSmokeColor[1], props.tyreSmokeColor[2], props.tyreSmokeColor[3])
+    if mods.TyreSmokeColour ~= nil then
+      SetVehicleTyreSmokeColor(vehicle, mods.TyreSmokeColour[1], mods.TyreSmokeColour[2], mods.TyreSmokeColour[3])
     end
   
-    if props.modSpoilers ~= nil then
-      SetVehicleMod(vehicle, 0, props.modSpoilers, false)
+    if mods.Spoiler ~= nil then
+      SetVehicleMod(vehicle, 0, mods.Spoiler, false)
     end
   
-    if props.modFrontBumper ~= nil then
-      SetVehicleMod(vehicle, 1, props.modFrontBumper, false)
+    if mods.FrontBumper ~= nil then
+      SetVehicleMod(vehicle, 1, mods.FrontBumper, false)
     end
   
-    if props.modRearBumper ~= nil then
-      SetVehicleMod(vehicle, 2, props.modRearBumper, false)
+    if mods.RearBumper ~= nil then
+      SetVehicleMod(vehicle, 2, mods.RearBumper, false)
     end
   
-    if props.modSideSkirt ~= nil then
-      SetVehicleMod(vehicle, 3, props.modSideSkirt, false)
+    if mods.SideSkirt ~= nil then
+      SetVehicleMod(vehicle, 3, mods.SideSkirt, false)
     end
   
-    if props.modExhaust ~= nil then
-      SetVehicleMod(vehicle, 4, props.modExhaust, false)
+    if mods.Exhaust ~= nil then
+      SetVehicleMod(vehicle, 4, mods.Exhaust, false)
     end
   
-    if props.modFrame ~= nil then
-      SetVehicleMod(vehicle, 5, props.modFrame, false)
+    if mods.Frame ~= nil then
+      SetVehicleMod(vehicle, 5, mods.Frame, false)
     end
   
-    if props.modGrille ~= nil then
-      SetVehicleMod(vehicle, 6, props.modGrille, false)
+    if mods.Grille ~= nil then
+      SetVehicleMod(vehicle, 6, mods.Grille, false)
     end
   
-    if props.modHood ~= nil then
-      SetVehicleMod(vehicle, 7, props.modHood, false)
+    if mods.Hood ~= nil then
+      SetVehicleMod(vehicle, 7, mods.Hood, false)
     end
   
-    if props.modFender ~= nil then
-      SetVehicleMod(vehicle, 8, props.modFender, false)
+    if mods.Fender ~= nil then
+      SetVehicleMod(vehicle, 8, mods.Fender, false)
     end
   
-    if props.modRightFender ~= nil then
-      SetVehicleMod(vehicle, 9, props.modRightFender, false)
+    if mods.RightFender ~= nil then
+      SetVehicleMod(vehicle, 9, mods.RightFender, false)
     end
   
-    if props.modRoof ~= nil then
-      SetVehicleMod(vehicle, 10, props.modRoof, false)
+    if mods.Roof ~= nil then
+      SetVehicleMod(vehicle, 10, mods.Roof, false)
     end
   
-    if props.modEngine ~= nil then
-      SetVehicleMod(vehicle, 11, props.modEngine, false)
+    if mods.Engine ~= nil then
+      SetVehicleMod(vehicle, 11, mods.Engine, false)
     end
   
-    if props.modBrakes ~= nil then
-      SetVehicleMod(vehicle, 12, props.modBrakes, false)
+    if mods.Brakes ~= nil then
+      SetVehicleMod(vehicle, 12, mods.Brakes, false)
     end
   
-    if props.modTransmission ~= nil then
-      SetVehicleMod(vehicle, 13, props.modTransmission, false)
+    if mods.Transmission ~= nil then
+      SetVehicleMod(vehicle, 13, mods.Transmission, false)
     end
   
-    if props.modHorns ~= nil then
-      SetVehicleMod(vehicle, 14, props.modHorns, false)
+    if mods.Horns ~= nil then
+      SetVehicleMod(vehicle, 14, mods.Horns, false)
     end
   
-    if props.modSuspension ~= nil then
-      SetVehicleMod(vehicle, 15, props.modSuspension, false)
+    if mods.Suspension ~= nil then
+      SetVehicleMod(vehicle, 15, mods.Suspension, false)
     end
   
-    if props.modArmor ~= nil then
-      SetVehicleMod(vehicle, 16, props.modArmor, false)
+    if mods.Armor ~= nil then
+      SetVehicleMod(vehicle, 16, mods.Armor, false)
     end
   
-    if props.modTurbo ~= nil then
-      ToggleVehicleMod(vehicle,  18, props.modTurbo)
+    if mods.Turbo ~= nil then
+      ToggleVehicleMod(vehicle,  18, mods.Turbo)
     end
   
-    if props.modXenon ~= nil then
-      ToggleVehicleMod(vehicle,  22, props.modXenon)
+    if mods.Xenon ~= nil then
+      ToggleVehicleMod(vehicle,  22, mods.Xenon)
     end
   
-    if props.modFrontWheels ~= nil then
-      SetVehicleMod(vehicle, 23, props.modFrontWheels, false)
+    if mods.FrontWheels ~= nil then
+      SetVehicleMod(vehicle, 23, mods.FrontWheels, false)
     end
   
-    if props.modBackWheels ~= nil then
-      SetVehicleMod(vehicle, 24, props.modBackWheels, false)
+    if mods.BackWheels ~= nil then
+      SetVehicleMod(vehicle, 24, mods.BackWheels, false)
     end
   
-    if props.modPlateHolder ~= nil then
-      SetVehicleMod(vehicle, 25, props.modPlateHolder, false)
+    if mods.PlateHolder ~= nil then
+      SetVehicleMod(vehicle, 25, mods.PlateHolder, false)
     end
   
-    if props.modVanityPlate ~= nil then
-      SetVehicleMod(vehicle, 26, props.modVanityPlate, false)
+    if mods.VanityPlate ~= nil then
+      SetVehicleMod(vehicle, 26, mods.VanityPlate, false)
     end
   
-    if props.modTrimA ~= nil then
-      SetVehicleMod(vehicle, 27, props.modTrimA, false)
+    if mods.TrimA ~= nil then
+      SetVehicleMod(vehicle, 27, mods.TrimA, false)
     end
   
-    if props.modOrnaments ~= nil then
-      SetVehicleMod(vehicle, 28, props.modOrnaments, false)
+    if mods.Ornaments ~= nil then
+      SetVehicleMod(vehicle, 28, mods.Ornaments, false)
     end
   
-    if props.modDashboard ~= nil then
-      SetVehicleMod(vehicle, 29, props.modDashboard, false)
+    if mods.Dashboard ~= nil then
+      SetVehicleMod(vehicle, 29, mods.Dashboard, false)
     end
   
-    if props.modDial ~= nil then
-      SetVehicleMod(vehicle, 30, props.modDial, false)
+    if mods.Dial ~= nil then
+      SetVehicleMod(vehicle, 30, mods.Dial, false)
     end
   
-    if props.modDoorSpeaker ~= nil then
-      SetVehicleMod(vehicle, 31, props.modDoorSpeaker, false)
+    if mods.DoorSpeaker ~= nil then
+      SetVehicleMod(vehicle, 31, mods.DoorSpeaker, false)
     end
   
-    if props.modSeats ~= nil then
-      SetVehicleMod(vehicle, 32, props.modSeats, false)
+    if mods.Seats ~= nil then
+      SetVehicleMod(vehicle, 32, mods.Seats, false)
     end
   
-    if props.modSteeringWheel ~= nil then
-      SetVehicleMod(vehicle, 33, props.modSteeringWheel, false)
+    if mods.SteeringWheel ~= nil then
+      SetVehicleMod(vehicle, 33, mods.SteeringWheel, false)
     end
   
-    if props.modShifterLeavers ~= nil then
-      SetVehicleMod(vehicle, 34, props.modShifterLeavers, false)
+    if mods.ShifterLeavers ~= nil then
+      SetVehicleMod(vehicle, 34, mods.ShifterLeavers, false)
     end
   
-    if props.modAPlate ~= nil then
-      SetVehicleMod(vehicle, 35, props.modAPlate, false)
+    if mods.APlate ~= nil then
+      SetVehicleMod(vehicle, 35, mods.APlate, false)
     end
   
-    if props.modSpeakers ~= nil then
-      SetVehicleMod(vehicle, 36, props.modSpeakers, false)
+    if mods.Speakers ~= nil then
+      SetVehicleMod(vehicle, 36, mods.Speakers, false)
     end
   
-    if props.modTrunk ~= nil then
-      SetVehicleMod(vehicle, 37, props.modTrunk, false)
+    if mods.Trunk ~= nil then
+      SetVehicleMod(vehicle, 37, mods.Trunk, false)
     end
   
-    if props.modHydrolic ~= nil then
-      SetVehicleMod(vehicle, 38, props.modHydrolic, false)
+    if mods.Hydrolic ~= nil then
+      SetVehicleMod(vehicle, 38, mods.Hydrolic, false)
     end
   
-    if props.modEngineBlock ~= nil then
-      SetVehicleMod(vehicle, 39, props.modEngineBlock, false)
+    if mods.EngineBlock ~= nil then
+      SetVehicleMod(vehicle, 39, mods.EngineBlock, false)
     end
   
-    if props.modAirFilter ~= nil then
-      SetVehicleMod(vehicle, 40, props.modAirFilter, false)
+    if mods.AirFilter ~= nil then
+      SetVehicleMod(vehicle, 40, mods.AirFilter, false)
     end
   
-    if props.modStruts ~= nil then
-      SetVehicleMod(vehicle, 41, props.modStruts, false)
+    if mods.Struts ~= nil then
+      SetVehicleMod(vehicle, 41, mods.Struts, false)
     end
   
-    if props.modArchCover ~= nil then
-      SetVehicleMod(vehicle, 42, props.modArchCover, false)
+    if mods.ArchCover ~= nil then
+      SetVehicleMod(vehicle, 42, mods.ArchCover, false)
     end
   
-    if props.modAerials ~= nil then
-      SetVehicleMod(vehicle, 43, props.modAerials, false)
+    if mods.Aerials ~= nil then
+      SetVehicleMod(vehicle, 43, mods.Aerials, false)
     end
   
-    if props.modTrimB ~= nil then
-      SetVehicleMod(vehicle, 44, props.modTrimB, false)
+    if mods.TrimB ~= nil then
+      SetVehicleMod(vehicle, 44, mods.TrimB, false)
     end
   
-    if props.modTank ~= nil then
-      SetVehicleMod(vehicle, 45, props.modTank, false)
+    if mods.Tank ~= nil then
+      SetVehicleMod(vehicle, 45, mods.Tank, false)
     end
   
-    if props.modWindows ~= nil then
-      SetVehicleMod(vehicle, 46, props.modWindows, false)
+    if mods.Windows ~= nil then
+      SetVehicleMod(vehicle, 46, mods.Windows, false)
     end
   
-    if props.modLivery ~= nil then
-      SetVehicleMod(vehicle, 48, props.modLivery, false)
-      SetVehicleLivery(vehicle, props.modLivery)
+    if mods.Livery ~= nil then
+      SetVehicleMod(vehicle, 48, mods.Livery, false)
+      SetVehicleLivery(vehicle, mods.Livery)
     end
   end
   
 function c.GetVehicleModifications(vehicle)
-    local color1, color2 = GetVehicleColours(vehicle)
-    local pearlescentColor, wheelColor = GetVehicleExtraColours(vehicle)
-    local extras = {}
-  
+    local Colour_1, Colour_2 = GetVehicleColours(vehicle)
+    local Pearlescent, WheelColor = GetVehicleExtraColours(vehicle)
+    local Extras = {}
     for id=0, 64 do
       if DoesExtraExist(vehicle, id) then
-        local state = IsVehicleExtraTurnedOn(vehicle, id) == 1
-        extras[tostring(id)] = state
+        local state = (IsVehicleExtraTurnedOn(vehicle, id) == 1)
+        Extras[tostring(id)] = state
       end
     end
-  
     return {
-      model             = GetEntityModel(vehicle),
-  
-      plate             = GetVehicleNumberPlateText(vehicle),
-      plateIndex        = GetVehicleNumberPlateTextIndex(vehicle),
-  
-      bodyHealth        = math.ceil(GetVehicleBodyHealth(vehicle), 1),
-      engineHealth      = math.ceil(GetVehicleEngineHealth(vehicle), 1),
-  
+      Model             = GetEntityModel(vehicle),
+      Plate             = GetVehicleNumberPlateText(vehicle),
+      PlateIndex        = GetVehicleNumberPlateTextIndex(vehicle),
       Fuel              = math.ceil(GetVehicleFuelLevel(vehicle), 1),
-      dirtLevel         = math.ceil(GetVehicleDirtLevel(vehicle), 1),
-      color1            = color1,
-      color2            = color2,
-  
-      pearlescentColor  = pearlescentColor,
-      wheelColor        = wheelColor,
-  
+      Dirt              = math.ceil(GetVehicleDirt(vehicle), 1),
+      Colour_1          = Colour_1,
+      Colour_2          = Colour_2,
+      Pearlescent       = Pearlescent,
+      WheelColor        = WheelColor,
       wheels            = GetVehicleWheelType(vehicle),
-      windowTint        = GetVehicleWindowTint(vehicle),
-  
-      neonEnabled       = {
+      WindowTint        = GetVehicleWindowTint(vehicle),
+      NeonEnabled       = {
         IsVehicleNeonLightEnabled(vehicle, 0),
         IsVehicleNeonLightEnabled(vehicle, 1),
         IsVehicleNeonLightEnabled(vehicle, 2),
         IsVehicleNeonLightEnabled(vehicle, 3)
       },
-  
-      extras            = extras,
-  
-      neonColor         = table.pack(GetVehicleNeonLightsColour(vehicle)),
-      tyreSmokeColor    = table.pack(GetVehicleTyreSmokeColor(vehicle)),
-  
-      modSpoilers       = GetVehicleMod(vehicle, 0),
-      modFrontBumper    = GetVehicleMod(vehicle, 1),
-      modRearBumper     = GetVehicleMod(vehicle, 2),
-      modSideSkirt      = GetVehicleMod(vehicle, 3),
-      modExhaust        = GetVehicleMod(vehicle, 4),
-      modFrame          = GetVehicleMod(vehicle, 5),
-      modGrille         = GetVehicleMod(vehicle, 6),
-      modHood           = GetVehicleMod(vehicle, 7),
-      modFender         = GetVehicleMod(vehicle, 8),
-      modRightFender    = GetVehicleMod(vehicle, 9),
-      modRoof           = GetVehicleMod(vehicle, 10),
-  
-      modEngine         = GetVehicleMod(vehicle, 11),
-      modBrakes         = GetVehicleMod(vehicle, 12),
-      modTransmission   = GetVehicleMod(vehicle, 13),
-      modHorns          = GetVehicleMod(vehicle, 14),
-      modSuspension     = GetVehicleMod(vehicle, 15),
-      modArmor          = GetVehicleMod(vehicle, 16),
-  
-      modTurbo          = IsToggleModOn(vehicle, 18),
-      modSmokeEnabled   = IsToggleModOn(vehicle, 20),
-      modXenon          = IsToggleModOn(vehicle, 22),
-  
-      modFrontWheels    = GetVehicleMod(vehicle, 23),
-      modBackWheels     = GetVehicleMod(vehicle, 24),
-  
-      modPlateHolder    = GetVehicleMod(vehicle, 25),
-      modVanityPlate    = GetVehicleMod(vehicle, 26),
-      modTrimA          = GetVehicleMod(vehicle, 27),
-      modOrnaments      = GetVehicleMod(vehicle, 28),
-      modDashboard      = GetVehicleMod(vehicle, 29),
-      modDial           = GetVehicleMod(vehicle, 30),
-      modDoorSpeaker    = GetVehicleMod(vehicle, 31),
-      modSeats          = GetVehicleMod(vehicle, 32),
-      modSteeringWheel  = GetVehicleMod(vehicle, 33),
-      modShifterLeavers = GetVehicleMod(vehicle, 34),
-      modAPlate         = GetVehicleMod(vehicle, 35),
-      modSpeakers       = GetVehicleMod(vehicle, 36),
-      modTrunk          = GetVehicleMod(vehicle, 37),
-      modHydrolic       = GetVehicleMod(vehicle, 38),
-      modEngineBlock    = GetVehicleMod(vehicle, 39),
-      modAirFilter      = GetVehicleMod(vehicle, 40),
-      modStruts         = GetVehicleMod(vehicle, 41),
-      modArchCover      = GetVehicleMod(vehicle, 42),
-      modAerials        = GetVehicleMod(vehicle, 43),
-      modTrimB          = GetVehicleMod(vehicle, 44),
-      modTank           = GetVehicleMod(vehicle, 45),
-      modWindows        = GetVehicleMod(vehicle, 46),
-      modLivery         = GetVehicleLivery(vehicle)
+      Extras            = Extras,
+      NeonColor         = table.pack(GetVehicleNeonLightsColour(vehicle)),
+      TyreSmokeColour   = table.pack(GetVehicleTyreSmokeColor(vehicle)),
+      Spoiler        = GetVehicleMod(vehicle, 0),
+      FrontBumper    = GetVehicleMod(vehicle, 1),
+      RearBumper     = GetVehicleMod(vehicle, 2),
+      SideSkirt      = GetVehicleMod(vehicle, 3),
+      Exhaust        = GetVehicleMod(vehicle, 4),
+      Frame          = GetVehicleMod(vehicle, 5),
+      Grille         = GetVehicleMod(vehicle, 6),
+      Hood           = GetVehicleMod(vehicle, 7),
+      Fender         = GetVehicleMod(vehicle, 8),
+      RightFender    = GetVehicleMod(vehicle, 9),
+      Roof           = GetVehicleMod(vehicle, 10),
+      Engine         = GetVehicleMod(vehicle, 11),
+      Brakes         = GetVehicleMod(vehicle, 12),
+      Transmission   = GetVehicleMod(vehicle, 13),
+      Horns          = GetVehicleMod(vehicle, 14),
+      Suspension     = GetVehicleMod(vehicle, 15),
+      Armor          = GetVehicleMod(vehicle, 16),
+      Turbo          = IsToggleModOn(vehicle, 18),
+      TyreSmoke      = IsToggleModOn(vehicle, 20),
+      Xenon          = IsToggleModOn(vehicle, 22),
+      FrontWheels    = GetVehicleMod(vehicle, 23),
+      BackWheels     = GetVehicleMod(vehicle, 24),
+      PlateHolder    = GetVehicleMod(vehicle, 25),
+      VanityPlate    = GetVehicleMod(vehicle, 26),
+      TrimA          = GetVehicleMod(vehicle, 27),
+      Ornaments      = GetVehicleMod(vehicle, 28),
+      Dashboard      = GetVehicleMod(vehicle, 29),
+      Dial           = GetVehicleMod(vehicle, 30),
+      DoorSpeaker    = GetVehicleMod(vehicle, 31),
+      Seats          = GetVehicleMod(vehicle, 32),
+      SteeringWheel  = GetVehicleMod(vehicle, 33),
+      ShifterLeavers = GetVehicleMod(vehicle, 34),
+      APlate         = GetVehicleMod(vehicle, 35),
+      Speakers       = GetVehicleMod(vehicle, 36),
+      Trunk          = GetVehicleMod(vehicle, 37),
+      Hydrolic       = GetVehicleMod(vehicle, 38),
+      EngineBlock    = GetVehicleMod(vehicle, 39),
+      AirFilter      = GetVehicleMod(vehicle, 40),
+      Struts         = GetVehicleMod(vehicle, 41),
+      ArchCover      = GetVehicleMod(vehicle, 42),
+      Aerials        = GetVehicleMod(vehicle, 43),
+      TrimB          = GetVehicleMod(vehicle, 44),
+      Tank           = GetVehicleMod(vehicle, 45),
+      Windows        = GetVehicleMod(vehicle, 46),
+      Livery         = GetVehicleLivery(vehicle)
     }
   end
 
 function c.GetVehicleCondition(vehicle)
-  local eng = GetVehicleEngineHealth(vehicle)
-  local tank = GetVehiclePetrolTankHealth(vehicle)
-  local body = GetVehicleBodyHealth(vehicle)
   local numwheels = GetVehicleNumberOfWheels(vehicle)
   local wheels = {}
   for i=1, numwheels, 0 do
     wheels[i] = {
-      ['ConBurst'] = IsVehicleTyreBurst(vehicle, i, false),
-      ['ConGone'] = DoesVehicleTyreExist(vehicle, i),
-      ['ConTyre'] = GetTyreHealth(vehicle, i),
-      ['ConWheel'] = GetVehicleWheelHealth(vehicle, i),
+      ['Burst'] = IsVehicleTyreBurst(vehicle, i, false),
+      ['Gone'] = DoesVehicleTyreExist(vehicle, i),
+      ['Tyre'] = GetTyreHealth(vehicle, i),
+      ['Wheel'] = GetVehicleWheelHealth(vehicle, i),
     }
   end
   local numdoors = GetNumberOfVehicleDoors(vehicle)
@@ -761,47 +737,42 @@ function c.GetVehicleCondition(vehicle)
   end
   --
   return {
-    ['ConWheels'] = wheels,
-    ['ConDoors'] = doors,
-    ['ConEng'] = eng,
-    ['ConTank'] = tank,
-    ['ConBody'] = body,
+    ['Wheels'] = wheels,
+    ['Doors'] = doors,
+    ['Eng'] = GetVehicleEngineHealth(vehicle),
+    ['Tank'] = GetVehiclePetrolTankHealth(vehicle),
+    ['Body'] = GetVehicleBodyHealth(vehicle),
   }
 end
 
-function c.SetVehicleCondition(vehicle, cons)
-  
-  if cons.ConEng ~= nil then
-    SetVehicleEngineHealth(vehicle, cons.ConEng)
+
+function c.SetVehicleCondition(vehicle, cons)  
+  if cons.Eng ~= nil then
+    SetVehicleEngineHealth(vehicle, cons.Eng)
   end
-  
-  if cons.ConTank ~= nil then
-    SetVehiclePetrolTankHealth(vehicle, cons.ConTank)
+  if cons.Tank ~= nil then
+    SetVehiclePetrolTankHealth(vehicle, cons.Tank)
   end
-  
-  if cons.ConBody ~= nil then
-    SetVehicleBodyHealth(vehicle, cons.ConBody)
+  if cons.Body ~= nil then
+    SetVehicleBodyHealth(vehicle, cons.Body)
   end
-  
-  if cons.ConWheels ~= nil then
-    for i=1, #cons.ConWheels, 0 do
-      if cons.ConWheels[i]['ConGone'] then
+  if cons.Wheels ~= nil then
+    for i=1, #cons.Wheels, 0 do
+      local a,b = cons.Wheels[i]['Gone'], cons.Wheels[i]['Burst']
+      if a and b then
         SetVehicleTyreBurst(vehicle, i, true, 1000.0)
-      end
-      if cons.ConWheels[i]['ConBurst'] then
+      elseif not a and b then
         SetVehicleTyreBurst(vehicle, i, false, 250.0)
-      end
-      SetVehicleWheelHealth(vehicle, i, cons.ConWheels[i]['ConWheel'])
-      SetTyreHealth(vehicle, i, cons.ConWheels[i]['ConTyre'])
-      if not cons.ConWheels[i]['ConBurst'] and not cons.ConWheels[i]['ConGone'] then
+      elseif not a or b then
         SetVehicleTyreFixed(vehicle, i)
       end
+      SetVehicleWheelHealth(vehicle, i, cons.Wheels[i]['Wheel'])
+      SetTyreHealth(vehicle, i, cons.Wheels[i]['Tyre'])
     end
   end
-
-  if cons.ConDoors ~= nil then
-    for i=1, #cons.ConDoors, 0 do
-      local a,b = cons.ConDoors[i]['ConValid'], cons.ConDoors[i]['ConDamaged']
+  if cons.Doors ~= nil then
+    for i=1, #cons.Doors, 0 do
+      local a,b = cons.Doors[i]['ConValid'], cons.Doors[i]['ConDamaged']
       if a and b then
         SetVehicleDoorBroken(vehicle, i, true)
       elseif a or b then
@@ -809,21 +780,7 @@ function c.SetVehicleCondition(vehicle, cons)
       end
     end
   end
-
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   Scaleforms = {}
