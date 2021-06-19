@@ -33,7 +33,7 @@ function c.sql.SaveUser(data, cb)
         local Modifiers = json.encode(data.GetModifiers())
         -- 
         local Character_ID = data.GetCharacter_ID()
-        MySQL.Async.insert(SaveData, {
+        MySQL.Async.insert(PlayerSaveData, {
             -- Other Variables.
             ['@Health'] = Health,
             ['@Armour'] = Armour,
@@ -74,7 +74,7 @@ function c.sql.SaveUsers(cb)
             local Modifiers = json.encode(data.GetModifiers())
             -- 
             local Character_ID = data.GetCharacter_ID()
-            MySQL.Async.insert(SaveData, {
+            MySQL.Async.insert(PlayerSaveData, {
                 -- Other Variables.
                 ['@Health'] = Health,
                 ['@Armour'] = Armour,
@@ -329,6 +329,27 @@ end
 
 --- Get - `Locale` from the users License_ID
 -- @License_ID
+function c.sql.GetLastLogin(license_id, cb)
+    local License_ID = license_id
+    local IsBusy = true
+    local result = nil
+    MySQL.Async.fetchScalar('SELECT `Last_Login` FROM `users` WHERE `License_ID` = @License_ID LIMIT 1;', {
+        ['@License_ID'] = License_ID
+    }, function(data)
+        result = data
+        IsBusy = false
+    end)
+    while IsBusy do
+        Wait(0)
+    end
+    if cb then
+        cb()
+    end
+    return result
+end
+
+--- Get - `Locale` from the users License_ID
+-- @License_ID
 function c.sql.GetLocale(license_id, cb)
     local License_ID = license_id
     local IsBusy = true
@@ -345,7 +366,7 @@ function c.sql.GetLocale(license_id, cb)
     if cb then
         cb()
     end
-    return new
+    return result
 end
 
 --- Set - Prefered locale or `Locale` for the users License_ID

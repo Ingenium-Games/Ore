@@ -38,19 +38,22 @@ SetThisScriptCanRemoveBlipsCreatedByAnyScript(true)
 ---@param category number
 ---@param legend boolean
 function c.blip.Blip(coords, sprite, colour, text, scale, flash, fade, short, high, display, category, legend)
-    local x,y,z = table.unpack(coords) or 0.0, 0.0, 0.0
-    local blip = AddBlipForCoord(x,y,z)
+    local blip = AddBlipForCoord(coords)
     SetBlipSprite(blip, (sprite or 1))
     SetBlipDisplay(blip, (display or 6))
     SetBlipScale(blip, (scale or 0.82))
     SetBlipColour(blip, (colour or 4))
-    SetBlipFlashes(blip, (flash.state or false))
-    if flash.state then
-        SetBlipFlashInterval(blip, flash.interval)
-        SetBlipFlashTimer(blip, flash.timer)
+    if flash then
+        SetBlipFlashes(blip, (flash.state or false))
+        if flash.state then
+            SetBlipFlashInterval(blip, flash.interval)
+            SetBlipFlashTimer(blip, flash.timer)
+        end
     end
-    if fade.state then
-        SetBlipFade(blip, fade.state, fade.duration)
+    if fade then
+        if fade.state then
+            SetBlipFade(blip, fade.state, fade.duration)
+        end
     end
     SetBlipCategory(blip, (category or 1))
     SetBlipAsShortRange(blip, (short or true))
@@ -84,8 +87,7 @@ end
 ---@param alpha any
 ---@param high any
 function c.blip.RadiusBlip(coords, range, color, alpha, high)
-    local x,y,z = table.unpack(coords) or 0.0, 0.0, 0.0
-    local blip = AddBlipForRadius(x,y,z, (range or 100.0))
+    local blip = AddBlipForRadius(coords (range or 100.0))
     SetBlipColour(blip, (color or 1))
     SetBlipAlpha(blip, (alpha or 80))
     SetBlipHighDetail(blip, (high or true))
@@ -112,8 +114,7 @@ end
 ---@param display any
 ---@param short any
 function c.blip.AreaBlip(coords, width, height, heading, color, alpha, high, display, short)
-    local x,y,z = table.unpack(coords) or 0.0, 0.0, 0.0
-    local blip = AddBlipForArea(x,y,z, (width or 100.0), (height or 100.0))
+    local blip = AddBlipForArea(coords, (width or 100.0), (height or 100.0))
     SetBlipColour(blip, (color or 1))
     SetBlipAlpha(blip, (alpha or 80))
     SetBlipHighDetail(blip, (high or true))

@@ -68,7 +68,7 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
         City_ID = city,
         Phone = phone,
         Coords = json.encode(conf.spawn),
-        Accounts = json.encode({["bank"]=conf.startingbank,["money"]=125}),
+        Accounts = json.encode({{["name"] = "bank",["bank"]=conf.startingbank},{["name"]="money",["money"]=125}}),
         Modifiers = json.encode({["Hunger"] = 1,["Thirst"] = 1,["Stress"] = 1})
     }
     c.sql.CreateCharacter(data, function()
