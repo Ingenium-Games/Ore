@@ -21,30 +21,4 @@
 c.vehicle = {} -- function level
 c.vehicles = {} -- data to save
 
-function c.vehicle.GetVehicle(plate)
-    return c.vehicles[plate]
-end
-
---- Same as above.
----@param plate string
-function c.GetVehicle(plate)
-    return c.vehicle.GetVehicle(plate)
-end
-
-function c.vehicle.SetVehicle(plate, data)
-    c.vehicles[plate] = data
-end
-
-function c.vehicle.RemoveVehicle(plate)
-    c.vehicles[plate] = false
-end
-
-function c.vehicle.GetVehicles()
-    return c.vehicles
-end
-
-function c.GetVehicles()
-    return c.vehicle.GetVehicles()
-end
-
 

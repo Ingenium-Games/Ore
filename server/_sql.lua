@@ -9,13 +9,13 @@ NOTES.
 ]] --
 math.randomseed(c.Seed)
 -- ====================================================================================--
-local SaveData = -1
+local PlayerSaveData = -1
 MySQL.Async.store(
     "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Modifiers` = @Modifiers, `Accounts` = @Accounts, `Last_Seen` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
     function(id)
-        SaveData = id
+        PlayerSaveData = id
     end)
-
+    
 --- Save Single User/Character
 ---@param data table "xPlayer table"
 ---@param cb function "To be called on SQL 'UPDATE' statement completion."
@@ -57,10 +57,9 @@ end
 
 --- Save All Characters from the xPLayer Table.
 ---@param cb function "To be called on SQL 'UPDATE' statements are completed."
-function c.sql.SaveData(cb)
+function c.sql.SaveUsers(cb)
     local xPlayers = c.data.GetPlayers()
-    local size = c.table.SizeOf(xPlayers)
-    for i = 1, size, 1 do
+    for i = 1, #xPlayers, 1 do
         local data = c.data.GetPlayer(i)
         if data then
             -- Other Variables.
@@ -1289,11 +1288,105 @@ end
 --- VEHICLES TABLE
 -------------------------------------------------------------------------------
 
-function c.sql.GetVehiclesByCityId(City_ID, cb)
+local VehicleSaveData = -1
+MySQL.Async.store(
+    "UPDATE `vehicles` SET `Coords` = @Coords, `Keys` = @Keys, `Condition` = @Condition, `Modifications` = @Modifications, `Garage` = @Garage, `State` = @State, `Impound` = @Impound, `Wanted` = @Wanted  WHERE `Plate` = @Plate;",
+    function(id)
+        CarSaveData = id
+    end)
+
+--- Save Single User/Character
+---@param data table "xCar table"
+---@param cb function "To be called on SQL 'UPDATE' statement completion."
+function c.sql.SaveVehicle(data, cb)
+    if data then
+        -- Other Variables.
+        local Garage = data.GetGarage()
+        -- Booleans
+        local State = data.GetState()
+        local Impound = data.GetImpound()
+        local Wanted = data.GetWanted()
+        -- Tables require JSON Encoding.
+        local Keys = json.encode(data.GetKeys())
+        local Coords = json.encode(data.GetCoords())
+        local Condition = json.encode(data.GetCondition())
+        local Modifications = json.encode(data.GetModifications())
+        -- The Key
+        local Plate = data.GetPlate()
+        --
+        MySQL.Async.insert(VehicleSaveData, {
+            -- Other Variables.
+            ['@Garage'] = Garage,
+            -- Booleans
+            ['@Impound'] = Impound,
+            ['@State'] = State,
+            ['@Wanted'] = Wanted,
+            -- Table Informaiton.
+            ['@Keys'] = Keys,
+            ['@Coords'] = Coords,
+            ['@Condition'] = Condition,
+            ['@Modifications'] = Modifications,
+            --
+            ['@Plate'] = Plate
+        }, function(r)
+            -- do
+        end)
+        if cb then
+            cb()
+        end
+    end
+end
+
+--- Save All Characters from the xPLayer Table.
+---@param cb function "To be called on SQL 'UPDATE' statements are completed."
+function c.sql.SaveVehicles(cb)
+    local xCars = c.data.GetVehicles()
+    for i = 1, #xCars, 1 do
+        local data = c.data.GetVehicle(i)
+        if data then
+        -- Other Variables.
+        local Garage = data.GetGarage()
+        -- Booleans
+        local State = data.GetState()
+        local Impound = data.GetImpound()
+        local Wanted = data.GetWanted()
+        -- Tables require JSON Encoding.
+        local Keys = json.encode(data.GetKeys())
+        local Coords = json.encode(data.GetCoords())
+        local Condition = json.encode(data.GetCondition())
+        local Modifications = json.encode(data.GetModifications())
+        -- The Key
+        local Plate = data.GetPlate()
+        --
+        MySQL.Async.insert(VehicleSaveData, {
+            -- Other Variables.
+            ['@Garage'] = Garage,
+            -- Booleans
+            ['@Impound'] = Impound,
+            ['@State'] = State,
+            ['@Wanted'] = Wanted,
+            -- Table Informaiton.
+            ['@Keys'] = Keys,
+            ['@Coords'] = Coords,
+            ['@Condition'] = Condition,
+            ['@Modifications'] = Modifications,
+            --
+            ['@Plate'] = Plate
+            }, function(r)
+                -- Do nothing.
+            end)
+        end
+    end
+    if cb then
+        cb()
+    end
+end
+
+function c.sql.GetVehiclesByCharacter(Character_ID, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchAll('SELECT * FROM vehicles WHERE `City_ID` = @City_ID LIMIT 100;', {
-        ['@City_ID'] = City_ID
+    MySQL.Async.fetchAll('SELECT * FROM vehicles WHERE `Character_ID` = @Character_ID;', {
+        ['@Character_ID'] = Character_ID
     }, function(data)
         result = data
         IsBusy = false
@@ -1307,10 +1400,11 @@ function c.sql.GetVehiclesByCityId(City_ID, cb)
     return result
 end
 
-function c.sql.GetVehiclesByPlate(Plate, cb)
+
+function c.sql.GetVehicleByPlate(Plate, cb)
     local IsBusy = true
     local result = nil
-    MySQL.Async.fetchAll('SELECT * FROM vehicles WHERE `Plate` = @Plate LIMIT 1;', {
+    MySQL.Async.fetchScalar('SELECT * FROM vehicles WHERE `Plate` = @Plate LIMIT 1;', {
         ['@Plate'] = Plate
     }, function(data)
         result = data

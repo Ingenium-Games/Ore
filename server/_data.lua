@@ -129,13 +129,46 @@ function c.GetPlayerFromIdentifier(id)
     return c.data.GetPlayerByIdentifier(id)
 end
 
+
+function c.data.GetVehicle(plate)
+    return c.vehicles[plate]
+end
+
+
+
+--- Same as above.
+---@param plate string
+function c.GetVehicle(plate)
+    return c.data.GetVehicle(plate)
+end
+
+function c.data.SetVehicle(plate, data)
+    c.vehicles[plate] = data
+end
+
+function c.data.RemoveVehicle(plate)
+    c.vehicles[plate] = false
+end
+
+function c.data.GetVehicles()
+    return c.vehicles
+end
+
+function c.GetVehicles()
+    return c.data.GetVehicles()
+end
+
+
 -- ====================================================================================--
 
 -- Server to DB routine.
 function c.data.ServerSync()
     local function Do()
-        c.sql.SaveData(function()
-            c.debug('[F] ServerSync() : Synced with Database.')
+        c.sql.SaveUsers(function()
+            c.debug('[F] ServerSync() : Users Synced.')
+        end)
+        c.sql.SaveVehicles(function()
+            c.debug('[F] ServerSync() : Vehicles Synced.')
         end)
         SetTimeout(conf.serversync, Do)
     end

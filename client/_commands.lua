@@ -16,7 +16,7 @@ math.randomseed(c.Seed)
 RegisterCommand('cross', function()
     TriggerEvent("Client:Animation.CrossedArms", true, GetPlayerPed(-1))
 end, false)
-
+TriggerEvent("chat:removeSuggestion", "/cross")
 RegisterKeyMapping('cross', 'Cross arms', 'keyboard', 'NumPad1')
 
 -- ====================================================================================--
@@ -24,7 +24,7 @@ RegisterKeyMapping('cross', 'Cross arms', 'keyboard', 'NumPad1')
 RegisterCommand('hands', function()
     TriggerEvent("Client:Animation.HandsUp", true, GetPlayerPed(-1))
 end, false)
-
+TriggerEvent("chat:removeSuggestion", "/hands")
 RegisterKeyMapping('hands', 'Hands Up', 'keyboard', 'NumPad2')
 
 -- ====================================================================================--
@@ -32,7 +32,7 @@ RegisterKeyMapping('hands', 'Hands Up', 'keyboard', 'NumPad2')
 RegisterCommand('armhold', function()
     TriggerEvent("Client:Animation.ArmHold", true, GetPlayerPed(-1))
 end, false)
-
+TriggerEvent("chat:removeSuggestion", "/armhold")
 RegisterKeyMapping('armhold', 'Arm Hold', 'keyboard', 'NumPad3')
 
 -- ====================================================================================--
