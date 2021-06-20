@@ -51,3 +51,10 @@ AddEventHandler('Client:Character:Ready', function()
     --
     TriggerServerEvent("Server:Character:Ready")
 end)
+
+-- Use this to remove any things connected to Characters like police blips etc.
+RegisterNetEvent("Client:Character:Switch")
+AddEventHandler("Client:Character:Switch", function()
+    
+
+end)

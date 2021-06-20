@@ -25,6 +25,12 @@ AddEventHandler("Server:Character:Ready", function(data)
 
 end)
 
+-- Use this to remove any things connected to Characters like police blips etc.
+RegisterNetEvent("Server:Character:Switch")
+AddEventHandler("Server:Character:Switch", function()
+    
+end)
+
 -- Default player to instance listed in conf.defaultinstance
 RegisterNetEvent('Server:Instance:Player:Default')
 AddEventHandler('Server:Instance:Player:Default', function(req)
@@ -37,9 +43,9 @@ RegisterNetEvent("Server:Character:Death")
 AddEventHandler("Server:Character:Death", function(data)
     local src = source
     if (data.PlayerKill == true) then
-
+        c.discord(conf.deathlog)
     else
-
+        c.discord(conf.deathlog)
     end
 end)
 

@@ -86,6 +86,10 @@ function c.affil.CreateGroup(str, relations)
 end
 
 --[[
+
+-- To create loop to set relationship or look to permenant solution.
+-- Potentially use multiple threads??
+
 0 = Companion  
 1 = Respect  
 2 = Like  

@@ -1,5 +1,13 @@
 conf.disable = {}
 
+conf.disable.peds = {
+
+}
+
+conf.disable.weapons = {
+
+}
+
 conf.disable.vehicles = {
 	-- Military, or weaponized vehicles.
 	`PREDATOR`,

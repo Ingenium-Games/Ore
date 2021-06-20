@@ -4,7 +4,7 @@
 c.decors = {}
 --[[
 NOTES.
-    - No longer to be used Entity(entity).state.INFORMATION o be used instead.
+    - No longer to be used Entity(entity).state:Set(INFORMATION, Value TRUE) to be used instead.
 ]]--
 math.randomseed(c.Seed)
 -- ====================================================================================--

@@ -10,7 +10,7 @@ NOTES.
 
 math.randomseed(c.Seed)
 -- ====================================================================================--
--- ESX Team
+-- ESX Team -- to Review and recreate.
 
 Citizen.CreateThread(function()
     local IsDead = false

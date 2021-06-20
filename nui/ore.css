@@ -11,20 +11,6 @@ html {
     overflow-y: hidden;
 }
 
-.Animus-darkest {background-color: #101954}
-.Animus-darker {background-color: #15216e}
-.Animus-dark {background-color: #1a2887}
-.Animus {background-color: #1f30a1}
-.Animus-light {background-color: #2337ba}
-.Animus-lighter {background-color: #283fd4}
-.Animus-lightest {background-color: #2d47ed}
-
-.HP {background-color: #da3737;}
-.ARM {background-color: #283275;}
-.HUN {background-color: burlywood;}
-.THI {background-color: turquoise;}
-.STR {background-color: thistle;}
-
 ::-webkit-scrollbar {
     width: 15px;
 }
@@ -60,17 +46,20 @@ body {
 }
 
     #Information h1 {
+        color: #fff;
         font-size:1.25em;
         padding-top: 2vh;
         padding-left: 3vw;
     }
 
     #Information h3 {
+        color: #fff;
         font-size: 1.15em;
         padding-left: 3vw;
     }
 
     #Information p {
+        color: #fff;
         font-size: 0.95em;
         padding-left: 3.5vw;
     }
@@ -92,6 +81,7 @@ body {
 }
 
 #Sidebar {
+    color: #fff;
     background-color: rgba(0,0,0,0.55) !important;
     z-index: 1;
     top: 0px !important;
@@ -105,6 +95,7 @@ body {
 }
 
 #Row {
+    color: #fff;
     background-color: rgba(0,0,0,0.55) !important;
     z-index: 2;
     top: 0px !important;
@@ -218,91 +209,3 @@ a {
         text-align: center;
         margin-left: 19%;
     }
-
-    .health-bar {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 7.5vw;
-        height: 20px;
-        padding: 5px;
-        background: #ddd;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        left: 0.36vw;
-        bottom: 1.67vh;
-        position: absolute;
-    }
-      .armour-bar {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 7.5vw;
-        height: 20px;
-        padding: 5px;
-        background: #ddd;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        left: 7.87vw;
-        bottom: 1.67vh;
-        position: absolute;
-      }
-      .hunger-bar {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 5vw;
-        height: 20px;
-        padding: 5px;
-        background: #ddd;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        left: 0.36vw;
-        bottom: 0.12vh;
-        position: absolute;  }
-      .thirst-bar {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 5vw;
-        height: 20px;
-        padding: 5px;
-        background: #ddd;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        left: 5.37vw;
-        bottom: 0.12vh;
-        position: absolute;}
-      .stress-bar {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 5vw;
-        height: 20px;
-        padding: 5px;
-        background: #ddd;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        left: 10.38vw;
-        bottom: 0.12vh;
-        position: absolute;}
-      .bar {
-        width: 100%;
-        height: 10px;
-        position: relative; 
-        transition: width .5s linear;
-      }
-      .hit {
-        background: rgba(255,255,255,0.6);
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 0px;
-        transition: width .5s linear;
-      }

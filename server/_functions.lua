@@ -80,6 +80,26 @@ function c.identifiers(source)
     return steam, fivem, license, discord, ip
 end
 
+--- func desc
+---@param url any
+---@param color any
+---@param name any
+---@param message any
+---@param footer any
+function c.discord(url, color, name, message, footer)
+    local embed = {
+        {
+              ["color"] = color,
+              ["title"] = "**".. name .."**",
+              ["description"] = message,
+              ["footer"] = {
+                  ["text"] = footer,
+              },
+        }
+    }
+    PerformHttpRequest(url, function(err, text, headers) end, 'POST', json.encode({username = name, embeds = embed}), { ['Content-Type'] = 'application/json' })
+end
+
 -- ====================================================================================--
 -- https://forum.cfx.re/t/tutorial-cancellable-function-usage/137558
 

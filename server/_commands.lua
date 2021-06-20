@@ -28,7 +28,8 @@ RegisterCommand('switch', function(source)
         TriggerClientEvent('Client:Character:OpeningMenu', src)
         TriggerEvent('Server:Character:Request:List', src, Primary_ID)
         c.data.RemovePlayer(src)
-        -- MAKE AN EVENT THAT GETS TRIGGERED AND ADD DAT SHIT HERE.
+        TriggerClientEvent("Client:Character:Switch")
+        TriggerEvent("Server:Character:Switch")
     end)
 end, false)
 

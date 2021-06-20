@@ -2,7 +2,7 @@
 --  MIT License 2020 : Twiitchter
 -- ====================================================================================--
 c.text = {}
-c.textentries = {}
+c.texts = {}
 --[[
 NOTES.
     -
@@ -15,14 +15,13 @@ math.randomseed(c.Seed)
 function c.text.AddEntry(s1, s2)
     local str1 = string.upper(s1)
     local str2 = s2
-    if not c.textentries[str1] then
-        c.textentries[str1] = str2
-        AddTextEntry(str1,str2)
+    if not c.texts[str1] then
+        c.texts[str1] = str2
+        AddTextEntry(str1, str2)
     else
         c.debug("Text Entry: "..str1.." has already been used. Ignoring this input.")
     end    
 end
-
 
 function c.text.DisplayHelp(s, addon)
     SetTextComponentFormat(s)

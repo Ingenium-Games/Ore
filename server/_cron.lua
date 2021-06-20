@@ -1,3 +1,5 @@
+----------
+-- Credits to esx team, need to review and rewrite
 local Jobs = {}
 local LastTime = nil
 

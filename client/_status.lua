@@ -173,6 +173,7 @@ function c.status.SetPlayer(data)
     --
     -- Set default hp to 400 on spawn
     SetPedMaxHealth(ped, conf.defaulthealth)
+    SetEntityMaxHealth(ped, conf.defaulthealth)
     c.status.SetHealth(ped, conf.defaulthealth)
     --
     -- Set default armour to 0 on spawn

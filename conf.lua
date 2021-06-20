@@ -81,6 +81,7 @@ BANK START AMOUNT :
 ]]--
 conf.startingbank = 2500
 conf.startingloan = 0
+conf.bankoverdraw = 25
 --[[
 BANK LOANS TIMES TO PAY: 
     -- Repayment Time to take money from bank account

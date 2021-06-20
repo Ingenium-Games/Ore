@@ -7,9 +7,9 @@ NOTES.
     -
     -
 ]] --
-
 math.randomseed(c.Seed)
 -- ====================================================================================--
+-- Character Selections
 
 local cam, cam2, cam3
 
@@ -46,9 +46,6 @@ RegisterNUICallback('Client:Character:Create', function(Data, cb)
     cb("ok")
 end)
 
-------------------------------------------------------------------------------
---  While in join menu, Events and Triggers
-
 RegisterNetEvent('Client:Character:OpeningMenu')
 AddEventHandler('Client:Character:OpeningMenu', function()
     -- Set false for switch command.
@@ -82,4 +79,13 @@ AddEventHandler('Client:Character:ReSpawn', function(Character_ID, Coords)
     SetCamActive(cam,false)
     SetCamActive(cam2,false)
     SetCamActive(cam3,false)
+end)
+
+-- ====================================================================================--
+-- Notifications 
+
+-- Send Update to HTML NUI Notification - Still to make.
+RegisterNetEvent("Client:Display:HUD")
+AddEventHandler("Client:Display:HUD", function(string)
+
 end)

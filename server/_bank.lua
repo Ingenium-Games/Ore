@@ -29,8 +29,27 @@ end
 TriggerEvent('Server:Cron:NewTask', conf.loaninterest.h, conf.loaninterest.m, c.bank.CalculateInterest)
 --
 
+function c.bank.CheckNegativeBalances()
+    local xJob = c.data.GetJob("bank")
+    local xPlayers = c.data.GetPlayers()
+    for i=1, #xPlayers, 1 do
+        local xPlayer = c.data.GetPlayer(i)
+        if xPlayer then
+            local bank = xPlayer.GetBank()
+            if bank < 0 then
+                TriggerClientEvent("Client:Display:HUD", i, "You're Bank accoutn is in Negative. \nCurrent Balance is: $"..bank..". \nOver Draw Fee Charged at: $"..conf.bankoverdraw..". \nThese fees apply every hour, on the hour until repaid.")
+                xPlayer.RemoveBank(conf.bankoverdraw)
+                xJob.AddBank(conf.bankoverdraw)
+            end
+        end
+    end
+end
 
-
+AddEventHandler("onResourceStart",function()
+    for i=1, 23, 0 do
+        TriggerEvent('Server:Cron:NewTask', i, 0, c.bank.CheckNegativeBalances)
+    end
+end)
 
 function c.bank.EmergancyBlackout()
 
