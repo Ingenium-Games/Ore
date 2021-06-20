@@ -134,9 +134,9 @@ end)
 function c.marker.SelectMarker(v, ords)
     if type(ords) ~= vector3 then
         local ords = {
-            [1] = v.x,
-            [2] = v.y,
-            [3] = v.z
+            [1] = ords.x,
+            [2] = ords.y,
+            [3] = ords.z
         }
     end
     if v == 1 then

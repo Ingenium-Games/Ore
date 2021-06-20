@@ -102,23 +102,14 @@ function c.class.CreateCharacter(character_id)
         end
     end
     --
-    self.GetAccounts = function(b)
-        local bool = c.check.Boolean(b)
-        if bool then
-            local Accounts = {}
-            for k,v in ipairs(self.Accounts) do
-                Accounts[k] = v
-            end
-            return Accounts
-        else
-            return self.Accounts
-        end
+    self.GetAccounts = function()
+        return self.Accounts
     end
     --
     self.GetAccount = function(acc)
-        for k, v in ipairs(self.Accounts) do
-            if k == acc then
-                return v
+        for k, v in pairs(self.Accounts) do
+            if v.name == acc then
+                return v.money
             end
         end
     end
