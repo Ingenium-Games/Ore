@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `Primary_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The Character Owner\\',
   `Character_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The Character ID to be called as reference, C00:Unique_ID/C01:Unique_ID/C02:Unique_ID etc...',
   `Created` timestamp NOT NULL DEFAULT current_timestamp(),
-  `Last_Seen` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Last_Seen` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `City_ID` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'City ID / License to be used for Government Actions',
   `First_Name` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Last_Name` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `Inventory` longtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}',
   `Accounts` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Modifiers` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Traits` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Health` int(3) NOT NULL DEFAULT 400,
   `Armour` int(3) NOT NULL DEFAULT 0,
   `Hunger` int(3) NOT NULL DEFAULT 100,
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `Instance` (`Instance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Character Table';
 
--- Dumping data for table db.characters: ~3 rows (approximately)
+-- Dumping data for table db.characters: ~0 rows (approximately)
 /*!40000 ALTER TABLE `characters` DISABLE KEYS */;
 /*!40000 ALTER TABLE `characters` ENABLE KEYS */;
 
@@ -92,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `character_accounts` (
   CONSTRAINT `FK_character_accounts_characters` FOREIGN KEY (`Character_ID`) REFERENCES `characters` (`Character_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table db.character_accounts: ~2 rows (approximately)
+-- Dumping data for table db.character_accounts: ~1 rows (approximately)
 /*!40000 ALTER TABLE `character_accounts` DISABLE KEYS */;
 /*!40000 ALTER TABLE `character_accounts` ENABLE KEYS */;
 
@@ -106,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `Grade_Salary` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`) USING BTREE,
   KEY `Name` (`Name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table db.jobs: ~38 rows (approximately)
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
@@ -148,7 +149,8 @@ INSERT INTO `jobs` (`ID`, `Name`, `Label`, `Grade`, `Grade_Label`, `Grade_Salary
 	(35, 'gopo', 'Go Postal', 0, 'Delivery Driver', 13),
 	(36, 'mine', 'Caveat Cutters Union', 0, 'Miner', 13),
 	(37, 'lumb', 'Chippy Chop\'ns Wood Shop\'n', 0, 'Wood Cutter', 13),
-	(38, 'chic', 'Cluckin\' Bell', 0, 'Chicken Packer', 13);
+	(38, 'chic', 'Cluckin\' Bell', 0, 'Chicken Packer', 13),
+	(39, 'bank', 'Fleeca', 0, 'Associate', 21);
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 
 -- Dumping structure for table db.job_accounts
@@ -161,27 +163,10 @@ CREATE TABLE IF NOT EXISTS `job_accounts` (
   `Accounts` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE,
   KEY `Name` (`Name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table db.job_accounts: ~14 rows (approximately)
+-- Dumping data for table db.job_accounts: ~0 rows (approximately)
 /*!40000 ALTER TABLE `job_accounts` DISABLE KEYS */;
-INSERT INTO `job_accounts` (`ID`, `Name`, `Description`, `Boss`, `Members`, `Accounts`) VALUES
-	(1, 'none', 'Unemployed : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(2, 'cop', 'Police Department : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(3, 'news', 'Wezeal New\'s : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(4, 'grov', 'Grove : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(5, 'ball', 'Baller : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(6, 'ems', 'Emergancy Medical Services : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(7, 'pdm', 'Premium Motor Sport : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(8, 'benny', 'Benny\'s Original Motorworks : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(9, 'king', 'King\'s : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(10, 'bins', 'Desperardo Waste Management : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(11, 'varg', 'Vargo : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(12, 'chic', 'Cluckin\' Bell : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(13, 'pepe', 'Pepe\'s Pizzaria : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(14, 'mine', 'Caveat Cutters Union : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(15, 'lumb', 'Chippy Chop\'ns Wood Shop\'n : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}'),
-	(16, 'gopo', 'Go Postal : Description for role here.', 'Not Owned', '[]', '{"safe":0,"bank":25000}');
 /*!40000 ALTER TABLE `job_accounts` ENABLE KEYS */;
 
 -- Dumping structure for table db.users
@@ -195,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Locale` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Language Preferance as Key',
   `Ace` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT 'public' COMMENT 'All users are Public, Moderators are Mods and Admins are Admins. No Higher Roler than Admin.',
   `Join_Date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `Last_Login` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Last_Login` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `IP_Address` varchar(18) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Last Connected IP Address',
   `Ban` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 is Not Banned. 1 is Banned.',
   `Supporter` tinyint(1) NOT NULL DEFAULT 0,
@@ -207,9 +192,38 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `Ace` (`Ace`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Users Table';
 
--- Dumping data for table db.users: ~3 rows (approximately)
+-- Dumping data for table db.users: ~1 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
+-- Dumping structure for table db.vehicles
+CREATE TABLE IF NOT EXISTS `vehicles` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Character_ID` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Model` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Hash ID',
+  `Plate` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Coords` varchar(355) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{"x":0.00,"y":0.00,"z":0.00,"h":0.00}',
+  `Keys` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Condition` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Inventory` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Modifications` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Garage` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `State` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'In = True / Out = False',
+  `Impound` tinyint(1) NOT NULL DEFAULT 0,
+  `Wanted` tinyint(1) NOT NULL DEFAULT 0,
+  `Updated` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `Plate` (`Plate`),
+  KEY `Character_ID` (`Character_ID`),
+  KEY `State` (`State`),
+  KEY `Impound` (`Impound`),
+  KEY `Wanted` (`Wanted`),
+  KEY `Garage` (`Garage`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table db.vehicles: ~0 rows (approximately)
+/*!40000 ALTER TABLE `vehicles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vehicles` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

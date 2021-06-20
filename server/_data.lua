@@ -44,7 +44,7 @@ function c.data.Initilize()
         c.sql.GrabJobAccounts(cb)
         -- [5]
         c.data.CreateJobObjects()
-        c.debug(cb)
+        cb()
         --
         loaded = true
     end)
@@ -177,7 +177,10 @@ end
 function c.data.CreateJobObjects()
     local jobs = c.job.GetJobs()
     for k,v in pairs(jobs) do
-        c.jdex[k] = c.class.CreateJob(k)
+        if not c.jdex[k] then
+            c.jdex[k] = c.class.CreateJob(k)
+            c.debug("xJob Created for: "..k)
+        end
     end
 end
 
