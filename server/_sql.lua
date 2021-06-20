@@ -1340,8 +1340,8 @@ end
 --- Save All Characters from the xPLayer Table.
 ---@param cb function "To be called on SQL 'UPDATE' statements are completed."
 function c.sql.SaveVehicles(cb)
-    local xCars = c.data.GetVehicles()
-    for i = 1, #xCars, 1 do
+    local xVehicles = c.data.GetVehicles()
+    for i = 1, #xVehicles, 1 do
         local data = c.data.GetVehicle(i)
         if data then
         -- Other Variables.

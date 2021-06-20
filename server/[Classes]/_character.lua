@@ -37,17 +37,16 @@ function c.class.CreateCharacter(character_id)
 
     -- Booleans
     self.Wanted = data.Wanted
-
+    self.Supporter = data.Supporter
+    
     -- Tables (JSONIZE)
     self.Job = json.decode(data.Job)
     self.Accounts = json.decode(data.Accounts)
-    
     self.Appearance = json.decode(data.Appearance)
     self.Inventory = json.decode(data.Inventory)
     self.Modifiers = json.decode(data.Modifiers)
     self.Coords = json.decode(data.Coords)
-    
-    self.Supporter = data.Supporter
+
     
     ---- FUNCTIONS
     -- This one is to check if they are a VIP/Supporter of the server, ie tebex linked.

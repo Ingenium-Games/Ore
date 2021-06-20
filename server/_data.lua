@@ -22,7 +22,7 @@ function c.data.Initilize()
         [2] = 'DB: Jobs have been Generated;',
         [3] = 'DB: Finding Job Accounts or Creating them;',
         [4] = 'DB: Job Accounts have been Generated;',
-        [5] = 'DB: Vehicles;',
+        [5] = 'DB: Job Objects Created and Added;',
         [6] = 'DB: Vehicles;'
     }
     --
@@ -42,6 +42,9 @@ function c.data.Initilize()
         c.sql.SetupJobs(cb)
         -- [4]
         c.sql.GrabJobAccounts(cb)
+        -- [5]
+        c.data.CreateJobObjects()
+        c.debug(cb)
         --
         loaded = true
     end)
@@ -129,12 +132,14 @@ function c.GetPlayerFromIdentifier(id)
     return c.data.GetPlayerByIdentifier(id)
 end
 
+-- ====================================================================================--
+-- Vehicles
 
+--- Get the xVehicle Data/Table
+---@param plate string "Return the xVehicle table of data/functions"
 function c.data.GetVehicle(plate)
     return c.vehicles[plate]
 end
-
-
 
 --- Same as above.
 ---@param plate string
@@ -142,22 +147,47 @@ function c.GetVehicle(plate)
     return c.data.GetVehicle(plate)
 end
 
+--- Set the plates data.
+---@param plate string
+---@param data table
 function c.data.SetVehicle(plate, data)
     c.vehicles[plate] = data
 end
 
+--- Set the plate to no data.
+---@param plate string
 function c.data.RemoveVehicle(plate)
     c.vehicles[plate] = false
 end
 
+--- Get all xVehicles
 function c.data.GetVehicles()
     return c.vehicles
 end
 
+--- Get all xVehicles
 function c.GetVehicles()
     return c.data.GetVehicles()
 end
 
+-- ====================================================================================--
+-- Jobs - c.jdex = Object table, c.jobs = table built from the DB, c.job = functions.
+
+ --- func desc
+function c.data.CreateJobObjects()
+    local jobs = c.job.GetJobs()
+    for k,v in pairs(jobs) do
+        c.jdex[k] = c.class.CreateJob(k)
+    end
+end
+
+function c.data.GetJob(str)
+    return c.jdex[str]
+end
+
+function c.GetJob(str)
+    return c.data.GetJob(str)
+end
 
 -- ====================================================================================--
 

@@ -3,6 +3,7 @@
 -- ====================================================================================--
 c.job = {} -- Function Table
 c.jobs = {} -- DB Pull
+c.jdex = {} -- Job Index
 --[[
 NOTES.
     -
@@ -11,6 +12,16 @@ NOTES.
 ]]--
 math.randomseed(c.Seed)
 -- ====================================================================================--
+
+
+function c.job.GetJob(str)
+    return c.jobs[str]
+end
+
+function c.job.GetJobs()
+    return c.jobs
+end
+
 
 local CurrentlyActive = {}
 
@@ -30,7 +41,7 @@ end
 
 --- 
 ---@param job string
----@param grade string
+---@param grade any
 function c.job.Exist(job, grade)
 	grade = tostring(grade)
 	if job and grade then
@@ -39,6 +50,13 @@ function c.job.Exist(job, grade)
 		end
 	end
 	return false
+end
+
+--- Same as above.
+---@param job string
+---@param grade any
+function c.DoesJobExist(job,grade)
+    return c.job.Exist(job,grade)
 end
 
 -- req = source or number id calling event if internal
@@ -58,23 +76,3 @@ end)
 TriggerEvent('Server:Character:SetJob', self.ID, self.GetJob())
 self.TriggerEvent('Client:Character:SetJob', self.GetJob())
 ]]--
-
-function c.job.GetJob(str)
-    return c.jobs[str]
-end
-
-function c.job.GetJobs()
-    return c.jobs
-end
-
-function c.job.CreateJobObjects()
-    local jobs = c.job.GetJobs()
-    for k,v in pairs(jobs) do
-        c.jobs[k].Object = c.class.CreateJob(k)
-    end
-end
-
-function c.job.GetPlayerJob(str)
-    local job = c.job.GetJob(str)
-    return job.Object
-end

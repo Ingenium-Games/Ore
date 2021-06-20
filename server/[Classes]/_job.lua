@@ -10,14 +10,14 @@ NOTES.
 math.randomseed(c.Seed)
 -- ====================================================================================--
 
-function c.class.CreateJob(t)
+function c.class.CreateJob(tab)
     c.debug('Start Job Creation')
-    local tab = c.check.Table(t)
     local self = {}
     --
     self.Name = tab.Name
     self.Label = tab.Label
     self.Grades = tab.Grades
+    self.Members = tab.Members
     self.Description = tab.Description
     self.Accounts = tab.Accounts
     --
@@ -141,4 +141,8 @@ function c.class.CreateJob(t)
             end
         end
     end
+
+
+    c.debug("End Job Creation")
+    return self
 end
