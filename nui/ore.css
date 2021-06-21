@@ -1,211 +1,245 @@
 * {
-    font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 html {
-    width: 100vw !important;
-    height: 100vh !important;
-    background-color: rgba(0,0,0,0) !important;
-    overflow: scroll;
-    overflow-x: hidden;
-    overflow-y: hidden;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 ::-webkit-scrollbar {
-    width: 15px;
+  width: 15px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    border-radius: 0px 0px 0px 0px;
+  border-radius: 0px 0px 0px 0px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: lightslategrey;
-    border-radius: 0px;
-}
-
-#link{
-    
-    bottom: 1vh !important;
-    position: absolute;
+  background: lightslategrey;
+  border-radius: 0px;
 }
 
 input:invalid {
-    border-color: rgb(126, 56, 56);
+  border-color: rgb(126, 56, 56);
 }
 
 input,
 input:valid {
-    border-color: #ccc;
+  border-color: #ccc;
 }
 
 body {
-    background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
-    #Information h1 {
-        color: #fff;
-        font-size:1.25em;
-        padding-top: 2vh;
-        padding-left: 3vw;
-    }
+#Information h1 {
+  color: #fff;
+  font-size: 1.25em;
+  padding-top: 2vh;
+  padding-left: 3vw;
+}
 
-    #Information h3 {
-        color: #fff;
-        font-size: 1.15em;
-        padding-left: 3vw;
-    }
+#Information h3 {
+  color: #fff;
+  font-size: 1.15em;
+  padding-left: 3vw;
+}
 
-    #Information p {
-        color: #fff;
-        font-size: 0.95em;
-        padding-left: 3.5vw;
-    }
+#Information p {
+  color: #fff;
+  font-size: 0.95em;
+  padding-left: 3.5vw;
+}
 
 #Play {
-    bottom: 2vh !important;
-    right: 2vw !important;
-    width: 5.35vw;
-    height: 13vh;
-    position: absolute !important;
+  bottom: 2vh !important;
+  right: 2vw !important;
+  width: 5.35vw;
+  height: 13vh;
+  position: absolute !important;
 }
 
 #Kill {
-    bottom: 2vh !important;
-    right: 18vw !important;
-    width: 5.35vw;
-    height: 13vh;
-    position: absolute !important;
+  bottom: 2vh !important;
+  right: 18vw !important;
+  width: 5.35vw;
+  height: 13vh;
+  position: absolute !important;
 }
 
 #Sidebar {
-    color: #fff;
-    background-color: rgba(0,0,0,0.55) !important;
-    z-index: 1;
-    top: 0px !important;
-    left: 0px !important;
-    width: 25.55vw !important;
-    height: 100vh !important;
-    white-space: nowrap;
-    overflow-y: hidden;
-    bottom: 0px !important;
-    position: absolute;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.55) !important;
+  z-index: 1;
+  top: 0px !important;
+  left: 0px !important;
+  width: 25.55vw !important;
+  height: 100vh !important;
+  white-space: nowrap;
+  overflow-y: hidden;
+  bottom: 0px !important;
+  position: absolute;
 }
 
 #Row {
-    color: #fff;
-    background-color: rgba(0,0,0,0.55) !important;
-    z-index: 2;
-    top: 0px !important;
-    left: 25.55vw !important;
-    width: 8.75vw !important;
-    height: 100vh !important;
-    border-left: 4vw !important;
-    border-left-color: black !important;
-    white-space: pre-wrap;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    bottom: 0px !important;
-    position: absolute;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.55) !important;
+  z-index: 2;
+  top: 0px !important;
+  left: 25.55vw !important;
+  width: 8.75vw !important;
+  height: 100vh !important;
+  border-left: 4vw !important;
+  border-left-color: black !important;
+  white-space: pre-wrap;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  bottom: 0px !important;
+  position: absolute;
 }
 
 .Selector {
-    padding-top: 15px !important;
-    padding-left: 0px !important;
+  padding-top: 15px !important;
+  padding-left: 0px !important;
 }
 
 .Character {
-    padding-top: 15px !important;
-    padding-left: 35px !important;
+  padding-top: 15px !important;
+  padding-left: 35px !important;
 }
 
 a {
-    text-decoration: none !important;
+  text-decoration: none !important;
 }
 
-    a img {
-        border: 0px !important;
-        margin: 0 !important;
-        max-width: 70px !important;
-        max-height: 70px !important;
-        border-color: rgba(0,0,0,0) !important;
-        border: 0px solid rgba(0,0,0,0.25) !important;
-        border-radius: 50% !important;
-        background-color: rgba(255,255,255,0.25) !important;
-    }
+a img {
+  border: 0px !important;
+  margin: 0 !important;
+  max-width: 70px !important;
+  max-height: 70px !important;
+  border-color: rgba(0, 0, 0, 0) !important;
+  border: 0px solid rgba(0, 0, 0, 0.25) !important;
+  border-radius: 50% !important;
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
 
-        a img:hover {
-            border: 0px !important;
-            margin: 0 !important;
-            max-width: 70px !important;
-            max-height: 70px !important;
-            border-color: rgba(0,0,0,0) !important;
-            border: 0px solid rgba(0,0,0,0.25) !important;
-            border-radius: 50% !important;
-            background-color: rgba(0,0,0,0.25) !important;
-        }
+a img:hover {
+  border: 0px !important;
+  margin: 0 !important;
+  max-width: 70px !important;
+  max-height: 70px !important;
+  border-color: rgba(0, 0, 0, 0) !important;
+  border: 0px solid rgba(0, 0, 0, 0.25) !important;
+  border-radius: 50% !important;
+  background-color: rgba(0, 0, 0, 0.25) !important;
+}
 
 .tooltip {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
-    .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 100px;
-        background-color: black;
-        font-size: 12px;
-        color: #fff;
-        text-align: center;
-        padding: 9px 0;
-        border-radius: 6px;
-        position: absolute;
-        z-index: 30;
-        top: 100px;
-        left: 20px;
-    }
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 100px;
+  background-color: black;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  padding: 9px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 30;
+  top: 100px;
+  left: 20px;
+}
 
-    .tooltip:hover .tooltiptext {
-        visibility: visible;
-    }
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 
-    .tooltip .tooltiptext::after {
-        content: " ";
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: transparent transparent black transparent;
-    }
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
 
 .FeildSet {
-    background-color: rgba(0,0,0,0.55) !important;
-    padding: 8px;
-    border-radius: 6px;
-    font-size: 0.75em;
-    position: absolute;
-    border: hidden;
-    width: 12vw;
-    top: 15vh;
-    z-index:29;
+  background-color: rgba(0, 0, 0, 0.55) !important;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.75em;
+  position: absolute;
+  border: hidden;
+  width: 12vw;
+  top: 15vh;
+  z-index: 29;
 }
 
-    .FeildSet p {
-        text-align: center;
-    }
+.FeildSet p {
+  text-align: center;
+}
 
-    .FeildSet input {
-        text-align: center;
-        margin-left: 12%;
-        min-width: 15%;
-        max-width: 75%;
-    }
+.FeildSet input {
+  text-align: center;
+  margin-left: 12%;
+  min-width: 15%;
+  max-width: 75%;
+}
 
-    .FeildSet a {
-        text-align: center;
-        margin-left: 19%;
-    }
+.FeildSet a {
+  text-align: center;
+  margin-left: 19%;
+}
+
+
+/* Notifications Handler */
+
+#Notify-Window {
+  position: absolute;
+  top: 0vh;
+  right: 0vw;
+  width: 43vw;
+  height: 24vh;
+}
+
+.noty {
+  color: #000;
+  margin: 2px;
+  text-align: left;
+  padding: 10px;
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  word-spacing: 1.2px;
+  font-size: 1em;
+  display: inline-block;
+}
+
+.normal {
+  background-color: rgba(224, 210, 84, 0.795);
+}
+
+.success {
+  background-color: rgba(84, 224, 142, 0.795);
+}
+
+.fail {
+  background-color: rgba(221, 113, 41, 0.795);
+}
+
+.error {
+  background-color: rgba(224, 84, 103, 0.795);
+}

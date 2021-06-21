@@ -2,10 +2,9 @@
 
 */
 
-let EnableDebug = false
+let EnableDebug = conf.debug
 let Character_ID = null
 let PacketTemp = null
-let hudTemp = null
 
 function OnJoin(data) {
     if (data !== null) {
@@ -81,44 +80,40 @@ function CharacterMake() {
     OnAction(PacketTemp);
 };
 
-
-
-var hBar = $('.health-bar'),
-    bar = hBar.find('.bar'),
-    hit = hBar.find('.hit'),
-    total = hBar.data('total'),
-    value = hBar.data('value');
-
-function DoHealthUpdate(hp) {
-    if (value != hp){
-        var damage = value - hp;
-        var newValue = value - damage;
-        var barWidth = (newValue / total) * 100;
-        var hitWidth = (damage / value) * 100 + "%";
-
-        hit.css('width', hitWidth);
-        hBar.data('value', newValue);
-
-        setTimeout(function(){
-        hit.css({'width': '0'});
-        bar.css('width', barWidth + "%");
-        }, 500);
-    }
-};
-
-// packet = c.stats {Health, Hunger, etc}
-function UpdateHUDElements(packet) {
-    let data = packet
-    if (data.Health) {
-        DoHealthUpdate(data.Health)
+function OnNotify(data){
+    var text = data.text
+    var style = data.style
+    var fade = data.fade
+    var element
+    if (style == 'normal') {
+      element = $('<div class="noty normal"></div>'); 
+    } else if (style == 'success') {
+      element = $('<div class="noty success"></div>');
+    } else if (style == 'fail') {
+      element = $('<div class="noty fail"></div>');
+    } else if (style == 'error') {
+      element = $('<div class="noty error"></div>'); 
+    } else {
+      element = $('<div class="noty normal"></div>');     
     };
 
+    $('#Notify-Window').prepend(element);
+    $(element).innerText(text);
+    $(element).fadeIn(750);
+    
+    setTimeout(function(){
+       $(element).fadeOut(fade-(fade / 2));
+    }, fade / 2);
+    
+    setTimeout(function(){
+        $('#Notify-Window').remove(element);
+    }, fade + 10000);
+  
 };
 
 $(document).ready(function () {
     $('#DateOfBirth').mask('00-00-0000', { clearIfNotMatch: true });
     $('#Height').mask('000', { clearIfNotMatch: true });
-
     window.onload = (e) => {
         window.addEventListener('message', (event) => {
             let data = event.data;
@@ -141,21 +136,12 @@ $(document).ready(function () {
                     $("#CharacterList").hide();
                     $("#CharacterMake").show();
                     break;
-                case 'CharacterHUD':
+                case 'OnNotify':
                     if (EnableDebug) {
-                        console.log('   -= Message = CharacterHUD =-   ')
+                        console.log('   -= Message = OnNotify =-   ')
                     }
-                    $("#Sidebar").hide();    
-                    $("#CharacterList").hide();
-                    $("#CharacterMake").hide();
-                    $("#CharacterHUD").show();
-                    break;
-                case 'UpdateHUD':
-                    if (EnableDebug) {
-                        console.log('   -= Message = UpdateHUD =-   ')
-                    }
-                    hudTemp = data.packet;
-                    UpdateHUDElements(data.packet);
+                    $("#Notify-Window").show();
+                    OnNotify(data.notify)
                     break;
                 case 'default':
                     if (EnableDebug) {

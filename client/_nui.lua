@@ -85,7 +85,13 @@ end)
 -- Notifications 
 
 -- Send Update to HTML NUI Notification - Still to make.
-RegisterNetEvent("Client:Display:HUD")
-AddEventHandler("Client:Display:HUD", function(string)
-
+RegisterNetEvent("Client:Notify")
+AddEventHandler("Client:Notify", function(text,style,fade)
+    if not style then style = 'normal' end
+    if not fade then fade = 13500 end
+    local noty = {text = text, style = style, fade = fade}
+    SendNUIMessage({
+        message = "OnNotify",
+        notify = noty
+    })
 end)
