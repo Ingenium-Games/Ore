@@ -11,7 +11,7 @@ math.randomseed(c.Seed)
 -- ====================================================================================--
 local PlayerSaveData = -1
 MySQL.Async.store(
-    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Modifiers` = @Modifiers, `Accounts` = @Accounts, `Last_Seen` = current_timestamp() WHERE `Character_ID` = @Character_ID;",
+    "UPDATE `characters` SET `Health` = @Health, `Armour` = @Armour, `Hunger` = @Hunger, `Thirst` = @Thirst, `Stress` = @Stress, `Coords` = @Coords, `Modifiers` = @Modifiers, `Accounts` = @Accounts WHERE `Character_ID` = @Character_ID;",
     function(id)
         PlayerSaveData = id
     end)

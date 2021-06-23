@@ -51,7 +51,7 @@ AddEventHandler('Server:PlayerConnecting', function()
             if (r ~= nil) then
                 -- Update their steam, discord if they do not exist in the db and their ip address upon every login.
                 MySQL.Async.execute(
-                    'UPDATE `users` SET `Username` = @Username, `Steam_ID` = IFNULL(`Steam_ID`,@Steam_ID), `FiveM_ID` = IFNULL(`FiveM_ID`,@FiveM_ID), `Discord_ID` = IFNULL(`Discord_ID`,@Discord_ID), `IP_Address` = @IP_Address, `Last_Login` = current_timestamp() WHERE `License_ID` = @License_ID;',
+                    'UPDATE `users` SET `Username` = @Username, `Steam_ID` = IFNULL(`Steam_ID`,@Steam_ID), `FiveM_ID` = IFNULL(`FiveM_ID`,@FiveM_ID), `Discord_ID` = IFNULL(`Discord_ID`,@Discord_ID), `IP_Address` = @IP_Address WHERE `License_ID` = @License_ID;',
                     {
                         Username = Username,
                         License_ID = License_ID,
