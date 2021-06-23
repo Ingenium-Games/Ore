@@ -47,7 +47,7 @@ function c.camera.Basic(px, py, pz, rx, ry, rz, fov)
     return name
 end
 
-function c.camera.MakeAdvanced(type, px, py, pz, rx, ry, rz, fov)
+function c.camera.Advanced(type, px, py, pz, rx, ry, rz, fov)
     local t = {
         ['type'] = type,
         ['px'] = px,
