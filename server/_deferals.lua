@@ -40,7 +40,7 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
             end)
         else
             if conf.forcename then
-                Citizen.Wait(250)
+                Citizen.Wait(25)
                 deferrals.update('Checking name matches approved characters.')
                 if (playerName:match("%W")) then
                     Citizen.Wait(25)

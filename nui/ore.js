@@ -89,8 +89,8 @@ function OnNotify(data){
       element = $('<div class="noty normal"></div>'); 
     } else if (style == 'success') {
       element = $('<div class="noty success"></div>');
-    } else if (style == 'fail') {
-      element = $('<div class="noty fail"></div>');
+    } else if (style == 'warn') {
+      element = $('<div class="noty warn"></div>');
     } else if (style == 'error') {
       element = $('<div class="noty error"></div>'); 
     } else {

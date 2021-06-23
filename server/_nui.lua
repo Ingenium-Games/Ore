@@ -21,8 +21,7 @@ AddEventHandler('Server:Character:Request:List', function(req, Primary_ID)
     -- Place the user in their own instance until the user has joined and loaded.
     c.inst.SetPlayer(src, c.inst.New(), true)
 end)
-------------------------------------------------------------------------------
--- When they click the tick...
+
 RegisterNetEvent('Server:Character:Request:Join')
 AddEventHandler('Server:Character:Request:Join', function(Character_ID)
     local src = tonumber(source)
@@ -40,7 +39,6 @@ AddEventHandler('Server:Character:Request:Join', function(Character_ID)
     end
 end)
 
--- Currently not in use.
 RegisterNetEvent('Server:Character:Request:Delete')
 AddEventHandler('Server:Character:Request:Delete', function(Character_ID)
     local src = tonumber(source)
@@ -77,5 +75,9 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
     end)
         c.data.LoadPlayer(src, char)
         TriggerClientEvent('Client:Character:FirstSpawn', src)
+        ---
+        ---
+        ---
+        ---
         TriggerClientEvent('creator:OpenCreator', src)
 end)

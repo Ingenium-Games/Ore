@@ -236,7 +236,7 @@ a img:hover {
   background-color: rgba(84, 224, 142, 0.795);
 }
 
-.fail {
+.warn {
   background-color: rgba(221, 113, 41, 0.795);
 }
 

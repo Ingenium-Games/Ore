@@ -31,13 +31,6 @@ AddEventHandler("Server:Character:Switch", function()
     
 end)
 
--- Default player to instance listed in conf.defaultinstance
-RegisterNetEvent('Server:Instance:Player:Default')
-AddEventHandler('Server:Instance:Player:Default', function(req)
-    local src = req or source
-    c.inst.SetPlayerDefault(src)
-end)
-
 -- Server Death Handler - if was killed by a player or not.
 RegisterNetEvent("Server:Character:Death")
 AddEventHandler("Server:Character:Death", function(data)
@@ -57,7 +50,15 @@ AddEventHandler("Server:Character:SetJob", function(req, t)
 
 end)
 
+-- Default player to instance listed in conf.defaultinstance
+RegisterNetEvent('Server:Instance:Player:Default')
+AddEventHandler('Server:Instance:Player:Default', function(req)
+    local src = req or source
+    c.inst.SetPlayerDefault(src)
+end)
+
 -- ====================================================================================--
+-- The data reciever to modify the xPlayer Table
 
 RegisterNetEvent('Server:Packet:Update')
 AddEventHandler('Server:Packet:Update', function(data)
@@ -69,6 +70,7 @@ AddEventHandler('Server:Packet:Update', function(data)
     xPlayer.SetHunger(data.Hunger)
     xPlayer.SetThirst(data.Thirst)
     xPlayer.SetStress(data.Stress)
+    -- Status Modifiers
     xPlayer.SetModifiers(data.Modifiers)
     -- Coords
     xPlayer.SetCoords(data.Coords)
@@ -76,6 +78,7 @@ AddEventHandler('Server:Packet:Update', function(data)
 end)
 
 -- ====================================================================================--
+-- Bank Events for Transactions
 
 RegisterNetEvent("Server:Bank:Deposit")
 AddEventHandler("Server:Bank:Deposit", function(data, req)
@@ -85,6 +88,7 @@ AddEventHandler("Server:Bank:Deposit", function(data, req)
     --
     xPlayer.RemoveMoney(amount)
     xPlayer.AddBank(amount)
+    xPlayer.TriggerEvent("Client:Notify", xPlayer.ID, "Diposited $"..amount, "warn")
 end)
 
 RegisterNetEvent("Server:Bank:Withdraw")
@@ -95,6 +99,7 @@ AddEventHandler("Server:Bank:Withdraw", function(data, req)
     --
     xPlayer.RemoveBank(amount)
     xPlayer.AddMoney(amount)
+    xPlayer.TriggerEvent("Client:Notify", xPlayer.ID, "Withdrew $"..amount, "warn")
 end)
 
 RegisterNetEvent("Server:Bank:Transfer")
@@ -107,22 +112,26 @@ AddEventHandler("Server:Bank:Transfer", function(data, req, id)
     --
     xPlayer.RemoveBank(amount)
     tPlayer.AddBank(amount)
+    xPlayer.TriggerEvent("Client:Notify", xPlayer.ID, "Sent $"..amount.." to "..tPlayer.Full_Name, "warn")
+    tPlayer.TriggerEvent("Client:Notify", tPlayer.ID, "Recieved $"..amount.." from "..xPlayer.Full_Name, "warn")
 end)
 
-RegisterNetEvent("Server:Bank:Bill")
-AddEventHandler("Server:Bank:Bill", function(data, req)
+RegisterNetEvent("Server:Bank:Remove")
+AddEventHandler("Server:Bank:Remove", function(data, req)
     local src = req or source
     local amount = data
     local xPlayer = c.data.GetPlayer(src)
     --
     xPlayer.RemoveBank(amount)
+    xPlayer.TriggerEvent("Client:Notify", xPlayer.ID, "Payed $"..amount, "warn")
 end)
 
-RegisterNetEvent("Server:Bank:Loan")
-AddEventHandler("Server:Bank:Loan", function(data, req)
+RegisterNetEvent("Server:Bank:Add")
+AddEventHandler("Server:Bank:Add", function(data, req)
     local src = req or source
     local amount = data
     local xPlayer = c.data.GetPlayer(src)
     --
     xPlayer.AddBank(amount)
+    xPlayer.TriggerEvent("Client:Notify", xPlayer.ID, "$"..amount.." was added to your account.", "warn")
 end)

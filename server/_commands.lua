@@ -28,6 +28,7 @@ RegisterCommand('switch', function(source)
         TriggerClientEvent('Client:Character:OpeningMenu', src)
         TriggerEvent('Server:Character:Request:List', src, Primary_ID)
         c.data.RemovePlayer(src)
+        -- Events to handle character removeal.
         TriggerClientEvent("Client:Character:Switch")
         TriggerEvent("Server:Character:Switch")
     end)
@@ -53,16 +54,16 @@ RegisterCommand('ban', function(source, ...)
     local src = tonumber(source)
     local args = {...}
     if (type(args[1]) ~= 'number') then
-        TriggerClientEvent('HudText', src, 'Invalid Number Used for /ban Command.')
+        TriggerClientEvent("Client:Notify", src, 'Invalid Number Used for /ban Command.')
     else
         if (args[1] == src) then
-            TriggerClientEvent('HudText', src, 'You cannot /ban yourself.')
+            TriggerClientEvent("Client:Notify", src, 'You cannot /ban yourself.')
         else
             local Primary_ID = c.identifier(args[1])
             local xPlayer = c.data.GetPlayer(args[1])
             c.sql.SetBanned(Primary_ID, function()
                 xPlayer.Kick('You have been banned.')
-                TriggerClientEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been banned.')
+                TriggerClientEvent("Client:Notify", src, 'TargetID: ' .. args[1] .. ', has been banned.')
             end)
         end
     end
@@ -79,14 +80,14 @@ RegisterCommand('kick', function(source, ...)
     local src = tonumber(source)
     local args = {...}
     if (type(args[1]) ~= 'number') then
-        TriggerClientEvent('HudText', src, 'Invalid Number Used for /kick Command.')
+        TriggerClientEvent("Client:Notify", src, 'Invalid Number Used for /kick Command.')
     else
         if (args[1] == src) then
-            TriggerClientEvent('HudText', src, 'You cannot /kick yourself.')
+            TriggerClientEvent("Client:Notify", src, 'You cannot /kick yourself.')
         else
             local xPlayer = c.data.GetPlayer(args[1])
             xPlayer.Kick('You have been kicked.')
-            TriggerClientEvent('HudText', src, 'TargetID: ' .. args[1] .. ', has been kicked.')
+            TriggerClientEvent("Client:Notify", src, 'TargetID: ' .. args[1] .. ', has been kicked.')
         end
     end
 end, true)

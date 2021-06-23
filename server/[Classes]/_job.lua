@@ -16,6 +16,7 @@ function c.class.CreateJob(tab)
     --
     self.Name = tab.Name
     self.Label = tab.Label
+    self.Boss = tab.Boss
     self.Grades = tab.Grades
     self.Members = tab.Members
     self.Description = tab.Description
