@@ -13,8 +13,8 @@ math.randomseed(c.Seed)
 
 -- Pulls all characters with loans and deducts money to pay the loan, can go negitive.
 function c.bank.CalculatePayments()
-    
-    
+    local xJob = c.data.GetJob("bank")
+    -- To run independant of active players and debit accounts via sql.
 end
 
 TriggerEvent('Server:Cron:NewTask', conf.loanpayment.h, conf.loanpayment.m, c.bank.CalculatePayments)
@@ -22,13 +22,14 @@ TriggerEvent('Server:Cron:NewTask', conf.loanpayment.h, conf.loanpayment.m, c.ba
 
 -- Updates the characters loan to add the interest on the outstanding amount each day.
 function c.bank.CalculateInterest()
-
-
+    local xJob = c.data.GetJob("bank")
+    -- To run independant of active players and debit accounts via sql.
 end
 
 TriggerEvent('Server:Cron:NewTask', conf.loaninterest.h, conf.loaninterest.m, c.bank.CalculateInterest)
 --
 
+--- func desc
 function c.bank.CheckNegativeBalances()
     local xJob = c.data.GetJob("bank")
     local xPlayers = c.data.GetPlayers()
@@ -43,19 +44,12 @@ function c.bank.CheckNegativeBalances()
             end
         end
     end
+    c.debug("Active clients notified of negative bank balances and Fees charged at $"..conf.bankoverdraw)
 end
 
+-- Set so the server will debit bank accounts on the hour every hour if in negative balance.
 AddEventHandler("onResourceStart",function()
     for i=1, 23, 0 do
         TriggerEvent('Server:Cron:NewTask', i, 0, c.bank.CheckNegativeBalances)
     end
 end)
-
-function c.bank.EmergancyBlackout()
-
-end
-
-
-function c.bank.TheftOrRandsom()
-
-end

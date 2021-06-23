@@ -11,30 +11,7 @@ NOTES.
 
 math.randomseed(c.Seed)
 -- ====================================================================================--
--- 
--- Too Add vehicle driving fuel consumption.
 
---[[
-
-
-	`ID`
-	`Character_ID`
-	`Model` Hash
-	`Plate` 8 Varchar
-	`Coords` '{"x":0.00,"y":0.00,"z":0.00,"h":0.00}'
-	`Keys` json{} Character_ID's
-	`Condition` vfuel, hp, other values
-    `Inventory` json{}
-    `Modifications` json{}handling info, mos and liverys
-	`Garage` 2 character - A1 A2 A3
-	`State` T/F In OUt
-	`Impound` T/F In OUt
-	`Wanted` T/F In OUt
-
-
-]]--
-
----
 function c.class.VehicleClass(networkid, owned, plate)
     local self = {}
     self.Entity = NetworkGetEntityFromNetworkId(networkid)
@@ -50,9 +27,11 @@ function c.class.VehicleClass(networkid, owned, plate)
         if type(k) ~= 'string' then k = tostring(k) end
         return Entity(self.Entity).state[k]
     end
+
 ----------------------------------------------------------------------
 -- START SEPERATION OF TYPE FOR CLASS, IS IT OWNEND BY THE DB OR NOT!.
 ----------------------------------------------------------------------
+
     -- If is not owned by a player on creation, do...
     if not owned then
         -- Declare
@@ -169,7 +148,7 @@ function c.class.VehicleClass(networkid, owned, plate)
 -- still provide similar or the same informaiton to what is calling it.
 -------------------------------------------------------------------------        
 
-        -- If it IS owned by a player, DO...
+    -- If it IS owned by a player, DO...
     elseif owned then
         local data = c.sql.GetVehicleByPlate(plate)
         -- Declare

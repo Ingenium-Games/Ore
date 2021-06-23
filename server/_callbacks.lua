@@ -58,17 +58,6 @@ end
 
 -- ====================================================================================--
 
-c.RegisterServerCallback('Request:CountActiveCharacters', function(source)
-    local Count = c.sql.GetActiveCharactersAsCount()
-    return Count
-end)
-
-c.RegisterServerCallback('Request:CountActiveCharactersByJob', function(source, jobname)
-    local Jobname = tostring(jobname)
-    local Count = c.sql.GetActiveCharactersByJobAsCount(Jobname)
-    return Count
-end)
-
 c.RegisterServerCallback('Request:Create:VehicleClass', function(source, networkid, bool, plate)
     local xCar = c.class.VehicleClass(networkid, bool, plate)
         c.vehicle.SetVehicle(plate, xCar)

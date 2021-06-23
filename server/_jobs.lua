@@ -3,7 +3,7 @@
 -- ====================================================================================--
 c.job = {} -- Function Table
 c.jobs = {} -- DB Pull
-c.jdex = {} -- Job Index
+c.jdex = {} -- Job Index for xJobs functions.
 --[[
 NOTES.
     -
@@ -31,8 +31,8 @@ function c.job.ActiveMembers()
     for k,v in ipairs(CurrentlyActive) do
         if not tab[v.name] then
             table.insert(tab, v.name)
-            tab[v.name] = 0
-        else
+            tab[v.name] = 1
+        else    
             tab[v.name] = tab[v.name] + 1
         end
     end

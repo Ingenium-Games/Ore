@@ -101,51 +101,6 @@ function c.discord(url, color, name, message, footer)
 end
 
 -- ====================================================================================--
--- https://forum.cfx.re/t/tutorial-cancellable-function-usage/137558
-
-CancellationToken = {}
-CancellationToken.__index = CancellationToken
-
-function CancellationToken.MakeToken(cancellationHandler)
-    local self = {}
-
-    setmetatable(self, CancellationToken)
-
-    self._cancelled = false
-
-    if cancellationHandler then
-        self._cancellationHandler = cancellationHandler
-    end
-end
-
-function CancellationToken:Cancel()
-    if self._cancelled then
-        return
-    end
-
-    self._cancelled = true
-
-    if self._cancellationHandler then
-        self._cancellationHandler()
-    end
-end
-
-function CancellationToken:WasCancelled()
-    return self._cancelled
-end
-
-function c.CancellableToken(cb)
-    return CancellationToken.MakeToken(cb)
-end
-
-function c.CancellableWait(ms, token)
-    Citizen.Wait(ms)
-    if token:WasCancelled() then
-        CancelEvent()
-    end
-end
-
--- ====================================================================================--
 
 function c.GetState(entity)
     return Entity(entity).state

@@ -14,7 +14,7 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
         last = last,
     })
     Citizen.Wait(25)
-    deferrals.update('Checking User')
+    deferrals.update('Checking User...')
     -- If you have/use discordperms..
     if not ban then
         if conf.discordperms then
@@ -24,18 +24,18 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
                 deferrals.update('Checking name matches approved characters.')
                 if (playerName:match("%W")) then
                     Citizen.Wait(25)
-                    deferrals.done('Your name must not contain special characters.')
+                    deferrals.done('You have not joined due to your name having special characters within it. Please remove any special characters prior to rejoining.')
                 end
             end
             Citizen.Wait(25)
-            deferrals.update('If your stuck on this, join our discord guild.')
+            deferrals.update('You must be a member within our discord to join our game servers. Please visit https://www.ingenium.games to find our discord link there.')
             exports['discordroles']:isRolePresent(src, conf.discordrole, function(hasRole, roles)
                 if hasRole then
                     Citizen.Wait(25)
                     deferrals.done()
                 else
                     Citizen.Wait(25)
-                    deferrals.done('Please visit our website to join our discord prior to joining...')
+                    deferrals.done('You must be a member within our discord to join our game servers. Please visit https://www.ingenium.games to find our discord link there.')
                 end
             end)
         else
@@ -44,7 +44,7 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
                 deferrals.update('Checking name matches approved characters.')
                 if (playerName:match("%W")) then
                     Citizen.Wait(25)
-                    deferrals.done('Please only use Alpha Numeric Characters in your name...')
+                    deferrals.done('You have not joined due to your name having special characters within it. Please remove any special characters prior to rejoining.')
                 end
             else
                 Citizen.Wait(25)
@@ -53,6 +53,6 @@ AddEventHandler("playerConnecting", function(name, setKickReason, deferrals)
         end
     else
         Citizen.Wait(25)
-        deferrals.done("Banned")
+        deferrals.done("This is triggered when you are banned, please contact the server administrators.")
     end
 end)

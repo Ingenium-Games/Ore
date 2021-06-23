@@ -52,7 +52,7 @@ function c.data.Initilize()
     while not loaded do
         Wait(250)
     end
-
+    
     c.Loading = false
     c.debug('Loading Sequence Complete.')
     c.Running = true
@@ -133,7 +133,7 @@ function c.GetPlayerFromIdentifier(id)
 end
 
 -- ====================================================================================--
--- Vehicles
+-- Vehicles - c.vehicles = Object Table with xVehicle as referance obj, c.vehicle = function table
 
 --- Get the xVehicle Data/Table
 ---@param plate string "Return the xVehicle table of data/functions"
