@@ -1,4 +1,4 @@
-conf.cars = {
+conf.vehicles = {
 `ADDER`,
 `AIRBUS`,
 `AIRTUG`,
@@ -689,6 +689,7 @@ conf.cars = {
 `ZHABA`,
 }
 
+conf.vehicle = {}
 conf.vehicle.classes = {
 [0] = "Compact",
 [1] = "Sedan",
