@@ -76,7 +76,7 @@ body {
 
 #Sidebar {
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.55) !important;
+  background-color: rgba(0, 0, 0, 0.75) !important;
   z-index: 1;
   top: 0px !important;
   left: 0px !important;
@@ -90,7 +90,7 @@ body {
 
 #Row {
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.55) !important;
+  background-color: rgba(0, 0, 0, 0.75) !important;
   z-index: 2;
   top: 0px !important;
   left: 25.55vw !important;
@@ -141,6 +141,8 @@ a img:hover {
   background-color: rgba(0, 0, 0, 0.25) !important;
 }
 
+/* Useful tooltip hover functions. */
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -176,34 +178,38 @@ a img:hover {
   border-color: transparent transparent black transparent;
 }
 
+/* Character Data Input Field */
+
 .FeildSet {
-  background-color: rgba(0, 0, 0, 0.55) !important;
-  padding: 8px;
-  border-radius: 6px;
-  font-size: 0.75em;
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  padding: 12px;
+  border-radius: 22px;
+  font-size: 1em;
   position: absolute;
   border: hidden;
-  width: 12vw;
-  top: 15vh;
+  width: 19vw;
+  top: 20vh;
+  left:40vw;
+  right:40vw !important;
   z-index: 29;
 }
 
 .FeildSet p {
+  color: #fff;
+  font-weight: 700;
   text-align: center;
 }
 
 .FeildSet input {
   text-align: center;
-  margin-left: 12%;
-  min-width: 15%;
-  max-width: 75%;
+  position: relative;
+  width: 40%;
+  left:30%;
+  right:30%;
+  color:#fff;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.35) !important;
 }
-
-.FeildSet a {
-  text-align: center;
-  margin-left: 19%;
-}
-
 
 /* Notifications Handler */
 

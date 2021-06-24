@@ -54,8 +54,7 @@ end
 
 --- [E] - Passed Table of data results in creation of vehicle client side, to pass result to server, to generate and pull info from the server, to then return to the client to finalise and validate all changes to append to the vehicle.
 ---@param table table "{Model = hash, Coords = {c,y,z,h}, Owned = bool, Plate = string}"
-c.RegisterClientCallback('Request:Create:VehicleClass', function(table)
-    local tab = c.check.Table(table)
+c.RegisterClientCallback('Request:Create:VehicleClass', function(tab)
     local entity, networkid, safespawn = c.CreateVehicle(tab.Model, tab.Coords.x, tab.Coords.y, tab.Coords.z, tab.Coords.h)    
     if IsVehicleOnAllWheels(entity) and safespawn then
         -- Once the Vehicle is created, It sends a positive return to server, to query the network id,

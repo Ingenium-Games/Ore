@@ -28,6 +28,8 @@ function Selected(key) {
         document.getElementById('name').innerText = 'Confirm to make a new character'
         document.getElementById('created').innerText = '-'
         document.getElementById('lastseen').innerText = '-'
+        document.getElementById('city').innerText = '-'
+        document.getElementById('phone').innerText = '-'
         if (EnableDebug) {
             console.log('   -= ' + Character_ID + ' =-   ')
         }
@@ -40,9 +42,13 @@ function Selected(key) {
         let First = PacketTemp[key].First_Name
         let Last = PacketTemp[key].Last_Name
         let Login = PacketTemp[key].Last_Seen
+        let Phone = PacketTemp[key].Phone
+        let City = PacketTemp[key].City_ID
         document.getElementById('name').innerText = First + ' ' + Last;
         document.getElementById('created').innerText = new Date(Created).toISOString().slice(0, 19).replace('T', ' ')
         document.getElementById('lastseen').innerText = new Date(Login).toISOString().slice(0, 19).replace('T', ' ')
+        document.getElementById('city').innerText = City
+        document.getElementById('Phone').innerText = Phone
     }
 };
 

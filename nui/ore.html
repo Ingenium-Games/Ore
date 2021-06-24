@@ -17,10 +17,10 @@
 </head>
 <body id="body">
     <!-- Notification Window -->
-    <div id=Notify-Window style="display: none;">
+    <div id=Notify-Window style="display: hide;">
     </div>
     <!-- Character Informaiton Pannel -->
-    <div id="Sidebar" style="display: none;">
+    <div id="Sidebar" style="display: hide;">
         <div id="Information">
             <h1>Character Information Panel</h1>
             <br />
@@ -30,6 +30,11 @@
             <p id="created"></p>
             <h3>Last played:</h3>
             <p id="lastseen"></p>
+            <h3>City ID:</h3>
+            <p id="city"></p>
+            <h3>Phone Number:</h3>
+            <p id="phone"></p>
+            
             <br />
             <div id="Options">
                 <a id="Play" class="Selector Character tooltip" onclick="CharacterJoin();"><img src="img/icons8-checkmark-100.png" /><span class="tooltiptext">Enter</span></a>
@@ -38,13 +43,13 @@
         </div>
     </div>
     <!-- Character Top Down Slider -->
-    <div id="CharacterList" style="display: none;">
+    <div id="CharacterList" style="display: hide;">
         <div id="Row">
             <a id="New" class="Character tooltip"onclick="Selected('New');"><img src="img/icons8-test-account-100.png" /><span class="tooltiptext">New</span></a>
         </div>
     </div>
     <!-- Character Creation Form on selecting New and Play -->
-    <form id="CharacterMake" style="display: none;" autocomplete="off">
+    <form id="CharacterMake" style="display: hide;" autocomplete="off">
         <fieldset class="FeildSet">
             <p>First Name</p>
             <input name="FirstName" id="FirstName" placeholder="-" pattern="[A-Z/a-z]{1,25}" minlength="2" maxlength="25" type="text" required>
