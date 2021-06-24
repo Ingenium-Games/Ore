@@ -17,10 +17,10 @@
 </head>
 <body id="body">
     <!-- Notification Window -->
-    <div id=Notify-Window style="display: hide;">
+    <div id=Notify-Window style="display: none;">
     </div>
     <!-- Character Informaiton Pannel -->
-    <div id="Sidebar" style="display: hide;">
+    <div id="Sidebar" style="display: none;">
         <div id="Information">
             <h1>Character Information Panel</h1>
             <br />
@@ -43,13 +43,13 @@
         </div>
     </div>
     <!-- Character Top Down Slider -->
-    <div id="CharacterList" style="display: hide;">
+    <div id="CharacterList" style="display: none;">
         <div id="Row">
             <a id="New" class="Character tooltip"onclick="Selected('New');"><img src="img/icons8-test-account-100.png" /><span class="tooltiptext">New</span></a>
         </div>
     </div>
     <!-- Character Creation Form on selecting New and Play -->
-    <form id="CharacterMake" style="display: hide;" autocomplete="off">
+    <form id="CharacterMake" style="display: none;" autocomplete="off">
         <fieldset class="FeildSet">
             <p>First Name</p>
             <input name="FirstName" id="FirstName" placeholder="-" pattern="[A-Z/a-z]{1,25}" minlength="2" maxlength="25" type="text" required>

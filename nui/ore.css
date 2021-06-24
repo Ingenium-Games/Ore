@@ -27,12 +27,11 @@ html {
 }
 
 input:invalid {
-  border-color: rgb(126, 56, 56);
+  border-color: rgb(211, 31, 31);
 }
 
-input,
-input:valid {
-  border-color: #ccc;
+input, input:valid {
+  border-color: rgb(27, 24, 24);
 }
 
 body {
@@ -44,18 +43,21 @@ body {
   font-size: 1.25em;
   padding-top: 2vh;
   padding-left: 3vw;
+  text-shadow: 4px 4px 10px #000000;
 }
 
 #Information h3 {
   color: #fff;
   font-size: 1.15em;
   padding-left: 3vw;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 #Information p {
   color: #fff;
   font-size: 0.95em;
   padding-left: 3.5vw;
+  text-shadow: 2px 2px 4px #000000;
 }
 
 #Play {
@@ -94,7 +96,7 @@ body {
   z-index: 2;
   top: 0px !important;
   left: 25.55vw !important;
-  width: 8.75vw !important;
+  width: 9.80vw !important;
   height: 100vh !important;
   border-left: 4vw !important;
   border-left-color: black !important;
@@ -103,6 +105,7 @@ body {
   overflow-y: scroll;
   bottom: 0px !important;
   position: absolute;
+  box-shadow: 10px 0px 9px grey;
 }
 
 .Selector {
@@ -182,19 +185,21 @@ a img:hover {
 
 .FeildSet {
   background-color: rgba(0, 0, 0, 0.75) !important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 12px;
   border-radius: 22px;
   font-size: 1em;
   position: absolute;
   border: hidden;
   width: 19vw;
-  top: 20vh;
+  top: 25vh;
   left:40vw;
   right:40vw !important;
   z-index: 29;
 }
 
 .FeildSet p {
+  text-shadow: 2px 2px 4px #000000;
   color: #fff;
   font-weight: 700;
   text-align: center;
