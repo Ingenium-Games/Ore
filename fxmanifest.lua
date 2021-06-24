@@ -24,7 +24,7 @@ exports {"c"}
 server_exports {"c"}
 ------------------------------------------------------------------------------
 -- required resources
-dependencies {"mysql-async", "freecam", "discordroles"}
+dependencies {"mysql-async", "discordroles"}
 ------------------------------------------------------------------------------
 -- files
 files { "nui/ore.js", "nui/ore.css", "nui/ore.html", "nui/img/*.png", "nui/img/*.jpg", "nui/jquery-3.5.1.min.js",

@@ -36,15 +36,6 @@ end, false)
 
 -- ====================================================================================--
 
-TriggerEvent("chat:addSuggestion", "/noclip", "Admin Permission(s) Required.", {})
-
-RegisterCommand('noclip', function(source)
-    local src = tonumber(source)
-    TriggerClientEvent('AceCommand:NoClip', src)
-end, true)
-
--- ====================================================================================--
-
 TriggerEvent("chat:addSuggestion", "/ban", "Admin Permission(s) Required.", {{
     name = "TargetID",
     help = "The Target's server ID in this session."
