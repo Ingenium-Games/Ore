@@ -19,8 +19,11 @@ local hours = {
 --- func desc
 function c.time.Update()
     local t = os.date('*t')
-    SetConvarReplicated('Time', string.format('%02d:%02d', c.time.AlterTime(t.hour), t.min))
+    local newt = c.time.AlterTime(t.hour)
+    SetConvarReplicated('Time', string.format('%02d:%02d', newt, t.min))
     SetConvarServerInfo('Server Time', string.format('%02d:%02d', t.hour, t.min))
+    -- Add Cron Handler into the Time Functions.
+    c.cron.Action(newt, t.min)
 end
 
 --- func desc
@@ -48,4 +51,3 @@ function c.time.AlterTime(h)
     end
     return newhour
 end
-

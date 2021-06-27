@@ -17,7 +17,11 @@ function c.bank.CalculatePayments()
     -- To run independant of active players and debit accounts via sql.
 end
 
-TriggerEvent('Server:Cron:NewTask', conf.loanpayment.h, conf.loanpayment.m, c.bank.CalculatePayments)
+-- queued to add
+AddEventHandler("onServerResourceStart", function()
+    c.cron.Add(conf.loanpayment.h, conf.loanpayment.m, c.bank.CalculatePayments)
+    c.debug("[E] Added Cron Job [F] c.bank.CalculatePayments()")
+end)
 --
 
 -- Updates the characters loan to add the interest on the outstanding amount each day.
@@ -26,7 +30,11 @@ function c.bank.CalculateInterest()
     -- To run independant of active players and debit accounts via sql.
 end
 
-TriggerEvent('Server:Cron:NewTask', conf.loaninterest.h, conf.loaninterest.m, c.bank.CalculateInterest)
+-- queued to add
+AddEventHandler("onServerResourceStart", function()
+    c.cron.Add(conf.loaninterest.h, conf.loaninterest.m, c.bank.CalculateInterest)
+    c.debug("[E] Added Cron Job [F] c.bank.CalculateInterest()")
+end)
 --
 
 --- func desc
@@ -47,9 +55,11 @@ function c.bank.CheckNegativeBalances()
     c.debug("Active clients notified of negative bank balances and Fees charged at $"..conf.bankoverdraw)
 end
 
+-- queued to add
 -- Set so the server will debit bank accounts on the hour every hour if in negative balance.
-AddEventHandler("onResourceStart",function()
+AddEventHandler("onServerResourceStart", function()
     for i=1, 23, 0 do
-        TriggerEvent('Server:Cron:NewTask', i, 0, c.bank.CheckNegativeBalances)
+        c.cron.Add(i, 0, c.bank.CheckNegativeBalances)
     end
+    c.debug("[E] Added Cron Job: [F] c.bank.CheckNegativeBalances()")
 end)

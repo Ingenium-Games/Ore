@@ -42,7 +42,7 @@ function c.data.Initilize()
         c.sql.SetupJobs(cb)
         -- [4]
         c.sql.GrabJobAccounts(cb)
-        -- [5]
+        -- [5] -- Not so much a SQL function, but dependant on it being conducted in order.
         c.data.CreateJobObjects()
         cb()
         --
@@ -57,7 +57,6 @@ function c.data.Initilize()
     c.debug('Loading Sequence Complete.')
     c.Running = true
     -- Testing Table builds from SQL builds.
-    --c.debug(c.table.Dump(c.jobs))
 end
 
 -- ====================================================================================--
@@ -179,7 +178,6 @@ function c.data.CreateJobObjects()
     for k,v in pairs(jobs) do
         if not c.jdex[k] then
             c.jdex[k] = c.class.CreateJob(k)
-            c.debug("xJob Created for: "..k)
         end
     end
 end

@@ -1,49 +1,35 @@
-----------
--- Credits to esx team, need to review and rewrite
-local Jobs = {}
-local LastTime = nil
+-- ====================================================================================--
+--  MIT License 2020 : Twiitchter
+-- ====================================================================================--
+c.cron = {} -- functions
+c.crons = {} -- table of jobs to action @ times.
+--[[
+NOTES.
+    - Simple Cron Handler based on hours and minutes only.
+    - No need to add days intot he mix as generally all time based events within
+    - FiveM Game modes are not relyant on days.
+]]--
+math.randomseed(c.Seed)
+-- ====================================================================================--
 
-function RunAt(h, m, cb)
-	table.insert(Jobs, {
+--- [F] - Add Functino be be called back @ Hour and Minute.
+function c.cron.Add(h, m, cb)
+	table.insert(c.crons, {
 		h  = h,
 		m  = m,
 		cb = cb
 	})
 end
 
-function GetTime()
-	local timestamp = os.time()
-	local d = os.date('*t', timestamp).wday
-	local h = tonumber(os.date('%H', timestamp))
-	local m = tonumber(os.date('%M', timestamp))
-
-	return {d = d, h = h, m = m}
-end
-
-function OnTime(d, h, m)
-
-	for i=1, #Jobs, 1 do
-		if Jobs[i].h == h and Jobs[i].m == m then
-			Jobs[i].cb(d, h, m)
+-- Can be found within the c.time.Update() function.
+--- Internal [F] - Add a function to be called once @ Hour and Minute. 
+---@param h number "0-23"
+---@param m number "0-59"
+function c.cron.Action(h, m)
+	for i=1, #c.crons, 1 do
+		if c.crons[i].h == h and c.crons[i].m == m then
+			c.crons[i].cb(h, m)
 		end
 	end
 end
 
-function Tick()
-	local time = GetTime()
-
-	if time.h ~= LastTime.h or time.m ~= LastTime.m then
-		OnTime(time.d, time.h, time.m)
-		LastTime = time
-	end
-
-	SetTimeout(60000, Tick)
-end
-
-LastTime = GetTime()
-
-Tick()
-
-AddEventHandler('Server:Cron:NewTask', function(h, m, cb)
-	RunAt(h, m, cb)
-end)
