@@ -2,7 +2,6 @@
 
 */
 
-let EnableDebug = conf.debug
 let Character_ID = null
 let PacketTemp = null
 
@@ -30,14 +29,10 @@ function Selected(key) {
         document.getElementById('lastseen').innerText = '-'
         document.getElementById('city').innerText = '-'
         document.getElementById('phone').innerText = '-'
-        if (EnableDebug) {
-            console.log('   -= ' + Character_ID + ' =-   ')
-        }
+
     } else {
         Character_ID = PacketTemp[key].Character_ID
-        if (EnableDebug) {
-            console.log('   -= ' + Character_ID + ' =-   ')
-        }
+
         let Created = PacketTemp[key].Created
         let First = PacketTemp[key].First_Name
         let Last = PacketTemp[key].Last_Name
@@ -125,9 +120,6 @@ $(document).ready(function () {
             let data = event.data;
             switch (data.message) {
                 case 'OnJoin':
-                    if (EnableDebug) {
-                        console.log('   -= Message = OnJoin =-   ')
-                    }
                     $("#Sidebar").show();
                     $("#CharacterList").show();
                     $("#CharacterMake").hide();
@@ -135,26 +127,15 @@ $(document).ready(function () {
                     OnJoin(PacketTemp);
                     break;
                 case 'OnNew':
-                    if (EnableDebug) {
-                        console.log('   -= Message = OnNew =-   ')
-                    }
                     $("#Sidebar").hide();
                     $("#CharacterList").hide();
                     $("#CharacterMake").show();
                     break;
                 case 'OnNotify':
-                    if (EnableDebug) {
-                        console.log('   -= Message = OnNotify =-   ')
-                    }
                     $("#Notify-Window").show();
                     OnNotify(data.notify)
                     break;
                 case 'default':
-                    if (EnableDebug) {
-                        console.log('   -= No Message =-   ')
-                        console.log('   -= No Data =-   ')
-                        console.log('   -= Action = Hide NUI =-   ')
-                    }
                     break;
             }
         });

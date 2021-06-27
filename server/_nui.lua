@@ -80,4 +80,5 @@ AddEventHandler('Server:Character:Request:Create', function(first_name, last_nam
         ---
         ---
         TriggerClientEvent('creator:OpenCreator', src)
+        c.inst.SetPlayer(src, c.inst.New())
 end)
